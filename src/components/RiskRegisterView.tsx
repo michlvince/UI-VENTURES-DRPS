@@ -20,7 +20,7 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
 
   const categories = Array.from(new Set(risks.map((r) => r.category)));
 
-  // 5x5 heatmap cells
+  // Generate 5x5 matrix cells
   const matrixCells: { [key: string]: RiskItem[] } = {};
   for (let l = 1; l <= 5; l++) {
     for (let i = 1; i <= 5; i++) {
@@ -36,35 +36,36 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
 
   const getHeatmapColor = (l: number, i: number) => {
     const score = l * i;
-    if (score >= 20) return 'bg-[#FEF2F2] border-[#FECACA] text-[#B91C1C]';
-    if (score >= 10) return 'bg-[#F4F4F5] border-[#E4E4E7] text-[#52525B]';
-    if (score >= 5)  return 'bg-[#F0FDF4] border-[#BBF7D0] text-[#15803D]';
-    return 'bg-white border-[#E4E4E7] text-[#71717A]';
+    if (score >= 20) return 'bg-[#FEE2E2] border-[#FECACA] text-[#DC2626]';
+    if (score >= 10) return 'bg-[#FEF3C7] border-[#FDE68A] text-[#D97706]';
+    if (score >= 5) return 'bg-[#DCFCE7] border-[#BBF7D0] text-[#16A34A]';
+    return 'bg-[#F9FAFB] border-black/[0.05] text-[#6B7280]';
   };
 
   const severityBadge = (severity: string) => {
-    if (severity === 'Critical') return 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]';
-    if (severity === 'High')     return 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]';
-    return 'bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]';
+    if (severity === 'Critical') return 'bg-[#FEE2E2] text-[#DC2626] border border-[#FECACA]';
+    if (severity === 'High') return 'bg-[#FEF3C7] text-[#D97706] border border-[#FDE68A]';
+    return 'bg-[#DCFCE7] text-[#16A34A] border border-[#BBF7D0]';
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="space-y-4 sm:space-y-5 pb-16">
+
+      {/* Header Bento Card */}
+      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-[#09090B]">
-            Enterprise Risk Register & 5x5 Likelihood / Impact Matrix
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
+            Enterprise Risk Register & 5×5 Heatmap Matrix
           </h2>
-          <p className="text-xs text-[#52525B] mt-0.5">
-            15 catalogued operational, cyber, power, and supply risks. Adjust Likelihood (1-5) and Impact (1-5) to observe live score re-weighting.
+          <p className="text-xs text-[#6B7280] mt-0.5">
+            15 catalogued risks spanning power, equipment, cyber, and logistics. Adjust Likelihood (1–5) and Impact (1–5) to recompute scores.
           </p>
         </div>
 
         <select
           value={selectedCategoryFilter}
           onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-          className="py-1.5 px-3 text-xs bg-white border border-[#E4E4E7] rounded-md focus:outline-none focus:ring-1 focus:ring-[#0F3D2E] text-[#09090B]"
+          className="py-1.5 px-3.5 text-xs bg-[#F9FAFB] border border-black/[0.06] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#103E2E] text-[#111827] font-semibold"
         >
           <option value="ALL">All Categories ({risks.length})</option>
           {categories.map((c) => (
@@ -75,32 +76,33 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
         </select>
       </div>
 
-      {/* Heatmap + Severity Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* 5x5 Heatmap */}
-        <div className="lg:col-span-7 bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
+      {/* Heatmap & Breakdown Bento Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+
+        {/* 5x5 Heatmap Matrix (7 cols) */}
+        <div className="lg:col-span-7 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-[#09090B]">
-              5x5 Risk Distribution Heatmap
+            <h3 className="text-sm font-bold text-[#111827]">
+              5×5 Risk Distribution Matrix
             </h3>
-            <span className="text-[11px] text-[#71717A]">
-              Rows: Likelihood (1-5) / Cols: Impact (1-5)
+            <span className="text-[11px] text-[#6B7280]">
+              Rows: Likelihood (1–5) • Columns: Impact (1–5)
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <div className="min-w-[380px]">
-              <div className="grid grid-cols-6 gap-1.5 text-center text-xs">
-                <div className="text-[11px] font-semibold text-[#71717A] self-center">L \ I</div>
-                <div className="text-[11px] font-semibold text-[#71717A]">1</div>
-                <div className="text-[11px] font-semibold text-[#71717A]">2</div>
-                <div className="text-[11px] font-semibold text-[#71717A]">3</div>
-                <div className="text-[11px] font-semibold text-[#71717A]">4</div>
-                <div className="text-[11px] font-semibold text-[#71717A]">5</div>
+            <div className="min-w-[420px]">
+              <div className="grid grid-cols-6 gap-2 text-center text-xs">
+                <div className="text-[11px] font-bold text-[#6B7280] self-center">L \ I</div>
+                <div className="text-[11px] font-semibold text-[#6B7280]">1 (Minor)</div>
+                <div className="text-[11px] font-semibold text-[#6B7280]">2</div>
+                <div className="text-[11px] font-semibold text-[#6B7280]">3 (Moderate)</div>
+                <div className="text-[11px] font-semibold text-[#6B7280]">4</div>
+                <div className="text-[11px] font-semibold text-[#6B7280]">5 (Critical)</div>
 
                 {[5, 4, 3, 2, 1].map((l) => (
                   <React.Fragment key={`row-${l}`}>
-                    <div className="font-mono-metrics font-bold text-xs text-[#71717A] flex items-center justify-center">
+                    <div className="font-mono-metrics font-bold text-xs text-[#6B7280] flex items-center justify-center">
                       L={l}
                     </div>
                     {[1, 2, 3, 4, 5].map((i) => {
@@ -111,9 +113,9 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
                       return (
                         <div
                           key={key}
-                          className={`h-14 p-1 rounded-md border flex flex-col justify-between ${colorClass}`}
+                          className={`h-14 p-1.5 rounded-xl border flex flex-col justify-between transition-transform duration-100 hover:scale-[1.02] ${colorClass}`}
                         >
-                          <div className="text-[9px] font-mono-metrics opacity-75 self-start">
+                          <div className="text-[9px] font-mono-metrics font-bold opacity-75 self-start">
                             {l * i}
                           </div>
                           <div className="flex flex-wrap gap-1 justify-center items-center">
@@ -121,7 +123,7 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
                               <span
                                 key={ri.id}
                                 title={`${ri.id}: ${ri.title}`}
-                                className="text-[9px] font-mono-metrics font-bold px-1 py-0.5 bg-white/90 border rounded text-[#09090B]"
+                                className="text-[9px] font-mono-metrics font-bold px-1.5 py-0.2 bg-white rounded-md shadow-xs text-[#111827]"
                               >
                                 {ri.id}
                               </span>
@@ -137,97 +139,97 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
           </div>
         </div>
 
-        {/* Severity summary */}
-        <div className="lg:col-span-5 space-y-3">
-          <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-[#09090B]">
+        {/* Severity Count Summary (5 cols) */}
+        <div className="lg:col-span-5 space-y-3.5">
+          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-4">
+            <h3 className="text-sm font-bold text-[#111827]">
               Risk Severity Breakdown
             </h3>
 
             <div className="space-y-3">
-              <div className="p-3 rounded-lg border border-[#FECACA] bg-[#FEF2F2]/50 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-[#FEE2E2]/60 border border-[#FECACA] flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-semibold text-[#B91C1C]">Critical (Score 20-25)</div>
-                  <div className="text-[11px] text-[#B91C1C]/80 mt-0.5">Immediate holding-wide mitigation</div>
+                  <div className="text-xs font-bold text-[#DC2626]">Critical (Score 20–25)</div>
+                  <div className="text-[11px] text-[#991B1B]/80 mt-0.5">Holding-wide immediate mitigation</div>
                 </div>
-                <div className="text-2xl font-bold font-mono-metrics text-[#B91C1C]">
+                <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#DC2626]">
                   {risks.filter((r) => r.severity === 'Critical').length}
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg border border-[#E4E4E7] bg-[#F4F4F5]/60 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-[#FEF3C7]/60 border border-[#FDE68A] flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-semibold text-[#09090B]">High (Score 10-19)</div>
-                  <div className="text-[11px] text-[#52525B] mt-0.5">Unit-level technical failover</div>
+                  <div className="text-xs font-bold text-[#D97706]">High (Score 10–19)</div>
+                  <div className="text-[11px] text-[#B45309]/80 mt-0.5">Unit-level technical failover</div>
                 </div>
-                <div className="text-2xl font-bold font-mono-metrics text-[#09090B]">
+                <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#D97706]">
                   {risks.filter((r) => r.severity === 'High').length}
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg border border-[#BBF7D0] bg-[#F0FDF4]/50 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-[#DCFCE7]/60 border border-[#BBF7D0] flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-semibold text-[#15803D]">Moderate (Score 5-9)</div>
-                  <div className="text-[11px] text-[#15803D]/80 mt-0.5">Monitored standard runbooks</div>
+                  <div className="text-xs font-bold text-[#16A34A]">Moderate (Score 5–9)</div>
+                  <div className="text-[11px] text-[#15803D]/80 mt-0.5">Standard monitored runbooks</div>
                 </div>
-                <div className="text-2xl font-bold font-mono-metrics text-[#15803D]">
+                <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#16A34A]">
                   {risks.filter((r) => r.severity === 'Moderate').length}
                 </div>
               </div>
             </div>
 
-            <p className="text-[11px] text-[#71717A] leading-relaxed pt-2 border-t border-[#E4E4E7]">
-              R01 (Power Grid Failure) sits at maximum score 25 (L=5, I=5), requiring centralized 500kVA automated generator transfer across all UI Ventures entities.
+            <p className="text-[11px] text-[#6B7280] leading-relaxed pt-3 border-t border-black/[0.04]">
+              R01 (Campus Power Grid Outage) is rated maximum score 25 (L=5, I=5), requiring centralized 500kVA automated generator transfer across UI Ventures facilities.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Editable Risk Table */}
-      <div className="bg-white border border-[#E4E4E7] rounded-xl ring-1 ring-[#E4E4E7]">
-        <div className="p-4 border-b border-[#E4E4E7] flex items-center justify-between">
-          <span className="text-xs font-semibold text-[#09090B]">
+      {/* Editable Risk Table Bento */}
+      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03]">
+        <div className="pb-4 border-b border-black/[0.04] flex items-center justify-between">
+          <span className="text-sm font-bold text-[#111827]">
             Risk Register Details ({filteredRisks.length} items)
           </span>
-          <span className="text-[11px] text-[#71717A]">
-            Use inline dropdowns to test likelihood and impact changes
+          <span className="text-[11px] text-[#6B7280]">
+            Use dropdowns to simulate probability shifts
           </span>
         </div>
 
-        <div className="overflow-x-auto rounded-b-xl">
-          <table className="w-full text-left border-collapse text-xs min-w-[700px]">
+        <div className="overflow-x-auto mt-2">
+          <table className="w-full text-left border-collapse text-xs min-w-[750px]">
             <thead>
-              <tr className="border-b border-[#E4E4E7] text-[#71717A] bg-[#FAFAFA]">
-                <th className="py-2.5 px-3 font-medium">Risk ID</th>
-                <th className="py-2.5 px-3 font-medium">Title & Category</th>
-                <th className="py-2.5 px-3 font-medium text-center">L</th>
-                <th className="py-2.5 px-3 font-medium text-center">I</th>
-                <th className="py-2.5 px-3 font-medium text-center">Score</th>
-                <th className="py-2.5 px-3 font-medium text-center">Severity</th>
-                <th className="py-2.5 px-3 font-medium">Mitigation Controls</th>
-                <th className="py-2.5 px-3 font-medium text-right">Owner</th>
+              <tr className="border-b border-black/[0.06] text-[#6B7280] bg-[#F9FAFB] rounded-xl">
+                <th className="py-3 px-3.5 font-semibold rounded-l-xl">ID</th>
+                <th className="py-3 px-3.5 font-semibold">Title & Category</th>
+                <th className="py-3 px-3.5 font-semibold text-center">Likelihood</th>
+                <th className="py-3 px-3.5 font-semibold text-center">Impact</th>
+                <th className="py-3 px-3.5 font-semibold text-center">Score (L×I)</th>
+                <th className="py-3 px-3.5 font-semibold text-center">Severity</th>
+                <th className="py-3 px-3.5 font-semibold">Mitigation Strategy</th>
+                <th className="py-3 px-3.5 font-semibold text-right rounded-r-xl">Owner</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E4E4E7]">
+            <tbody className="divide-y divide-black/[0.04]">
               {filteredRisks.map((risk) => (
-                <tr key={risk.id} className="hover:bg-[#FAFAFA] transition-colors duration-100">
-                  <td className="py-3 px-3 font-mono-metrics font-bold text-[#09090B] align-top">
+                <tr key={risk.id} className="hover:bg-[#F9FAFB] transition-colors">
+                  <td className="py-3.5 px-3.5 font-mono-metrics font-bold text-[#111827] align-top">
                     {risk.id}
                   </td>
 
-                  <td className="py-3 px-3 align-top max-w-xs">
-                    <div className="font-semibold text-[#09090B]">{risk.title}</div>
-                    <div className="text-[11px] text-[#71717A] mt-0.5">{risk.category}</div>
-                    <div className="text-[10px] text-[#52525B] mt-1">
-                      Affected: {risk.affectedUnitIds.join(', ')}
+                  <td className="py-3.5 px-3.5 align-top max-w-xs">
+                    <div className="font-bold text-[#111827]">{risk.title}</div>
+                    <div className="text-[11px] text-[#6B7280] mt-0.5">{risk.category}</div>
+                    <div className="text-[10px] text-[#9CA3AF] mt-1">
+                      Units: {risk.affectedUnitIds.join(', ')}
                     </div>
                   </td>
 
-                  <td className="py-3 px-3 text-center align-top font-mono-metrics">
+                  <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics">
                     <select
                       value={risk.likelihood}
                       onChange={(e) => onUpdateRisk(risk.id, Number(e.target.value), risk.impact)}
-                      className="py-1 px-1.5 border border-[#E4E4E7] rounded text-xs bg-white text-[#09090B]"
+                      className="py-1 px-2 border border-black/[0.1] rounded-lg text-xs bg-white text-[#111827] font-semibold"
                     >
                       {[1, 2, 3, 4, 5].map((val) => (
                         <option key={val} value={val}>
@@ -237,13 +239,13 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
                     </select>
                   </td>
 
-                  <td className="py-3 px-3 text-center align-top font-mono-metrics">
+                  <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics">
                     <select
                       value={risk.impact}
                       onChange={(e) =>
                         onUpdateRisk(risk.id, risk.likelihood, Number(e.target.value))
                       }
-                      className="py-1 px-1.5 border border-[#E4E4E7] rounded text-xs bg-white text-[#09090B]"
+                      className="py-1 px-2 border border-black/[0.1] rounded-lg text-xs bg-white text-[#111827] font-semibold"
                     >
                       {[1, 2, 3, 4, 5].map((val) => (
                         <option key={val} value={val}>
@@ -253,21 +255,21 @@ export const RiskRegisterView: React.FC<RiskRegisterViewProps> = ({
                     </select>
                   </td>
 
-                  <td className="py-3 px-3 text-center align-top font-mono-metrics font-bold text-sm">
+                  <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics font-extrabold text-sm text-[#111827]">
                     {risk.score}
                   </td>
 
-                  <td className="py-3 px-3 text-center align-top">
-                    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${severityBadge(risk.severity)}`}>
+                  <td className="py-3.5 px-3.5 text-center align-top">
+                    <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${severityBadge(risk.severity)}`}>
                       {risk.severity}
                     </span>
                   </td>
 
-                  <td className="py-3 px-3 align-top max-w-sm text-xs text-[#52525B]">
+                  <td className="py-3.5 px-3.5 align-top max-w-sm text-xs text-[#4B5563]">
                     {risk.mitigationStrategy}
                   </td>
 
-                  <td className="py-3 px-3 text-right align-top font-mono-metrics font-semibold text-[#0F3D2E]">
+                  <td className="py-3.5 px-3.5 text-right align-top font-mono-metrics font-bold text-[#103E2E]">
                     {risk.ownerUnit}
                   </td>
                 </tr>

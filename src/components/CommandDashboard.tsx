@@ -4,6 +4,7 @@ import React from 'react';
 import {
   AlertTriangle,
   ArrowRight,
+  TrendingUp,
 } from 'lucide-react';
 import {
   BusinessUnit,
@@ -26,10 +27,10 @@ interface CommandDashboardProps {
   onSelectUnitFilter: (unitId: UnitId) => void;
 }
 
-function readinessBadge(score: number) {
-  if (score >= 85) return 'bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]';
-  if (score >= 75) return 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]';
-  return 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]';
+function readinessBadgeClass(score: number) {
+  if (score >= 85) return 'text-[#16A34A] bg-[#DCFCE7] border-[#BBF7D0]';
+  if (score >= 75) return 'text-[#0A261D] bg-[#F3F4F6] border-[#E5E7EB]';
+  return 'text-[#DC2626] bg-[#FEE2E2] border-[#FECACA]';
 }
 
 export const CommandDashboard: React.FC<CommandDashboardProps> = ({
@@ -50,123 +51,185 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
   const missedSims = simulations.filter((s) => s.complianceStatus === 'MISSED');
 
   return (
-    <div className="space-y-6">
-      {/* KPI strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
-          <div className="text-xs text-[#71717A]">Readiness Score</div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono-metrics text-[#0F3D2E]">
-            {aggregateReadiness.toFixed(1)}%
+    <div className="space-y-4 sm:space-y-5 pb-16">
+      
+      {/* =========================================
+          TOP BENTO STATS CARDS (Inspiration match)
+         ========================================= */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        {/* Card 1: Primary Forest Green Accent Card (like inspo dark green hero card) */}
+        <div className="bg-[#0A261D] text-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-white/70">Aggregate Posture</span>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#4ADE80]">
+              <TrendingUp className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-[11px] text-[#52525B]">9 operational entities</p>
+          <div className="my-3">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono-metrics tracking-tight text-[#4ADE80]">
+              {aggregateReadiness.toFixed(1)}%
+            </div>
+            <div className="text-xs text-white/70 mt-1">
+              +14.2% from baseline drill
+            </div>
+          </div>
+          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/60">
+            <span>9 Subsidiaries verified</span>
+            <span className="font-semibold text-white">ISO 22301</span>
+          </div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
+        {/* Card 2: Tier-1 Critical Processes */}
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm border border-black/[0.03] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#71717A]">Critical Processes</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]">
+            <span className="text-xs font-semibold text-[#6B7280]">Critical Processes</span>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FEE2E2] text-[#DC2626]">
               {criticalProcesses.length} Tier-1
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono-metrics text-[#09090B]">
-            {processes.length}
+          <div className="my-3">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono-metrics tracking-tight text-[#111827]">
+              {processes.length}
+            </div>
+            <div className="text-xs text-[#6B7280] mt-1">
+              RTO deadlines from 2h to 12h
+            </div>
           </div>
-          <p className="text-[11px] text-[#52525B]">RTO limits 2h to 12h</p>
+          <div className="pt-3 border-t border-black/[0.04] flex items-center justify-between text-[11px] text-[#6B7280]">
+            <span>Active BIA profiles</span>
+            <button 
+              onClick={() => onNavigateTab('units_bia')}
+              className="text-[#103E2E] font-semibold hover:underline"
+            >
+              View catalog →
+            </button>
+          </div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
+        {/* Card 3: Risk Register Balance */}
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm border border-black/[0.03] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#71717A]">Risk Register</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">
+            <span className="text-xs font-semibold text-[#6B7280]">Risk Register</span>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F3F4F6] text-[#111827]">
               {criticalRisks.length} Crit / {highRisks.length} High
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono-metrics text-[#09090B]">
-            {risks.length} Risks
+          <div className="my-3">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono-metrics tracking-tight text-[#111827]">
+              {risks.length}
+            </div>
+            <div className="text-xs text-[#6B7280] mt-1">
+              5×5 qualitative heatmap
+            </div>
           </div>
-          <p className="text-[11px] text-[#52525B]">5x5 probability matrix</p>
+          <div className="pt-3 border-t border-black/[0.04] flex items-center justify-between text-[11px] text-[#6B7280]">
+            <span>Peak hazard: R01 (25)</span>
+            <button 
+              onClick={() => onNavigateTab('risk_register')}
+              className="text-[#103E2E] font-semibold hover:underline"
+            >
+              Inspect 5×5 →
+            </button>
+          </div>
         </div>
 
-        <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
+        {/* Card 4: Simulation Drills Compliance */}
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm border border-black/[0.03] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#71717A]">Simulation Drills</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
+            <span className="text-xs font-semibold text-[#6B7280]">Simulation Drills</span>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#DCFCE7] text-[#16A34A]">
               {metSims.length} Met / {missedSims.length} Missed
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold font-mono-metrics text-[#0F3D2E]">
-            {Math.round((metSims.length / simulations.length) * 100)}% Compliance
+          <div className="my-3">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono-metrics tracking-tight text-[#16A34A]">
+              {Math.round((metSims.length / simulations.length) * 100)}%
+            </div>
+            <div className="text-xs text-[#6B7280] mt-1">
+              Recovery compliance rate
+            </div>
           </div>
-          <p className="text-[11px] text-[#52525B]">8 operational drills</p>
+          <div className="pt-3 border-t border-black/[0.04] flex items-center justify-between text-[11px] text-[#6B7280]">
+            <span>8 verified drills</span>
+            <button 
+              onClick={() => onNavigateTab('incident_simulator')}
+              className="text-[#103E2E] font-semibold hover:underline"
+            >
+              Test drills →
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Subsidiary Readiness Table */}
-        <div className="lg:col-span-2 bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
+      {/* =========================================
+          MAIN BENTO GRID: Table (Left) + Side Modules (Right)
+         ========================================= */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+        
+        {/* Left Column: Subsidiary Readiness Table (8 cols) */}
+        <div className="lg:col-span-8 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-[#09090B]">
-                Subsidiary Readiness & BIA Status
+              <h3 className="text-base font-bold text-[#111827]">
+                Subsidiary Readiness & BIA Catalog
               </h3>
-              <p className="text-xs text-[#52525B]">
-                Ranked by recovery maturity across all 9 entities.
+              <p className="text-xs text-[#6B7280] mt-0.5">
+                Continuity posture ranked across all 9 commercial subsidiaries.
               </p>
             </div>
             <button
               onClick={() => onNavigateTab('units_bia')}
-              className="text-xs text-[#0F3D2E] hover:underline font-medium flex items-center gap-1"
+              className="text-xs text-[#103E2E] hover:underline font-semibold flex items-center gap-1"
             >
-              <span>Process Catalog</span>
+              <span>Manage BIA</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs min-w-[480px]">
+            <table className="w-full text-left border-collapse text-xs min-w-[500px]">
               <thead>
-                <tr className="border-b border-[#E4E4E7] text-[#71717A] bg-[#FAFAFA]">
-                  <th className="py-2.5 px-3 font-medium">Unit Code</th>
-                  <th className="py-2.5 px-3 font-medium">Subsidiary</th>
-                  <th className="py-2.5 px-3 font-medium">Category</th>
-                  <th className="py-2.5 px-3 font-medium text-right">Readiness</th>
-                  <th className="py-2.5 px-3 font-medium text-center">Status</th>
-                  <th className="py-2.5 px-3 font-medium text-right">Action</th>
+                <tr className="border-b border-black/[0.06] text-[#6B7280] bg-[#F9FAFB] rounded-xl">
+                  <th className="py-3 px-3.5 font-semibold rounded-l-xl">Code</th>
+                  <th className="py-3 px-3.5 font-semibold">Subsidiary</th>
+                  <th className="py-3 px-3.5 font-semibold">Category</th>
+                  <th className="py-3 px-3.5 font-semibold text-right">Readiness</th>
+                  <th className="py-3 px-3.5 font-semibold text-center">Status</th>
+                  <th className="py-3 px-3.5 font-semibold text-right rounded-r-xl">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E4E4E7]">
+              <tbody className="divide-y divide-black/[0.04]">
                 {units
                   .slice()
                   .sort((a, b) => b.currentReadiness - a.currentReadiness)
                   .map((u) => (
-                    <tr key={u.id} className="hover:bg-[#FAFAFA] transition-colors duration-100">
-                      <td className="py-2.5 px-3 font-mono-metrics font-semibold text-[#09090B]">
+                    <tr key={u.id} className="hover:bg-[#F9FAFB] transition-colors">
+                      <td className="py-3 px-3.5 font-mono-metrics font-bold text-[#111827]">
                         {u.id}
                       </td>
-                      <td className="py-2.5 px-3 font-medium text-[#09090B]">
+                      <td className="py-3 px-3.5 font-semibold text-[#111827]">
                         {u.name}
                       </td>
-                      <td className="py-2.5 px-3 text-[#52525B]">{u.category}</td>
-                      <td className="py-2.5 px-3 text-right">
-                        <span className={`font-mono-metrics font-bold px-2 py-0.5 rounded text-[11px] ${readinessBadge(u.currentReadiness)}`}>
+                      <td className="py-3 px-3.5 text-[#6B7280]">{u.category}</td>
+                      <td className="py-3 px-3.5 text-right">
+                        <span className={`font-mono-metrics font-bold px-2.5 py-0.5 rounded-full text-[11px] border ${readinessBadgeClass(u.currentReadiness)}`}>
                           {u.currentReadiness.toFixed(1)}%
                         </span>
                       </td>
-                      <td className="py-2.5 px-3 text-center">
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[#52525B]">
+                      <td className="py-3 px-3.5 text-center">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F3F4F6] text-[#4B5563] font-medium">
                           {u.status}
                         </span>
                       </td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-3 px-3.5 text-right">
                         <button
                           onClick={() => {
                             onSelectUnitFilter(u.id);
                             onNavigateTab('units_bia');
                           }}
-                          className="text-[#0F3D2E] hover:underline text-[11px] font-medium"
+                          className="text-[#103E2E] hover:underline text-[11px] font-semibold"
                         >
-                          Drill Down
+                          Details
                         </button>
                       </td>
                     </tr>
@@ -176,22 +239,23 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="space-y-6">
-          {/* Shared Infrastructure snapshot */}
-          <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-3.5">
+        {/* Right Column: Shared Assets & Quick Alert (4 cols) */}
+        <div className="lg:col-span-4 space-y-4 sm:space-y-5">
+          
+          {/* Shared Infrastructure Blast Radius */}
+          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3.5">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-[#09090B]">
-                  Shared Utilities Blast Radius
-                </h3>
-                <p className="text-xs text-[#52525B]">
-                  Assets cascading across multiple units.
+                <h4 className="text-sm font-bold text-[#111827]">
+                  Shared Campus Utilities
+                </h4>
+                <p className="text-xs text-[#6B7280]">
+                  High blast radius assets cascading enterprise-wide.
                 </p>
               </div>
               <button
                 onClick={() => onNavigateTab('blast_radius')}
-                className="text-xs text-[#0F3D2E] hover:underline font-medium"
+                className="text-xs text-[#103E2E] hover:underline font-semibold"
               >
                 Inspect
               </button>
@@ -202,48 +266,48 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
                 <div
                   key={asset.id}
                   onClick={() => onNavigateTab('blast_radius')}
-                  className="p-3 border border-[#E4E4E7] rounded-lg hover:border-[#0F3D2E] transition-[border-color] duration-150 cursor-pointer bg-[#FAFAFA]"
+                  className="p-3.5 rounded-2xl border border-black/[0.05] hover:border-[#103E2E]/30 bg-[#F9FAFB] hover:bg-[#F3F4F6] transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono-metrics text-xs font-semibold text-[#09090B]">
+                    <span className="font-mono-metrics text-xs font-bold text-[#111827]">
                       {asset.id}
                     </span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[#52525B]">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#16A34A] font-bold">
                       {asset.redundancyLevel}
                     </span>
                   </div>
-                  <h4 className="text-xs font-medium text-[#09090B] mt-1 line-clamp-1">
+                  <h5 className="text-xs font-semibold text-[#111827] mt-1.5 line-clamp-1">
                     {asset.name}
-                  </h4>
-                  <div className="flex items-center justify-between text-[11px] text-[#71717A] mt-2">
-                    <span>{asset.dependentProcessIds.length} dependent processes</span>
-                    <span className="text-[#0F3D2E] font-medium">All Units</span>
+                  </h5>
+                  <div className="flex items-center justify-between text-[11px] text-[#6B7280] mt-2">
+                    <span>{asset.dependentProcessIds.length} dependent procs</span>
+                    <span className="text-[#103E2E] font-bold">9 Subsidiaries</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Focus alert */}
-          <div className="bg-[#FAFAFA] border border-[#E4E4E7] rounded-xl p-5 space-y-3">
+          {/* Quick Alert Card */}
+          <div className="bg-[#FEF2F2] rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 border border-[#FECACA] space-y-3">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-[#52525B]" />
-              <h3 className="text-sm font-semibold text-[#09090B]">
-                2 Over-RTO Scenarios
-              </h3>
+              <div className="w-8 h-8 rounded-full bg-[#DC2626]/10 flex items-center justify-center text-[#DC2626]">
+                <AlertTriangle className="w-4 h-4" />
+              </div>
+              <h4 className="text-sm font-bold text-[#991B1B]">
+                2 Scenarios Exceeded RTO
+              </h4>
             </div>
-            <p className="text-xs text-[#52525B] leading-relaxed">
-              Drills for SIM-03 (UI Water Treatment) and SIM-07 (Corporate Ransomware) exceeded allowed recovery objectives by +45m and +1h 30m respectively.
+            <p className="text-xs text-[#991B1B]/80 leading-relaxed">
+              Drills SIM-03 (UI Water Treatment) and SIM-07 (Corporate Ransomware) ran +45m and +1h 30m beyond allowed recovery thresholds.
             </p>
-            <div className="pt-1">
-              <button
-                onClick={() => onNavigateTab('incident_simulator')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#E4E4E7] text-xs font-medium text-[#09090B] rounded-md hover:bg-[#F4F4F5] transition-colors"
-              >
-                <span>Review Simulator Runbooks</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+            <button
+              onClick={() => onNavigateTab('incident_simulator')}
+              className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-[#DC2626] text-white hover:bg-[#B91C1C] text-xs font-semibold rounded-xl transition-colors shadow-sm"
+            >
+              <span>Review Simulation Runbooks</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </div>

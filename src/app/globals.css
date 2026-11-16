@@ -8,12 +8,28 @@
 }
 
 body {
-  background-color: #FAFAFA;
-  color: #09090B;
+  background-color: #ECEEEF;
+  color: #111827;
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Mono only for IDs, timestamps, numeric figures, code */
+/* Custom scrollbar styling for modern bento design */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
 .font-mono-metrics {
   font-family: var(--font-mono);
   font-feature-settings: 'tnum' on, 'lnum' on;

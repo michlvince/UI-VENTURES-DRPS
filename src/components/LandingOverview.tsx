@@ -20,10 +20,10 @@ interface LandingOverviewProps {
   onStartWalkthrough: () => void;
 }
 
-function readinessBadge(score: number) {
-  if (score >= 85) return 'bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]';
-  if (score >= 75) return 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]';
-  return 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]';
+function readinessColor(score: number) {
+  if (score >= 85) return 'text-[#16A34A] bg-[#DCFCE7] border-[#BBF7D0]';
+  if (score >= 75) return 'text-[#0A261D] bg-[#F3F4F6] border-[#E5E7EB]';
+  return 'text-[#DC2626] bg-[#FEE2E2] border-[#FECACA]';
 }
 
 export const LandingOverview: React.FC<LandingOverviewProps> = ({
@@ -34,93 +34,199 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
   onStartWalkthrough,
 }) => {
   return (
-    <div className="space-y-10 pb-16">
-      {/* Hero */}
-      <section className="bg-white border border-[#E4E4E7] rounded-xl p-8 sm:p-10 shadow-sm">
-        <div className="lg:flex lg:items-start lg:justify-between gap-10">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#ECFDF5] border border-[#A7F3D0] text-[#0F3D2E] text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-sm bg-[#15803D]" />
-              <span>Enterprise Business Continuity - University of Ibadan</span>
-            </div>
+    <div className="space-y-4 sm:space-y-5 pb-16">
+      
+      {/* =========================================
+          HERO BENTO CARD: Deep Emerald Feature Banner
+         ========================================= */}
+      <section className="bg-gradient-to-br from-[#0A261D] via-[#103E2E] to-[#14533D] text-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-lg shadow-black/5 relative overflow-hidden">
+        {/* Subtle decorative glow circle */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#4ADE80]/10 rounded-full blur-3xl pointer-events-none" />
 
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#09090B] leading-tight">
-              UI Ventures Limited Multi-Unit Disaster Recovery Planning System
-            </h1>
-
-            <p className="text-sm sm:text-base text-[#52525B] leading-relaxed">
-              An enterprise-grade business continuity and disaster recovery planning architecture built for UI Ventures Limited.
-              Designed to address multi-unit recovery dependencies across commercial, industrial, hospitality, and corporate operations
-              without external database overhead.
-            </p>
-
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => onNavigateTab('dashboard')}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0F3D2E] hover:bg-[#165B44] text-white text-xs sm:text-sm font-medium rounded-lg transition-colors shadow-sm"
-              >
-                <span>Launch Command Workspace</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={onStartWalkthrough}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-[#09090B] text-xs sm:text-sm font-medium rounded-lg transition-colors"
-              >
-                <Sparkles className="w-4 h-4 text-[#0F3D2E]" />
-                <span>Start 7-Step Guided Walkthrough</span>
-              </button>
-
-              <button
-                onClick={() => onNavigateTab('efficiency_storage')}
-                className="inline-flex items-center gap-2 px-3.5 py-2.5 text-xs text-[#52525B] hover:text-[#09090B] transition-colors"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-[#71717A]" />
-                <span>Governance & Export</span>
-              </button>
-            </div>
+        <div className="relative z-10 max-w-4xl space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[#86EFAC] text-xs font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse" />
+            <span>University of Ibadan Holding Company Continuity System</span>
           </div>
 
-          {/* Top-Right KPI card */}
-          <div className="mt-8 lg:mt-0 shrink-0 bg-[#FAFAFA] border border-[#E4E4E7] rounded-lg p-5 w-full lg:w-56 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-[#71717A]">Enterprise Posture</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
-                Verified
-              </span>
-            </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            Multi-Unit Disaster Recovery Planning System
+          </h2>
 
-            <div>
-              <div className="text-3xl font-bold font-mono-metrics text-[#0F3D2E]">
-                {aggregateReadiness.toFixed(1)}%
-              </div>
-              <div className="text-[11px] text-[#52525B] mt-0.5">Aggregate Subsidiary Readiness</div>
-            </div>
+          <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl font-normal">
+            A cohesive operational disaster recovery framework modeled for UI Ventures Limited. 
+            Empowering 9 commercial subsidiaries with automated RTO/RPO evaluation, blast radius impact analysis, and resilient offline local storage.
+          </p>
 
-            <div className="pt-2 border-t border-[#E4E4E7] flex items-center justify-between text-xs text-[#71717A]">
-              <span>Local Storage Engine</span>
-              <span className="font-mono-metrics text-[#09090B] font-medium">
-                {(storageBytes / 1024).toFixed(2)} KB
-              </span>
+          <div className="pt-2 flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => onNavigateTab('dashboard')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#4ADE80] hover:bg-[#22C55E] text-[#0A261D] text-xs sm:text-sm font-bold rounded-2xl transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02]"
+            >
+              <span>Open Command Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={onStartWalkthrough}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-medium rounded-2xl transition-all backdrop-blur-sm"
+            >
+              <Sparkles className="w-4 h-4 text-[#4ADE80]" />
+              <span>Start 7-Step Tour</span>
+            </button>
+
+            <button
+              onClick={() => onNavigateTab('efficiency_storage')}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-transparent hover:bg-white/5 text-white/80 hover:text-white text-xs sm:text-sm font-medium rounded-2xl transition-colors"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-[#86EFAC]" />
+              <span>Governance Audit</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Floating Mini Stats in Hero */}
+        <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div>
+            <div className="text-[11px] text-white/60">Readiness Score</div>
+            <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-[#4ADE80]">
+              {aggregateReadiness.toFixed(1)}%
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] text-white/60">Subsidiaries</div>
+            <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-white">
+              9 Units
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] text-white/60">Critical Processes</div>
+            <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-white">
+              14 Tier-1
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] text-white/60">Offline Storage</div>
+            <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-[#86EFAC]">
+              {(storageBytes / 1024).toFixed(1)} KB
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9 Subsidiaries Grid */}
-      <section className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <div>
-            <h2 className="text-xl font-semibold text-[#09090B]">9 Subsidiary Business Units</h2>
-            <p className="text-xs text-[#52525B] mt-0.5">
-              Federated business continuity profiles across commercial, service, industrial, and central corporate arms.
+      {/* =========================================
+          FOUR PILLARS BENTO ROW
+         ========================================= */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div
+          onClick={() => onNavigateTab('units_bia')}
+          className="group cursor-pointer bg-white rounded-[24px] p-5 shadow-sm border border-black/[0.04] hover:shadow-md hover:border-[#103E2E]/30 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center font-semibold">
+              <Building2 className="w-5 h-5 text-[#103E2E]" />
+            </div>
+            <h3 className="text-sm font-bold text-[#111827] group-hover:text-[#103E2E] transition-colors">
+              Business Impact Analysis
+            </h3>
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              14 critical business processes mapped with verified RTO/RPO limits and BIA scores (1–5).
             </p>
           </div>
+          <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
+            <span>Explore Matrix</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+
+        <div
+          onClick={() => onNavigateTab('blast_radius')}
+          className="group cursor-pointer bg-white rounded-[24px] p-5 shadow-sm border border-black/[0.04] hover:shadow-md hover:border-[#103E2E]/30 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center font-semibold">
+              <GitFork className="w-5 h-5 text-[#103E2E]" />
+            </div>
+            <h3 className="text-sm font-bold text-[#111827] group-hover:text-[#103E2E] transition-colors">
+              Asset Blast Radius
+            </h3>
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              Shared campus utilities (Fibre/ISP, 33kV Power) cascading downtime computation across all units.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
+            <span>Calculate Radius</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+
+        <div
+          onClick={() => onNavigateTab('risk_register')}
+          className="group cursor-pointer bg-white rounded-[24px] p-5 shadow-sm border border-black/[0.04] hover:shadow-md hover:border-[#103E2E]/30 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center font-semibold">
+              <AlertTriangle className="w-5 h-5 text-[#103E2E]" />
+            </div>
+            <h3 className="text-sm font-bold text-[#111827] group-hover:text-[#103E2E] transition-colors">
+              5×5 Risk Heatmap
+            </h3>
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              15 enterprise risks scored dynamically from R01 Grid Failure (25) to R15 Staff Unavailability.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
+            <span>Inspect Matrix</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+
+        <div
+          onClick={() => onNavigateTab('incident_simulator')}
+          className="group cursor-pointer bg-white rounded-[24px] p-5 shadow-sm border border-black/[0.04] hover:shadow-md hover:border-[#103E2E]/30 transition-all duration-200 flex flex-col justify-between"
+        >
+          <div className="space-y-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center font-semibold">
+              <Flame className="w-5 h-5 text-[#103E2E]" />
+            </div>
+            <h3 className="text-sm font-bold text-[#111827] group-hover:text-[#103E2E] transition-colors">
+              Disaster Drills & Runbooks
+            </h3>
+            <p className="text-xs text-[#6B7280] leading-relaxed">
+              8 controlled drill simulations evaluating RTO compliance (6 MET, 2 MISSED) with live stopwatch.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
+            <span>Launch Drills</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          9 SUBSIDIARY BUSINESS UNITS GRID
+         ========================================= */}
+      <section className="bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 shadow-sm border border-black/[0.03] space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-bold text-[#111827]">
+                Subsidiary Business Units
+              </h3>
+              <span className="px-2 py-0.5 rounded-full bg-[#F3F4F6] text-xs font-semibold text-[#4B5563]">
+                9 Entities
+              </span>
+            </div>
+            <p className="text-xs text-[#6B7280] mt-0.5">
+              Continuity postures across hospitality, bakery, water production, petroleum, print, and corporate arms.
+            </p>
+          </div>
+
           <button
             onClick={() => onNavigateTab('units_bia')}
-            className="text-xs text-[#0F3D2E] hover:underline font-medium flex items-center gap-1 self-start sm:self-auto"
+            className="text-xs text-[#103E2E] font-semibold flex items-center gap-1 hover:underline self-start sm:self-auto"
           >
-            <span>View Detailed BIA & Process Catalog</span>
+            <span>Open Detailed BIA Table</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -130,119 +236,58 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
             <div
               key={unit.id}
               onClick={() => onNavigateTab('units_bia')}
-              className="group cursor-pointer bg-white border border-[#E4E4E7] rounded-lg p-4 hover:border-[#0F3D2E]/40 hover:shadow-sm transition-[border-color,box-shadow] duration-150 flex flex-col justify-between"
+              className="group cursor-pointer rounded-2xl p-4 bg-[#F9FAFB] hover:bg-[#F3F4F6] border border-black/[0.04] hover:border-[#103E2E]/20 transition-all duration-150 flex flex-col justify-between"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono-metrics text-xs font-semibold px-2 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[#09090B]">
+                  <span className="font-mono-metrics text-xs font-bold px-2 py-0.5 rounded-lg bg-white border border-black/[0.06] text-[#111827]">
                     {unit.id}
                   </span>
-                  <span className={`font-mono-metrics text-xs font-bold px-2 py-0.5 rounded ${readinessBadge(unit.currentReadiness)}`}>
+                  <span className={`font-mono-metrics text-xs font-bold px-2.5 py-0.5 rounded-full border ${readinessColor(unit.currentReadiness)}`}>
                     {unit.currentReadiness.toFixed(1)}%
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-[#09090B] group-hover:text-[#0F3D2E] transition-colors duration-150">
+                  <h4 className="text-sm font-bold text-[#111827] group-hover:text-[#103E2E] transition-colors">
                     {unit.name}
-                  </h3>
-                  <div className="text-[11px] text-[#71717A] mt-0.5">{unit.location}</div>
+                  </h4>
+                  <div className="text-[11px] text-[#6B7280] mt-0.5">{unit.location}</div>
                 </div>
 
-                <p className="text-xs text-[#52525B] line-clamp-2 leading-relaxed">
+                <p className="text-xs text-[#4B5563] line-clamp-2 leading-relaxed">
                   {unit.description}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#E4E4E7] flex items-center justify-between text-[11px] text-[#71717A]">
+              <div className="mt-4 pt-3 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-[#6B7280]">
                 <span>Lead: {unit.headOfUnit}</span>
-                <span className="font-mono-metrics">{unit.primaryStaffCount} staff</span>
+                <span className="font-mono-metrics font-medium text-[#111827]">{unit.primaryStaffCount} staff</span>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Architecture Pillars */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-xl font-semibold text-[#09090B]">Disaster Recovery Architecture Pillars</h2>
-          <p className="text-xs text-[#52525B] mt-0.5">
-            Four functional layers covering business impact analysis, infrastructure dependency, risk scoring, and controlled drill simulation.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div
-            onClick={() => onNavigateTab('units_bia')}
-            className="cursor-pointer bg-white border border-[#E4E4E7] rounded-lg p-5 space-y-2.5 hover:border-[#0F3D2E] transition-[border-color] duration-150"
-          >
-            <div className="w-8 h-8 rounded-md bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center">
-              <Building2 className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-semibold text-[#09090B]">14 Critical Processes & BIA</h3>
-            <p className="text-xs text-[#52525B] leading-relaxed">
-              Granular Recovery Time Objectives (RTO) and Recovery Point Objectives (RPO) calibrated per unit from 2h to 12h.
-            </p>
+      {/* =========================================
+          UNIVERSITY OF IBADAN INSTITUTIONAL BADGE
+         ========================================= */}
+      <section className="bg-white rounded-[24px] sm:rounded-[28px] p-6 shadow-sm border border-black/[0.03] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#103E2E]" />
+            <h4 className="text-sm font-bold text-[#111827]">University of Ibadan</h4>
           </div>
-
-          <div
-            onClick={() => onNavigateTab('blast_radius')}
-            className="cursor-pointer bg-white border border-[#E4E4E7] rounded-lg p-5 space-y-2.5 hover:border-[#0F3D2E] transition-[border-color] duration-150"
-          >
-            <div className="w-8 h-8 rounded-md bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center">
-              <GitFork className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-semibold text-[#09090B]">Shared Blast Radius Matrix</h3>
-            <p className="text-xs text-[#52525B] leading-relaxed">
-              Cross-dependency mapping for shared campus utilities (A13 Fibre/ISP, A14 33kV Power) cascading across units.
-            </p>
-          </div>
-
-          <div
-            onClick={() => onNavigateTab('risk_register')}
-            className="cursor-pointer bg-white border border-[#E4E4E7] rounded-lg p-5 space-y-2.5 hover:border-[#0F3D2E] transition-[border-color] duration-150"
-          >
-            <div className="w-8 h-8 rounded-md bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center">
-              <AlertTriangle className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-semibold text-[#09090B]">5x5 Risk Likelihood / Impact</h3>
-            <p className="text-xs text-[#52525B] leading-relaxed">
-              15 enterprise risks dynamically scored from R01 Grid Failure to R15 Staff Unavailability with live slider updates.
-            </p>
-          </div>
-
-          <div
-            onClick={() => onNavigateTab('incident_simulator')}
-            className="cursor-pointer bg-white border border-[#E4E4E7] rounded-lg p-5 space-y-2.5 hover:border-[#0F3D2E] transition-[border-color] duration-150"
-          >
-            <div className="w-8 h-8 rounded-md bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center">
-              <Flame className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-semibold text-[#09090B]">8 Incident Simulations</h3>
-            <p className="text-xs text-[#52525B] leading-relaxed">
-              Step-by-step phased runbooks, automated RTO compliance checks (6 MET, 2 MISSED), and live disaster drills.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Credit Banner */}
-      <section className="bg-[#0F3D2E] text-white rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div className="space-y-1 max-w-xl">
-          <h3 className="text-lg font-semibold text-white">
-            University of Ibadan
-          </h3>
-          <p className="text-xs text-[#D1FAE5] leading-relaxed">
+          <p className="text-xs text-[#6B7280] leading-relaxed max-w-xl">
             Multi-Unit Disaster Recovery Planning System (DRPS) prototype demonstrating ISO 22301 and NIST SP 800-34 principles tailored for commercial subsidiary holding companies.
           </p>
         </div>
 
         <button
           onClick={() => onNavigateTab('dashboard')}
-          className="shrink-0 px-4 py-2 bg-white text-[#0F3D2E] hover:bg-[#ECFDF5] text-xs font-semibold rounded-lg transition-colors"
+          className="shrink-0 px-4 py-2 bg-[#0A261D] text-white hover:bg-[#14533D] text-xs font-semibold rounded-xl transition-colors"
         >
-          Open Executive Dashboard
+          Open Workspace
         </button>
       </section>
     </div>

@@ -30,31 +30,33 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
   const selectedAsset = blastData.asset;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-xl font-semibold text-[#09090B]">
-          Infrastructure Cross-Dependency & Blast Radius Engine
+    <div className="space-y-4 sm:space-y-5 pb-16">
+      
+      {/* Header Bento Box */}
+      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03]">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
+          Infrastructure Dependency & Blast Radius Engine
         </h2>
-        <p className="text-xs text-[#52525B] mt-0.5">
-          Interactive dependency mapping across 18 enterprise assets. Click any equipment or shared utility to calculate impacted subsidiaries, cascading downtime, and strictest recovery deadlines.
+        <p className="text-xs text-[#6B7280] mt-0.5">
+          Cascading impact simulator for shared campus assets. Click any equipment or utility to view affected subsidiaries and strictest recovery thresholds.
         </p>
       </div>
 
-      {/* Main Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Asset Catalog */}
-        <div className="lg:col-span-5 bg-white border border-[#E4E4E7] rounded-xl p-4 space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-[#E4E4E7]">
-            <span className="text-xs font-semibold text-[#09090B]">
+      {/* Main Grid: Left Assets List (5 cols) + Right Blast Radius Details (7 cols) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+        
+        {/* Left Column: 18 Assets List */}
+        <div className="lg:col-span-5 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-black/[0.04]">
+            <span className="text-xs font-bold text-[#111827]">
               18 Catalogued Assets (A01 - A18)
             </span>
-            <span className="font-mono-metrics text-[11px] text-[#52525B]">
-              {assets.filter((a) => a.isShared).length} shared utilities
+            <span className="font-mono-metrics text-[11px] font-semibold text-[#103E2E]">
+              {assets.filter((a) => a.isShared).length} Shared Utilities
             </span>
           </div>
 
-          <div className="space-y-2 max-h-[640px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-[660px] overflow-y-auto pr-1">
             {assets.map((asset) => {
               const isSelected = asset.id === selectedAssetId;
               const isShared = asset.isShared;
@@ -63,47 +65,46 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                 <div
                   key={asset.id}
                   onClick={() => onSelectAssetId(asset.id)}
-                  className={`p-3 rounded-lg border cursor-pointer transition-[border-color,background-color] duration-150 ${
+                  className={`p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'border-[#0F3D2E] bg-[#ECFDF5]/40'
-                      : 'border-[#E4E4E7] bg-white hover:border-[#D4D4D8] hover:bg-[#FAFAFA]'
+                      ? 'border-[#103E2E] bg-[#ECFDF5] shadow-sm'
+                      : 'border-black/[0.04] bg-[#F9FAFB] hover:bg-[#F3F4F6] hover:border-black/[0.08]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-mono-metrics font-bold text-xs text-[#09090B]">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono-metrics font-bold text-xs text-[#111827]">
                         {asset.id}
                       </span>
-                      {isShared && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-[#0F3D2E] text-white">
-                          SHARED
+                      {isShared ? (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[#0A261D] text-[#4ADE80]">
+                          SHARED ALL
                         </span>
-                      )}
-                      {!isShared && (
-                        <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B]">
+                      ) : (
+                        <span className="text-[10px] font-mono-metrics font-semibold px-2 py-0.5 rounded-md bg-white border border-black/[0.06] text-[#4B5563]">
                           {asset.primaryUnitId}
                         </span>
                       )}
                     </div>
 
                     <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         asset.redundancyLevel === 'Single Point of Failure'
-                          ? 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]'
-                          : 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]'
+                          ? 'bg-[#FEE2E2] text-[#DC2626]'
+                          : 'bg-[#F3F4F6] text-[#4B5563]'
                       }`}
                     >
                       {asset.redundancyLevel}
                     </span>
                   </div>
 
-                  <h4 className="text-xs font-medium text-[#09090B] mt-1.5 line-clamp-1">
+                  <h4 className="text-xs font-bold text-[#111827] mt-1.5 line-clamp-1">
                     {asset.name}
                   </h4>
 
-                  <div className="flex items-center justify-between text-[11px] text-[#71717A] mt-2">
+                  <div className="flex items-center justify-between text-[11px] text-[#6B7280] mt-2">
                     <span>{asset.category}</span>
-                    <span className="font-mono-metrics">
+                    <span className="font-mono-metrics font-semibold text-[#103E2E]">
                       {asset.dependentProcessIds.length} procs
                     </span>
                   </div>
@@ -113,138 +114,135 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
           </div>
         </div>
 
-        {/* Blast Radius Analysis */}
-        <div className="lg:col-span-7 space-y-5">
+        {/* Right Column: Live Blast Radius Analysis */}
+        <div className="lg:col-span-7 space-y-4 sm:space-y-5">
           {selectedAsset ? (
             <>
-              {/* Asset Header */}
-              <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-3">
+              {/* Asset Hero Bento */}
+              <div className="bg-[#0A261D] text-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 shadow-sm space-y-4">
                 <div className="flex items-start justify-between gap-4">
-                  <div>
+                  <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono-metrics text-sm font-bold px-2 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[#09090B]">
+                      <span className="font-mono-metrics text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white/10 text-[#4ADE80]">
                         {selectedAsset.id}
                       </span>
-                      <h3 className="text-base font-semibold text-[#09090B]">
-                        {selectedAsset.name}
-                      </h3>
+                      <span className="text-xs text-white/60">• Primary: {selectedAsset.primaryUnitId}</span>
                     </div>
-                    <p className="text-xs text-[#52525B] mt-1.5 leading-relaxed">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
+                      {selectedAsset.name}
+                    </h3>
+                    <p className="text-xs text-white/80 leading-relaxed max-w-xl">
                       {selectedAsset.description}
                     </p>
                   </div>
 
                   {selectedAsset.redundancyLevel === 'Single Point of Failure' && (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C] rounded-md shrink-0">
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[#DC2626]/20 border border-[#DC2626]/40 text-[#FCA5A5] rounded-xl shrink-0 text-xs font-semibold">
                       <AlertOctagon className="w-4 h-4" />
-                      <span className="text-[11px] font-medium">SPOF</span>
+                      <span>SPOF Hazard</span>
                     </div>
                   )}
                 </div>
 
-                <div className="pt-2 border-t border-[#E4E4E7] grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                <div className="pt-3 border-t border-white/10 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                   <div>
-                    <span className="text-[#71717A]">Category</span>
-                    <div className="font-medium text-[#09090B] mt-0.5">{selectedAsset.category}</div>
+                    <span className="text-white/60">Category</span>
+                    <div className="font-semibold text-white mt-0.5">{selectedAsset.category}</div>
                   </div>
                   <div>
-                    <span className="text-[#71717A]">Primary Owner</span>
-                    <div className="font-mono-metrics font-medium text-[#09090B] mt-0.5">
-                      {selectedAsset.primaryUnitId}
-                    </div>
+                    <span className="text-white/60">Redundancy</span>
+                    <div className="font-semibold text-[#4ADE80] mt-0.5">{selectedAsset.redundancyLevel}</div>
                   </div>
                   <div>
-                    <span className="text-[#71717A]">Maintenance</span>
-                    <div className="text-[#52525B] mt-0.5 text-[11px]">
-                      {selectedAsset.maintenanceSchedule}
-                    </div>
+                    <span className="text-white/60">Maintenance</span>
+                    <div className="text-white/80 mt-0.5 text-[11px]">{selectedAsset.maintenanceSchedule}</div>
                   </div>
                 </div>
               </div>
 
-              {/* Computed Metrics Strip - flat row, no nesting */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white border border-[#E4E4E7] rounded-lg p-3.5 space-y-1">
-                  <div className="text-[11px] text-[#71717A]">Impacted Units</div>
-                  <div className="text-2xl font-bold font-mono-metrics text-[#0F3D2E]">
+              {/* Three Impact Metrics Bento Cards */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                  <div className="text-[11px] font-semibold text-[#6B7280]">Impacted Units</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#103E2E]">
                     {blastData.impactedUnits.length} / 9
                   </div>
-                  <div className="text-[11px] text-[#52525B]">
-                    {blastData.impactedUnits.length === 9 ? 'Full enterprise' : 'Unit-isolated'}
+                  <div className="text-[11px] text-[#6B7280]">
+                    {blastData.impactedUnits.length === 9 ? 'Full enterprise scope' : 'Localized unit'}
                   </div>
                 </div>
 
-                <div className="bg-white border border-[#E4E4E7] rounded-lg p-3.5 space-y-1">
-                  <div className="text-[11px] text-[#71717A]">Impacted Processes</div>
-                  <div className="text-2xl font-bold font-mono-metrics text-[#09090B]">
+                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                  <div className="text-[11px] font-semibold text-[#6B7280]">Halted Processes</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#111827]">
                     {blastData.impactedProcesses.length} / 14
                   </div>
-                  <div className="text-[11px] text-[#52525B]">Direct operational halt</div>
+                  <div className="text-[11px] text-[#6B7280]">Direct operations stopped</div>
                 </div>
 
-                <div className="bg-white border border-[#E4E4E7] rounded-lg p-3.5 space-y-1">
-                  <div className="text-[11px] text-[#71717A]">Strictest RTO</div>
-                  <div className="text-2xl font-bold font-mono-metrics text-[#B91C1C]">
+                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                  <div className="text-[11px] font-semibold text-[#6B7280]">Strictest RTO</div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#DC2626]">
                     {blastData.strictestRtoHours !== null ? `${blastData.strictestRtoHours}h` : 'N/A'}
                   </div>
-                  <div className="text-[11px] text-[#52525B]">Recovery failover window</div>
+                  <div className="text-[11px] text-[#6B7280]">Max failover window</div>
                 </div>
               </div>
 
-              {/* Impacted Subsidiary Units */}
-              <div className="bg-white border border-[#E4E4E7] rounded-xl p-4 space-y-3">
-                <h4 className="text-xs font-semibold text-[#09090B]">
+              {/* Impacted Subsidiary Units Bento */}
+              <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3">
+                <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">
                   Impacted Subsidiary Units ({blastData.impactedUnits.length})
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {blastData.impactedUnits.map((u) => (
                     <div
                       key={u.id}
-                      className="px-2.5 py-1.5 rounded-md border border-[#E4E4E7] bg-[#FAFAFA] flex items-center gap-2 text-xs"
+                      className="px-3 py-1.5 rounded-xl bg-[#F9FAFB] border border-black/[0.05] flex items-center gap-2 text-xs"
                     >
-                      <span className="font-mono-metrics font-bold text-[#0F3D2E]">{u.id}</span>
-                      <span className="text-[#09090B] font-medium">{u.name}</span>
+                      <span className="font-mono-metrics font-bold text-[#103E2E]">{u.id}</span>
+                      <span className="text-[#111827] font-semibold">{u.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Cascading Processes */}
-              <div className="bg-white border border-[#E4E4E7] rounded-xl p-4 space-y-3">
-                <h4 className="text-xs font-semibold text-[#09090B]">
+              {/* Cascading Impacted Processes Detailed Bento */}
+              <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3">
+                <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">
                   Cascading Impacted Processes ({blastData.impactedProcesses.length})
                 </h4>
 
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
                   {blastData.impactedProcesses.map((proc) => (
                     <div
                       key={proc.id}
-                      className="p-3 border border-[#E4E4E7] rounded-lg flex items-center justify-between gap-4 bg-[#FAFAFA]"
+                      className="p-3.5 rounded-2xl bg-[#F9FAFB] border border-black/[0.04] flex items-center justify-between gap-3"
                     >
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono-metrics font-bold text-xs text-[#09090B]">
+                          <span className="font-mono-metrics font-bold text-xs text-[#111827]">
                             {proc.id}
                           </span>
-                          <span className="font-mono-metrics text-[10px] px-1.5 py-0.5 rounded bg-white border border-[#E4E4E7] text-[#52525B]">
+                          <span className="text-[10px] font-mono-metrics px-2 py-0.5 rounded-md bg-white border border-black/[0.05] text-[#4B5563]">
                             {proc.unitId}
                           </span>
                           <span
-                            className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                               proc.criticality === 'Critical'
-                                ? 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]'
-                                : 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]'
+                                ? 'bg-[#FEE2E2] text-[#DC2626]'
+                                : 'bg-[#F3F4F6] text-[#4B5563]'
                             }`}
                           >
                             {proc.criticality}
                           </span>
                         </div>
-                        <div className="text-xs font-medium text-[#09090B]">{proc.name}</div>
+                        <div className="text-xs font-semibold text-[#111827]">{proc.name}</div>
                       </div>
 
                       <div className="text-right shrink-0">
-                        <div className="text-[10px] text-[#71717A]">Target RTO</div>
-                        <div className="font-mono-metrics font-bold text-xs text-[#B91C1C]">
+                        <div className="text-[10px] text-[#6B7280]">Target RTO</div>
+                        <div className="font-mono-metrics font-bold text-xs text-[#DC2626]">
                           {proc.rtoHours}h
                         </div>
                       </div>
@@ -254,8 +252,8 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
               </div>
             </>
           ) : (
-            <div className="bg-white border border-[#E4E4E7] rounded-xl p-8 text-center text-[#71717A] text-xs">
-              Select an asset from the catalog to compute live blast radius.
+            <div className="bg-white rounded-[28px] p-8 text-center text-[#6B7280] text-xs">
+              Select an asset from the left catalog to compute live blast radius.
             </div>
           )}
         </div>
