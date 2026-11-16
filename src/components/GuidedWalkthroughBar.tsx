@@ -127,12 +127,12 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
       <div className="bg-white border border-[#E4E4E7] rounded-xl shadow-lg p-3.5 sm:p-4 text-[#09090B]">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center font-mono-metrics text-xs font-semibold border border-[#D1FAE5]">
+            <div className="w-7 h-7 rounded-md bg-[#ECFDF5] text-[#0F3D2E] flex items-center justify-center font-mono-metrics text-xs font-semibold border border-[#D1FAE5]">
               {currentStep}/7
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] uppercase tracking-wider font-semibold text-[#0F3D2E]">
+                <span className="text-[11px] font-semibold text-[#0F3D2E]">
                   Case Study Walkthrough
                 </span>
                 <span className="text-[11px] text-[#71717A]">•</span>
@@ -178,7 +178,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
             <button
               key={s.step}
               onClick={() => handleStepJump(s.step)}
-              className={`h-1.5 rounded-full transition-all ${
+              className={`h-1.5 rounded-full transition-[width,background-color] duration-150 ${
                 s.step === currentStep
                   ? 'w-8 bg-[#0F3D2E]'
                   : s.step < currentStep
@@ -188,7 +188,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
               title={`Jump to Step ${s.step}: ${s.title}`}
             />
           ))}
-          <span className="text-[10px] text-[#71717A] ml-2 font-mono-metrics">
+          <span className="text-[10px] text-[#71717A] ml-2">
             Step {currentStep} of 7: {stepData.highlightAction}
           </span>
         </div>

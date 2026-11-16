@@ -10,8 +10,6 @@ import {
   HardDrive,
   BarChart3,
   Home,
-  ShieldCheck,
-  RotateCcw,
   Sparkles,
 } from 'lucide-react';
 import { WorkspaceTab } from '@/types/drps';
@@ -56,8 +54,8 @@ export default function HomeShell() {
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] text-[#09090B]">
-        <div className="flex items-center gap-2 text-xs font-mono-metrics text-[#71717A]">
-          <span className="w-2 h-2 rounded-full bg-[#0F3D2E] animate-pulse" />
+        <div className="flex items-center gap-2 text-xs text-[#71717A]">
+          <span className="w-1.5 h-1.5 rounded-sm bg-[#0F3D2E]" />
           <span>Mounting UI Ventures DRPS Client Engine...</span>
         </div>
       </div>
@@ -81,27 +79,27 @@ export default function HomeShell() {
       <header className="sticky top-0 z-40 bg-white border-b border-[#E4E4E7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
-            {/* Brand Logo & Name */}
+            {/* Brand */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setActiveTab('overview')}
                 className="flex items-center gap-2.5 text-left focus:outline-none"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#0F3D2E] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                <div className="w-8 h-8 rounded-md bg-[#0F3D2E] text-white flex items-center justify-center font-bold text-xs">
                   UI
                 </div>
                 <div>
                   <div className="text-xs font-bold text-[#09090B] leading-none tracking-tight">
                     UI VENTURES LIMITED
                   </div>
-                  <div className="text-[10px] text-[#71717A] tracking-wider font-mono-metrics uppercase mt-0.5">
-                    Multi-Unit DRPS • Enterprise Edition
+                  <div className="text-[10px] text-[#71717A] mt-0.5">
+                    Multi-Unit DRPS
                   </div>
                 </div>
               </button>
             </div>
 
-            {/* Navigation tabs */}
+            {/* Desktop navigation tabs */}
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -112,7 +110,7 @@ export default function HomeShell() {
                     onClick={() => setActiveTab(item.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${isActive
                       ? 'bg-[#ECFDF5] text-[#0F3D2E] font-semibold border border-[#A7F3D0]/60'
-                      : 'text-[#52525B] hover:text-[#09090B] hover:bg-[#FAFAFA]'
+                      : 'text-[#52525B] hover:text-[#09090B] hover:bg-[#F4F4F5]'
                       }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -122,12 +120,11 @@ export default function HomeShell() {
               })}
             </nav>
 
-            {/* Right Telemetry Pill */}
+            {/* Right: Posture pill + walkthrough restore */}
             <div className="flex items-center gap-2">
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#FAFAFA] border border-[#E4E4E7] text-[11px] font-mono-metrics">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#15803D]" />
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F4F4F5] border border-[#E4E4E7] text-[11px]">
                 <span className="text-[#71717A]">Posture:</span>
-                <span className="font-bold text-[#0F3D2E]">
+                <span className="font-mono-metrics font-bold text-[#0F3D2E]">
                   {aggregateEnterpriseReadiness.toFixed(1)}%
                 </span>
               </div>
@@ -146,7 +143,7 @@ export default function HomeShell() {
           </div>
         </div>
 
-        {/* Mobile Horizontal Navigation Strip */}
+        {/* Mobile horizontal nav strip */}
         <div className="md:hidden border-t border-[#E4E4E7] bg-white px-2 py-1.5 overflow-x-auto flex items-center gap-1 scrollbar-none">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -155,9 +152,9 @@ export default function HomeShell() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs shrink-0 ${isActive
+                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs shrink-0 transition-colors ${isActive
                   ? 'bg-[#0F3D2E] text-white font-medium'
-                  : 'text-[#52525B] hover:bg-neutral-100'
+                  : 'text-[#52525B] hover:bg-[#F4F4F5]'
                   }`}
               >
                 <Icon className="w-3 h-3" />
@@ -169,7 +166,7 @@ export default function HomeShell() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28">
         {activeTab === 'overview' && (
           <LandingOverview
             units={state.units}

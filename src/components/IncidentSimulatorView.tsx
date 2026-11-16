@@ -68,16 +68,16 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#09090B]">
-            Controlled Disaster Incident Simulator & Runbook Checklists
+          <h2 className="text-xl font-semibold text-[#09090B]">
+            Controlled Incident Simulator & Runbooks
           </h2>
-          <p className="text-xs text-[#52525B]">
-            8 real-world university subsidiary disruption drills. Track phased task completion, evaluate live RTO compliance thresholds, and compare manual versus DRPS recovery latencies.
+          <p className="text-xs text-[#52525B] mt-0.5">
+            8 operational drills across university subsidiaries. Track recovery tasks, evaluate RTO compliance, and audit recovery latencies.
           </p>
         </div>
 
         {/* Live Elapsed Drill Timer */}
-        <div className="flex items-center gap-2 bg-white border border-[#E4E4E7] rounded-lg p-2 px-3 shadow-2xs">
+        <div className="flex items-center gap-2 bg-white border border-[#E4E4E7] rounded-lg p-2 px-3">
           <Timer className="w-4 h-4 text-[#0F3D2E]" />
           <div className="font-mono-metrics font-bold text-sm text-[#09090B] w-14">
             {formatSeconds(elapsedDrillSeconds)}
@@ -85,14 +85,14 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           {isRunningTimer ? (
             <button
               onClick={handleStopDrill}
-              className="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-semibold rounded"
+              className="px-2 py-1 bg-[#52525B] hover:bg-[#3F3F46] text-white text-[11px] font-semibold rounded transition-colors"
             >
               Pause
             </button>
           ) : (
             <button
               onClick={handleStartDrill}
-              className="px-2 py-1 bg-[#0F3D2E] hover:bg-[#165B44] text-white text-[11px] font-semibold rounded flex items-center gap-1"
+              className="px-2 py-1 bg-[#0F3D2E] hover:bg-[#165B44] text-white text-[11px] font-semibold rounded flex items-center gap-1 transition-colors"
             >
               <Play className="w-3 h-3" />
               <span>Drill</span>
@@ -108,7 +108,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
         </div>
       </div>
 
-      {/* Scenarios Grid Selector */}
+      {/* Scenarios Horizontal Selector */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
         {simulations.map((sim) => {
           const isSelected = sim.id === activeSimId;
@@ -122,9 +122,9 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 setElapsedDrillSeconds(0);
                 setIsRunningTimer(false);
               }}
-              className={`p-2.5 rounded-lg border text-left transition-all ${
+              className={`p-2.5 rounded-lg border text-left transition-[border-color,background-color] duration-150 ${
                 isSelected
-                  ? 'border-[#0F3D2E] bg-[#ECFDF5]/60 shadow-xs'
+                  ? 'border-[#0F3D2E] bg-[#ECFDF5]/60'
                   : 'border-[#E4E4E7] bg-white hover:border-[#D4D4D8] hover:bg-[#FAFAFA]'
               }`}
             >
@@ -133,10 +133,10 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   {sim.id}
                 </span>
                 <span
-                  className={`text-[9px] font-mono-metrics font-bold px-1 py-0.2 rounded ${
+                  className={`text-[9px] font-mono-metrics font-bold px-1 py-0.5 rounded ${
                     isMet
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-rose-100 text-rose-800'
+                      ? 'bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]'
+                      : 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]'
                   }`}
                 >
                   {sim.complianceStatus}
@@ -153,16 +153,15 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
         })}
       </div>
 
-      {/* Main Active Drill Console */}
+      {/* Active Drill Console */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Active Scenario Context, Task Checklist, and Recovery Sliders (7 cols) */}
+        {/* Left Column: Context, Sliders & Phased Checklist */}
         <div className="lg:col-span-7 space-y-5">
-          {/* Active Sim Context Card */}
           <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-3">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono-metrics font-bold text-xs px-2 py-0.5 rounded bg-[#FAFAFA] border border-[#E4E4E7]">
+                  <span className="font-mono-metrics font-bold text-xs px-2 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7]">
                     {activeSim.id}
                   </span>
                   <span className="text-[11px] font-mono-metrics text-[#71717A]">
@@ -171,8 +170,8 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   <span
                     className={`text-[11px] font-mono-metrics font-bold px-2 py-0.5 rounded ${
                       activeSim.complianceStatus === 'MET'
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-rose-50 text-rose-700 border border-rose-200'
+                        ? 'bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]'
+                        : 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]'
                     }`}
                   >
                     RTO {activeSim.complianceStatus} ({activeSim.varianceMinutes <= 0 ? `${activeSim.varianceMinutes}m` : `+${activeSim.varianceMinutes}m`})
@@ -187,7 +186,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
               </div>
             </div>
 
-            {/* Quick Metrics Bar */}
+            {/* Quick Metrics */}
             <div className="pt-2 border-t border-[#E4E4E7] grid grid-cols-3 gap-3 text-xs">
               <div>
                 <span className="text-[#71717A]">Mandated RTO</span>
@@ -202,18 +201,18 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 </div>
               </div>
               <div>
-                <span className="text-[#71717A]">Target Processes</span>
+                <span className="text-[#71717A]">Processes</span>
                 <div className="font-mono-metrics text-xs text-[#52525B] mt-0.5">
                   {activeSim.targetProcessIds.join(', ')}
                 </div>
               </div>
             </div>
 
-            {/* Test Slider: Recovery Minutes */}
+            {/* Slider */}
             <div className="pt-3 border-t border-[#E4E4E7] space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-[#71717A] font-medium">
-                  Test Simulated Recovery Time (Minutes):
+                  Simulated Recovery Time:
                 </span>
                 <span className="font-mono-metrics font-bold text-[#09090B]">
                   {activeSim.simulatedRecoveryMinutes} mins ({formattedSimulatedTime})
@@ -231,9 +230,9 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 className="w-full accent-[#0F3D2E]"
               />
               <div className="flex items-center justify-between text-[10px] text-[#71717A] font-mono-metrics">
-                <span>30 mins</span>
-                <span className="text-rose-600 font-bold">RTO Threshold: {activeSim.rtoHours * 60}m</span>
-                <span>{Math.max(600, activeSim.rtoHours * 60 * 1.5)} mins</span>
+                <span>30m</span>
+                <span className="text-[#B91C1C] font-semibold">RTO: {activeSim.rtoHours * 60}m</span>
+                <span>{Math.max(600, activeSim.rtoHours * 60 * 1.5)}m</span>
               </div>
             </div>
           </div>
@@ -242,7 +241,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+                <h4 className="text-xs font-semibold text-[#09090B]">
                   Technical & Continuity Tasks ({completedTaskCount}/{activeSim.tasks.length})
                 </h4>
                 <div className="text-[11px] text-[#52525B] mt-0.5">
@@ -250,25 +249,25 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 </div>
               </div>
               <div className="text-xs font-mono-metrics font-bold text-[#0F3D2E]">
-                {taskProgressPercent}% Completed
+                {taskProgressPercent}%
               </div>
             </div>
 
             {/* Task Progress Bar */}
-            <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-[#F4F4F5] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#0F3D2E] transition-all duration-300"
+                className="h-full bg-[#0F3D2E] transition-[width] duration-300"
                 style={{ width: `${taskProgressPercent}%` }}
               />
             </div>
 
             {/* Tasks list */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               {activeSim.tasks.map((task) => (
                 <div
                   key={task.id}
                   onClick={() => onToggleTask(activeSim.id, task.id)}
-                  className={`p-3 rounded-lg border cursor-pointer transition-colors flex items-start gap-3 ${
+                  className={`p-3 rounded-lg border cursor-pointer transition-[border-color,background-color] duration-150 flex items-start gap-3 ${
                     task.completed
                       ? 'bg-[#FAFAFA] border-[#E4E4E7]'
                       : 'bg-white border-[#E4E4E7] hover:border-[#0F3D2E]'
@@ -282,14 +281,14 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   />
                   <div className="flex-1 space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono-metrics px-1.5 py-0.2 rounded bg-neutral-100 text-[#52525B]">
+                      <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B]">
                         {task.phase}
                       </span>
-                      <span className="text-[10px] text-[#71717A]">• Assigned: {task.role}</span>
+                      <span className="text-[10px] text-[#71717A]">Assigned: {task.role}</span>
                     </div>
                     <div
                       className={`text-xs ${
-                        task.completed ? 'text-[#71717A] line-through' : 'text-[#09090B] font-medium'
+                        task.completed ? 'text-[#71717A]' : 'text-[#09090B] font-medium'
                       }`}
                     >
                       {task.label}
@@ -301,11 +300,10 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           </div>
         </div>
 
-        {/* Right: Operational Event Log & Manual vs Automated Benchmarks (5 cols) */}
+        {/* Right Column: MTTR Benchmarks & Chronological Telemetry */}
         <div className="lg:col-span-5 space-y-5">
-          {/* MTTR Benchmark Card */}
           <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-3.5">
-            <h4 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-[#09090B]">
               Manual vs Automated Efficiency Impact
             </h4>
 
@@ -313,19 +311,18 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
               <div className="p-3 rounded-lg bg-[#FAFAFA] border border-[#E4E4E7] space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="text-[#71717A]">Legacy Manual MTTR:</span>
-                  <span className="font-mono-metrics font-bold text-rose-700">
+                  <span className="font-mono-metrics font-bold text-[#B91C1C]">
                     {Math.floor(activeSim.manualMttrMinutes / 60)}h {activeSim.manualMttrMinutes % 60}m
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[#71717A]">DRPS Automated MTTR:</span>
-                  <span className="font-mono-metrics font-bold text-emerald-700">
+                  <span className="font-mono-metrics font-bold text-[#15803D]">
                     {formattedSimulatedTime}
                   </span>
                 </div>
               </div>
 
-              {/* Time saved */}
               <div className="p-3 rounded-lg bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-between text-[#0F3D2E]">
                 <div>
                   <div className="font-semibold text-xs">Simulated MTTR Reduction</div>
@@ -338,25 +335,24 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                     ((activeSim.manualMttrMinutes - activeSim.simulatedRecoveryMinutes) /
                       activeSim.manualMttrMinutes) *
                     100
-                  ).toFixed(1)}
-                  %
+                  ).toFixed(1)}%
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Chronological Incident Event Log */}
+          {/* Telemetry Log */}
           <div className="bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-[#09090B]">
                 Telemetry Log Sequence
               </h4>
-              <span className="text-[10px] font-mono-metrics text-[#71717A]">ISO 22301 Timestamp</span>
+              <span className="text-[10px] text-[#71717A]">ISO 22301 Timestamp</span>
             </div>
 
-            <div className="space-y-2 border-l-2 border-[#E4E4E7] ml-2 pl-3">
+            <div className="space-y-2 border-l border-[#E4E4E7] ml-2 pl-3">
               {activeSim.logs.map((log, idx) => (
-                <div key={idx} className="text-xs space-y-0.5">
+                <div key={idx} className="text-xs">
                   <div className="text-[#09090B] font-mono-metrics text-[11px] leading-relaxed">
                     {log}
                   </div>

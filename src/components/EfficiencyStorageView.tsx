@@ -51,7 +51,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
   const maxStorageBudgetKb = 5120; // 5 MB typical localStorage limit
   const percentUsed = ((storageBytes / (maxStorageBudgetKb * 1024)) * 100).toFixed(3);
 
-  // Benchmarks from report
+  // Benchmarks
   const manualMttrTotal = state.simulations.reduce((acc, s) => acc + s.manualMttrMinutes, 0);
   const automatedMttrTotal = state.simulations.reduce(
     (acc, s) => acc + s.simulatedRecoveryMinutes,
@@ -66,11 +66,11 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-semibold text-[#09090B]">
-          Efficiency Benchmarks & Local Client Storage Telemetry
+        <h2 className="text-xl font-semibold text-[#09090B]">
+          Efficiency Benchmarks & Client Storage Telemetry
         </h2>
-        <p className="text-xs text-[#52525B]">
-          Live quantitative verification of recovery time acceleration, client storage telemetry, and multi-format governance export utilities.
+        <p className="text-xs text-[#52525B] mt-0.5">
+          Quantitative verification of recovery acceleration, client storage metrics, and multi-format governance export utilities.
         </p>
       </div>
 
@@ -78,10 +78,8 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              MTTR Reduction
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="text-xs text-[#71717A]">MTTR Reduction</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
               Benchmark
             </span>
           </div>
@@ -89,16 +87,14 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             {mttrReductionPercent}%
           </div>
           <p className="text-[11px] text-[#52525B]">
-            Mean Time To Recovery reduced from {Math.round(manualMttrTotal / 60)}h to {Math.round(automatedMttrTotal / 60)}h
+            MTTR reduced from {Math.round(manualMttrTotal / 60)}h to {Math.round(automatedMttrTotal / 60)}h
           </p>
         </div>
 
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              Triage Latency Acceleration
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="text-xs text-[#71717A]">Triage Acceleration</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
               Response
             </span>
           </div>
@@ -112,10 +108,8 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              Client Storage Usage
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-neutral-100 text-neutral-700">
+            <span className="text-xs text-[#71717A]">Client Storage Usage</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">
               {percentUsed}% of 5MB
             </span>
           </div>
@@ -128,12 +122,12 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
         </div>
       </div>
 
-      {/* Main Grid: Governance Tools & LocalStorage Diagnostics */}
+      {/* Main Grid: Governance Tools & Diagnostics */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Governance & State Management (7 cols) */}
+        {/* Governance & State Management */}
         <div className="lg:col-span-7 bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-5">
           <div>
-            <h3 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+            <h3 className="text-sm font-semibold text-[#09090B]">
               Governance Audit Reports & Persistence Management
             </h3>
             <p className="text-xs text-[#52525B] mt-0.5">
@@ -145,14 +139,14 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             <div
               className={`p-3 rounded-lg border flex items-center gap-2 text-xs ${
                 importStatus.success
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                  : 'bg-rose-50 border-rose-200 text-rose-800'
+                  ? 'bg-[#F0FDF4] border-[#BBF7D0] text-[#15803D]'
+                  : 'bg-[#FEF2F2] border-[#FECACA] text-[#B91C1C]'
               }`}
             >
               {importStatus.success ? (
-                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Check className="w-4 h-4 text-[#15803D] shrink-0" />
               ) : (
-                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <AlertCircle className="w-4 h-4 text-[#B91C1C] shrink-0" />
               )}
               <span>{importStatus.message}</span>
             </div>
@@ -170,7 +164,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               </p>
               <button
                 onClick={onExportCsv}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded shadow-2xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export CSV Report</span>
@@ -188,7 +182,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               </p>
               <button
                 onClick={onExportJson}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded shadow-2xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export JSON State</span>
@@ -213,7 +207,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded shadow-2xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#E4E4E7] hover:bg-[#FAFAFA] text-xs font-medium text-[#09090B] rounded transition-colors"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Select JSON File</span>
@@ -221,12 +215,12 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             </div>
 
             {/* Factory Reset */}
-            <div className="p-4 border border-rose-200 rounded-lg space-y-2 bg-rose-50/30">
+            <div className="p-4 border border-[#FECACA] rounded-lg space-y-2 bg-[#FEF2F2]/30">
               <div className="flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 text-rose-700" />
-                <h4 className="text-xs font-semibold text-rose-900">Factory Reset</h4>
+                <RefreshCw className="w-4 h-4 text-[#B91C1C]" />
+                <h4 className="text-xs font-semibold text-[#B91C1C]">Factory Reset</h4>
               </div>
-              <p className="text-[11px] text-rose-700 leading-relaxed">
+              <p className="text-[11px] text-[#B91C1C]/90 leading-relaxed">
                 Revert all modified RTOs, risk scores, and simulations back to verified default seed dataset.
               </p>
               {showConfirmReset ? (
@@ -236,13 +230,13 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
                       onResetFactory();
                       setShowConfirmReset(false);
                     }}
-                    className="flex-1 py-1.5 px-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded transition-colors"
+                    className="flex-1 py-1.5 px-2 bg-[#B91C1C] hover:bg-[#991B1B] text-white text-xs font-semibold rounded transition-colors"
                   >
                     Confirm Reset
                   </button>
                   <button
                     onClick={() => setShowConfirmReset(false)}
-                    className="py-1.5 px-2 bg-white border border-[#E4E4E7] text-xs rounded hover:bg-neutral-50"
+                    className="py-1.5 px-2 bg-white border border-[#E4E4E7] text-xs rounded hover:bg-[#FAFAFA]"
                   >
                     Cancel
                   </button>
@@ -250,7 +244,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               ) : (
                 <button
                   onClick={() => setShowConfirmReset(true)}
-                  className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-rose-300 hover:bg-rose-50 text-xs font-medium text-rose-800 rounded shadow-2xs transition-colors"
+                  className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-white border border-[#FECACA] hover:bg-[#FEF2F2] text-xs font-medium text-[#B91C1C] rounded transition-colors"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Reset to Factory Seed</span>
@@ -260,9 +254,9 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
           </div>
         </div>
 
-        {/* Local Storage Telemetry & Specs (5 cols) */}
+        {/* Client Telemetry */}
         <div className="lg:col-span-5 bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
-          <h3 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+          <h3 className="text-sm font-semibold text-[#09090B]">
             Client Telemetry & Entity Registry
           </h3>
 

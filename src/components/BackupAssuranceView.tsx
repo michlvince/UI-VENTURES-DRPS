@@ -39,11 +39,11 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-semibold text-[#09090B]">
+        <h2 className="text-xl font-semibold text-[#09090B]">
           Continuous Backup Assurance & RPO Compliance Logs
         </h2>
-        <p className="text-xs text-[#52525B]">
-          Multi-destination snapshot telemetry auditing local and holding company replication. Validating 4h and 12h Recovery Point Objectives (RPO) against data loss scenarios.
+        <p className="text-xs text-[#52525B] mt-0.5">
+          Multi-destination snapshot telemetry auditing local and holding company replication. Validating 4h and 12h Recovery Point Objectives (RPO).
         </p>
       </div>
 
@@ -51,10 +51,8 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              Total Logged Snapshots
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="text-xs text-[#71717A]">Total Logged Snapshots</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
               Verified
             </span>
           </div>
@@ -66,10 +64,8 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
 
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              Aggregated Vault Size
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-neutral-100 text-neutral-700">
+            <span className="text-xs text-[#71717A]">Aggregated Vault Size</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">
               Storage
             </span>
           </div>
@@ -81,10 +77,8 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
 
         <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">
-              RPO Policy Threshold
-            </span>
-            <span className="text-[10px] font-mono-metrics px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span className="text-xs text-[#71717A]">RPO Policy Threshold</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0]">
               Compliant
             </span>
           </div>
@@ -97,10 +91,10 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
 
       {/* Main Grid: Form Left, Log Table Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Trigger Simulated Backup Form (4 cols) */}
+        {/* Trigger Simulated Backup Form */}
         <div className="lg:col-span-4 bg-white border border-[#E4E4E7] rounded-xl p-5 space-y-4">
           <div>
-            <h3 className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+            <h3 className="text-sm font-semibold text-[#09090B]">
               Trigger Operational Backup Job
             </h3>
             <p className="text-xs text-[#52525B] mt-1">
@@ -186,15 +180,15 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
               className="w-full mt-2 py-2 px-4 bg-[#0F3D2E] hover:bg-[#165B44] text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
-              <span>Record Simulated Snapshot</span>
+              <span>Record Snapshot</span>
             </button>
           </form>
         </div>
 
-        {/* Log Table (8 cols) */}
-        <div className="lg:col-span-8 bg-white border border-[#E4E4E7] rounded-xl overflow-hidden shadow-2xs">
+        {/* Log Table */}
+        <div className="lg:col-span-8 bg-white border border-[#E4E4E7] rounded-xl ring-1 ring-[#E4E4E7]">
           <div className="p-4 border-b border-[#E4E4E7] flex items-center justify-between">
-            <span className="text-xs font-semibold text-[#09090B] uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#09090B]">
               Continuous Verification Audit Log
             </span>
             <span className="text-[11px] text-[#71717A] font-mono-metrics">
@@ -202,14 +196,14 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
             </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+          <div className="overflow-x-auto rounded-b-xl">
+            <table className="w-full text-left border-collapse text-xs min-w-[640px]">
               <thead>
                 <tr className="border-b border-[#E4E4E7] text-[#71717A] bg-[#FAFAFA]">
                   <th className="py-2.5 px-3 font-medium">Log ID</th>
                   <th className="py-2.5 px-3 font-medium">Timestamp</th>
                   <th className="py-2.5 px-3 font-medium">Unit</th>
-                  <th className="py-2.5 px-3 font-medium">Dataset Description</th>
+                  <th className="py-2.5 px-3 font-medium">Dataset</th>
                   <th className="py-2.5 px-3 font-medium text-center">Type</th>
                   <th className="py-2.5 px-3 font-medium text-right">Size</th>
                   <th className="py-2.5 px-3 font-medium text-center">Destination</th>
@@ -218,7 +212,7 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
               </thead>
               <tbody className="divide-y divide-[#E4E4E7]">
                 {backups.map((b) => (
-                  <tr key={b.id} className="hover:bg-[#FAFAFA] transition-colors">
+                  <tr key={b.id} className="hover:bg-[#FAFAFA] transition-colors duration-100">
                     <td className="py-2.5 px-3 font-mono-metrics font-bold text-[#09090B]">
                       {b.id}
                     </td>
@@ -232,7 +226,7 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
                       {b.targetDataset}
                     </td>
                     <td className="py-2.5 px-3 text-center">
-                      <span className="text-[10px] px-1.5 py-0.2 rounded bg-neutral-100 text-neutral-700">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">
                         {b.backupType}
                       </span>
                     </td>
@@ -243,8 +237,8 @@ export const BackupAssuranceView: React.FC<BackupAssuranceViewProps> = ({
                       {b.destination}
                     </td>
                     <td className="py-2.5 px-3 text-center">
-                      <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="inline-flex items-center gap-1 text-[11px] text-[#15803D] font-medium">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Pass</span>
                       </span>
                     </td>

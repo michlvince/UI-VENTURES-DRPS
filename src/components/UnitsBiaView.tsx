@@ -74,11 +74,11 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-[#09090B]">
-            Business Impact Analysis (BIA) & Process Matrix
+          <h2 className="text-xl font-semibold text-[#09090B]">
+            Business Impact Analysis & Process Matrix
           </h2>
-          <p className="text-xs text-[#52525B]">
-            14 verified critical processes mapped across 9 UI Ventures subsidiaries with editable RTO / RPO thresholds and BIA score metrics.
+          <p className="text-xs text-[#52525B] mt-0.5">
+            14 verified critical processes mapped across 9 UI Ventures subsidiaries with editable RTO / RPO thresholds.
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
         </div>
       </div>
 
-      {/* Selected Unit Badge Info (if specific unit selected) */}
+      {/* Selected Unit info */}
       {selectedUnitFilter !== 'ALL' && (
         (() => {
           const u = units.find((x) => x.id === selectedUnitFilter);
@@ -119,7 +119,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
             <div className="bg-white border border-[#E4E4E7] rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono-metrics text-xs font-bold px-2 py-0.5 rounded bg-[#FAFAFA] border border-[#E4E4E7]">
+                  <span className="font-mono-metrics text-xs font-bold px-2 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7]">
                     {u.id}
                   </span>
                   <span className="text-sm font-semibold text-[#09090B]">{u.name}</span>
@@ -130,22 +130,20 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
 
               <div className="flex items-center gap-4 shrink-0">
                 <div className="text-right">
-                  <div className="text-[11px] text-[#71717A]">Readiness Score</div>
+                  <div className="text-[11px] text-[#71717A]">Readiness</div>
                   <div className="font-mono-metrics font-bold text-lg text-[#0F3D2E]">
                     {u.currentReadiness.toFixed(1)}%
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <input
-                    type="range"
-                    min="50"
-                    max="100"
-                    step="0.5"
-                    value={u.currentReadiness}
-                    onChange={(e) => onUpdateUnitReadiness(u.id, parseFloat(e.target.value))}
-                    className="w-24 accent-[#0F3D2E]"
-                  />
-                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="100"
+                  step="0.5"
+                  value={u.currentReadiness}
+                  onChange={(e) => onUpdateUnitReadiness(u.id, parseFloat(e.target.value))}
+                  className="w-24 accent-[#0F3D2E]"
+                />
               </div>
             </div>
           );
@@ -153,19 +151,19 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
       )}
 
       {/* Processes Table */}
-      <div className="bg-white border border-[#E4E4E7] rounded-xl overflow-hidden shadow-2xs">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
+      <div className="bg-white border border-[#E4E4E7] rounded-xl ring-1 ring-[#E4E4E7]">
+        <div className="overflow-x-auto rounded-xl">
+          <table className="w-full text-left border-collapse text-xs min-w-[800px]">
             <thead>
               <tr className="border-b border-[#E4E4E7] text-[#71717A] bg-[#FAFAFA]">
                 <th className="py-2.5 px-3 font-medium">Process ID</th>
                 <th className="py-2.5 px-3 font-medium">Unit</th>
                 <th className="py-2.5 px-3 font-medium">Business Process & Context</th>
                 <th className="py-2.5 px-3 font-medium text-center">Criticality</th>
-                <th className="py-2.5 px-3 font-medium text-center">RTO Limit</th>
-                <th className="py-2.5 px-3 font-medium text-center">RPO Limit</th>
-                <th className="py-2.5 px-3 font-medium text-center">BIA (Fin/Ops/Rep)</th>
-                <th className="py-2.5 px-3 font-medium text-center">Manual Workaround</th>
+                <th className="py-2.5 px-3 font-medium text-center">RTO</th>
+                <th className="py-2.5 px-3 font-medium text-center">RPO</th>
+                <th className="py-2.5 px-3 font-medium text-center">BIA (F/O/R)</th>
+                <th className="py-2.5 px-3 font-medium text-center">Workaround</th>
                 <th className="py-2.5 px-3 font-medium text-right">Action</th>
               </tr>
             </thead>
@@ -177,8 +175,8 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                 return (
                   <tr
                     key={proc.id}
-                    className={`hover:bg-[#FAFAFA] transition-colors ${
-                      isEditing ? 'bg-[#ECFDF5]/30' : ''
+                    className={`hover:bg-[#FAFAFA] transition-colors duration-100 ${
+                      isEditing ? 'bg-[#ECFDF5]/20' : ''
                     }`}
                   >
                     <td className="py-3 px-3 font-mono-metrics font-bold text-[#09090B] align-top">
@@ -186,7 +184,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                     </td>
 
                     <td className="py-3 px-3 align-top">
-                      <span className="font-mono-metrics font-semibold px-1.5 py-0.5 rounded bg-[#FAFAFA] border border-[#E4E4E7] text-[#09090B]">
+                      <span className="font-mono-metrics font-semibold px-1.5 py-0.5 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[#09090B]">
                         {proc.unitId}
                       </span>
                       <div className="text-[10px] text-[#71717A] mt-1">{unit?.name}</div>
@@ -202,7 +200,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                         {proc.dependentAssetIds.map((aid) => (
                           <span
                             key={aid}
-                            className="text-[10px] font-mono-metrics px-1 py-0.2 rounded bg-neutral-100 text-neutral-700"
+                            className="text-[10px] font-mono-metrics px-1 py-0.5 rounded bg-[#F4F4F5] text-[#52525B]"
                           >
                             {aid}
                           </span>
@@ -212,17 +210,17 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
 
                     <td className="py-3 px-3 text-center align-top">
                       <span
-                        className={`text-[11px] font-mono-metrics font-semibold px-2 py-0.5 rounded ${
+                        className={`text-[11px] font-semibold px-2 py-0.5 rounded ${
                           proc.criticality === 'Critical'
-                            ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                            : 'bg-amber-50 text-amber-700 border border-amber-200'
+                            ? 'bg-[#FEF2F2] text-[#B91C1C] border border-[#FECACA]'
+                            : 'bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]'
                         }`}
                       >
                         {proc.criticality}
                       </span>
                     </td>
 
-                    {/* RTO Cell */}
+                    {/* RTO */}
                     <td className="py-3 px-3 text-center align-top font-mono-metrics">
                       {isEditing ? (
                         <select
@@ -241,7 +239,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       )}
                     </td>
 
-                    {/* RPO Cell */}
+                    {/* RPO */}
                     <td className="py-3 px-3 text-center align-top font-mono-metrics">
                       {isEditing ? (
                         <select
@@ -251,7 +249,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                           }
                           className="px-1.5 py-0.5 border border-[#E4E4E7] rounded text-xs bg-white"
                         >
-                          <option value="null">N/A (Physical)</option>
+                          <option value="null">N/A</option>
                           <option value={2}>2h</option>
                           <option value={4}>4h</option>
                           <option value={8}>8h</option>
@@ -264,7 +262,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       )}
                     </td>
 
-                    {/* BIA Impact Scores (Fin / Ops / Rep) */}
+                    {/* BIA scores */}
                     <td className="py-3 px-3 text-center align-top font-mono-metrics">
                       {isEditing ? (
                         <div className="flex items-center justify-center gap-1">
@@ -305,24 +303,22 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       )}
                     </td>
 
-                    {/* Manual Workaround Available */}
+                    {/* Manual workaround */}
                     <td className="py-3 px-3 text-center align-top">
                       {isEditing ? (
                         <input
                           type="checkbox"
                           checked={editWorkaround}
                           onChange={(e) => setEditWorkaround(e.target.checked)}
-                          className="accent-[#0F3D2E]"
+                          className="accent-[#0F3D2E] rounded cursor-pointer"
                         />
                       ) : proc.manualWorkaroundAvailable ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-medium">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#15803D] font-medium">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>Enabled</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-[#71717A]">
-                          <span>No Buffer</span>
-                        </span>
+                        <span className="text-[11px] text-[#71717A]">None</span>
                       )}
                     </td>
 
@@ -331,7 +327,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       {isEditing ? (
                         <button
                           onClick={() => handleSaveEdit(proc.id)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-white bg-[#0F3D2E] hover:bg-[#165B44] rounded"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-white bg-[#0F3D2E] hover:bg-[#165B44] rounded transition-colors duration-150"
                         >
                           <Check className="w-3.5 h-3.5" />
                           <span>Save</span>
