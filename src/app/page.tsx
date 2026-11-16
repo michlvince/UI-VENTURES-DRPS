@@ -10,7 +10,7 @@ import {
   HardDrive,
   BarChart3,
   Home,
-  Sparkles,
+  Compass,
   Search,
   ShieldCheck,
   Menu,
@@ -243,7 +243,7 @@ export default function HomeShell() {
                 onClick={restoreGuidedWalkthrough}
                 className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#4ADE80]" />
+                <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />
                 <span>Open Walkthrough</span>
               </button>
             ) : null}
@@ -286,7 +286,7 @@ export default function HomeShell() {
                 onClick={restoreGuidedWalkthrough}
                 className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-[#0A261D] text-white text-xs font-medium hover:bg-[#154E3A] transition-colors shadow-sm"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#4ADE80]" />
+                <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />
                 <span className="hidden sm:inline">Guide</span>
               </button>
             </div>

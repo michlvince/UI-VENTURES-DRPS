@@ -6,7 +6,7 @@ import {
   AlertTriangle,
   Flame,
   ArrowRight,
-  Sparkles,
+  Compass,
   GitFork,
   FileSpreadsheet,
 } from 'lucide-react';
@@ -71,7 +71,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
               onClick={onStartWalkthrough}
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-medium rounded-2xl transition-all backdrop-blur-sm"
             >
-              <Sparkles className="w-4 h-4 text-[#4ADE80]" />
+              <Compass className="w-4 h-4 text-[#4ADE80]" />
               <span>Start 7-Step Tour</span>
             </button>
 

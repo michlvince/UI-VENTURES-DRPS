@@ -6,7 +6,7 @@ import {
   ArrowLeft,
   X,
   CheckCircle2,
-  Sparkles,
+  Compass,
 } from 'lucide-react';
 import { WorkspaceTab, WalkthroughStep } from '@/types/drps';
 
@@ -88,7 +88,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
           onClick={onRestore}
           className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-[#0A261D] hover:bg-[#14533D] rounded-full shadow-lg transition-transform hover:scale-105"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#4ADE80]" />
+          <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />
           <span>Resume Guided Walkthrough</span>
         </button>
       </div>
