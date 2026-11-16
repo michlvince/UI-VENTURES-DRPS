@@ -10,6 +10,8 @@ import {
   HardDrive,
   BarChart3,
   Home,
+  ShieldCheck,
+  RotateCcw,
   Sparkles,
 } from 'lucide-react';
 import { WorkspaceTab } from '@/types/drps';
@@ -108,11 +110,10 @@ export default function HomeShell() {
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                      isActive
-                        ? 'bg-[#ECFDF5] text-[#0F3D2E] font-semibold border border-[#A7F3D0]/60'
-                        : 'text-[#52525B] hover:text-[#09090B] hover:bg-[#FAFAFA]'
-                    }`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${isActive
+                      ? 'bg-[#ECFDF5] text-[#0F3D2E] font-semibold border border-[#A7F3D0]/60'
+                      : 'text-[#52525B] hover:text-[#09090B] hover:bg-[#FAFAFA]'
+                      }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     <span>{item.label}</span>
@@ -154,11 +155,10 @@ export default function HomeShell() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs shrink-0 ${
-                  isActive
-                    ? 'bg-[#0F3D2E] text-white font-medium'
-                    : 'text-[#52525B] hover:bg-neutral-100'
-                }`}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs shrink-0 ${isActive
+                  ? 'bg-[#0F3D2E] text-white font-medium'
+                  : 'text-[#52525B] hover:bg-neutral-100'
+                  }`}
               >
                 <Icon className="w-3 h-3" />
                 <span>{item.label}</span>
