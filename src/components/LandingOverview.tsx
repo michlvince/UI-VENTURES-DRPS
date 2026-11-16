@@ -235,15 +235,11 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
       {/* Case Study Credit Banner */}
       <section className="bg-[#0F3D2E] text-white rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="space-y-1 max-w-xl">
-          <div className="text-xs uppercase tracking-wider text-[#A7F3D0] font-mono-metrics">
-            Enterprise Resilience Architecture
-          </div>
           <h3 className="text-lg font-semibold text-white">
-            UI Ventures Limited • University of Ibadan
+            University of Ibadan
           </h3>
           <p className="text-xs text-[#D1FAE5] leading-relaxed">
-            Multi-Unit Disaster Recovery Planning System (DRPS) operational model demonstrating ISO 22301 and NIST SP 800-34 principles
-            tailored for commercial subsidiary holding companies.
+            Multi-Unit Disaster Recovery Planning System (DRPS) prototype demonstrating ISO 22301 and NIST SP 800-34 principles tailored for commercial subsidiary holding companies.
           </p>
         </div>
 
