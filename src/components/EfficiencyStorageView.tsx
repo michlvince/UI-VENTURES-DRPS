@@ -227,7 +227,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
                 <h4 className="text-xs font-semibold text-rose-900">Factory Reset</h4>
               </div>
               <p className="text-[11px] text-rose-700 leading-relaxed">
-                Revert all modified RTOs, risk scores, and simulations back to verified CSC 476 seed dataset.
+                Revert all modified RTOs, risk scores, and simulations back to verified default seed dataset.
               </p>
               {showConfirmReset ? (
                 <div className="flex items-center gap-2">

@@ -34,7 +34,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#ECFDF5] border border-[#A7F3D0] text-[#0F3D2E] text-xs font-medium">
             <span className="w-2 h-2 rounded-full bg-[#15803D]" />
-            <span>CSC 476 Final Year Project Case Study • University of Ibadan</span>
+            <span>Enterprise Business Continuity Case Study • University of Ibadan</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#09090B] leading-tight">
@@ -232,17 +232,17 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
         </div>
       </section>
 
-      {/* Case Study Project Credit Banner */}
+      {/* Case Study Credit Banner */}
       <section className="bg-[#0F3D2E] text-white rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="space-y-1 max-w-xl">
           <div className="text-xs uppercase tracking-wider text-[#A7F3D0] font-mono-metrics">
-            CSC 476 Course Project
+            Enterprise Resilience Architecture
           </div>
           <h3 className="text-lg font-semibold text-white">
-            Department of Computer Science • University of Ibadan
+            UI Ventures Limited • University of Ibadan
           </h3>
           <p className="text-xs text-[#D1FAE5] leading-relaxed">
-            Multi-Unit Disaster Recovery Planning System (DRPS) prototype demonstrating ISO 22301 and NIST SP 800-34 principles
+            Multi-Unit Disaster Recovery Planning System (DRPS) operational model demonstrating ISO 22301 and NIST SP 800-34 principles
             tailored for commercial subsidiary holding companies.
           </p>
         </div>

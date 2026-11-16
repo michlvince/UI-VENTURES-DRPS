@@ -95,7 +95,7 @@ export default function HomeShell() {
                     UI VENTURES LIMITED
                   </div>
                   <div className="text-[10px] text-[#71717A] tracking-wider font-mono-metrics uppercase mt-0.5">
-                    Multi-Unit DRPS • CSC 476
+                    Multi-Unit DRPS • Enterprise Edition
                   </div>
                 </div>
               </button>

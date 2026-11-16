@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'UI Ventures Limited | Multi-Unit Disaster Recovery Planning System (DRPS)',
   description:
-    'Comprehensive multi-unit enterprise business continuity and disaster recovery planning system modeled for UI Ventures Limited, University of Ibadan (CSC 476 Project).',
+    'Comprehensive multi-unit enterprise business continuity and disaster recovery planning system modeled for UI Ventures Limited, University of Ibadan.',
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 # UI Ventures Limited Multi-Unit Disaster Recovery Planning System (DRPS)
 
 **Case Study Model for UI Ventures Limited, University of Ibadan**  
-*CSC 476 Final Year Project in Computer Science*
+*Enterprise Continuity & Resilience Framework*
 
 ---
 
@@ -95,7 +95,7 @@ npm run lint
 
 ---
 
-## 5. Walkthrough Guide (CSC 476 Project Report Appendix B)
+## 5. Walkthrough Guide (Case Study Verification)
 
 The web application includes a docked 7-step interactive walkthrough bar:
 1. **Step 1:** Multi-Unit BIA & RTO Matrix inspection
@@ -109,4 +109,4 @@ The web application includes a docked 7-step interactive walkthrough bar:
 ---
 
 ## 6. License
-Designed and developed for academic demonstration and deployment under CSC 476, University of Ibadan.
+Designed and developed for enterprise demonstration and operational deployment for UI Ventures Limited, University of Ibadan.

@@ -89,7 +89,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
           className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-[#0F3D2E] bg-white border border-[#E4E4E7] rounded-lg shadow-sm hover:bg-[#ECFDF5] transition-colors"
         >
           <HelpCircle className="w-3.5 h-3.5 text-[#0F3D2E]" />
-          <span>CSC 476 Guided Walkthrough</span>
+          <span>Interactive Guided Walkthrough</span>
         </button>
       </div>
     );
@@ -133,7 +133,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] uppercase tracking-wider font-semibold text-[#0F3D2E]">
-                  Case Study Walkthrough (Appendix B)
+                  Case Study Walkthrough
                 </span>
                 <span className="text-[11px] text-[#71717A]">•</span>
                 <span className="text-xs font-semibold text-[#09090B]">{stepData.title}</span>
