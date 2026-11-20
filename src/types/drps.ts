@@ -7,7 +7,8 @@ export type UnitId =
   | 'UV-CON'
   | 'UV-HSE'
   | 'UV-COR'
-  | 'UV-WAT';
+  | 'UV-WAT'
+  | 'UV-MRT';
 
 export type ProcessCriticality = 'Critical' | 'High' | 'Medium' | 'Low';
 
@@ -32,11 +33,11 @@ export interface BusinessUnit {
 }
 
 export interface BusinessProcess {
-  id: string; // P01 - P14
+  id: string; // P01 - P16
   unitId: UnitId;
   name: string;
   criticality: ProcessCriticality;
-  rtoHours: number; // e.g. 4
+  rtoHours: number; // e.g. 1, 2, 4
   rpoHours: number | null; // e.g. 4 or null if physical/not applicable
   financialImpact: number; // 1-5
   operationalImpact: number; // 1-5
@@ -47,7 +48,7 @@ export interface BusinessProcess {
 }
 
 export interface InfrastructureAsset {
-  id: string; // A01 - A18
+  id: string; // A01 - A20
   name: string;
   category: AssetCategory;
   primaryUnitId: UnitId | 'ALL';
@@ -59,7 +60,7 @@ export interface InfrastructureAsset {
 }
 
 export interface RiskItem {
-  id: string; // R01 - R15
+  id: string; // R01 - R16
   title: string;
   category: 'Power & Infrastructure' | 'Hardware & Equipment' | 'Software & Cyber' | 'Supply & Utilities' | 'Personnel & Operations';
   likelihood: number; // 1-5
@@ -80,7 +81,7 @@ export interface SimulationTask {
 }
 
 export interface IncidentSimulation {
-  id: string; // SIM-01 - SIM-08
+  id: string; // SIM-01 - SIM-09
   title: string;
   targetUnitId: UnitId | 'All Units';
   targetProcessIds: string[];
@@ -114,6 +115,47 @@ export interface WalkthroughStep {
   highlightAction: string;
 }
 
+// UI Ventures Mart Offline Sales & Inventory Continuity Ledger Models
+export interface MartInventoryItem {
+  sku: string;
+  name: string;
+  category: string;
+  unitPrice: number;
+  openingStock: number;
+  currentStock: number;
+  reorderLevel: number;
+  unit: string;
+  lastUpdated: string;
+}
+
+export interface MartSaleItem {
+  sku: string;
+  name: string;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
+export interface MartSaleTransaction {
+  receiptId: string; // e.g., MRT-OFF-20261120-001
+  timestamp: string;
+  items: MartSaleItem[];
+  subtotal: number;
+  totalAmount: number;
+  paymentMethod: 'Cash' | 'Bank Transfer / POS Voucher' | 'Credit / Departmental Charge' | 'Campus Student Wallet';
+  cashierName: string;
+  notes?: string;
+  offlineSyncStatus: 'Pending Sync' | 'Reconciled / Audited';
+}
+
+export interface MartLedgerState {
+  inventory: MartInventoryItem[];
+  sales: MartSaleTransaction[];
+  offlineModeActive: boolean;
+  activeBatchSessionId: string;
+  lastPrestageTimestamp: string;
+}
+
 export type WorkspaceTab =
   | 'overview'
   | 'dashboard'
@@ -122,7 +164,8 @@ export type WorkspaceTab =
   | 'risk_register'
   | 'incident_simulator'
   | 'backup_assurance'
-  | 'efficiency_storage';
+  | 'efficiency_storage'
+  | 'mart_ledger';
 
 export interface DrpsState {
   version: string;
@@ -132,8 +175,9 @@ export interface DrpsState {
   risks: RiskItem[];
   simulations: IncidentSimulation[];
   backups: BackupLogRecord[];
+  martLedger: MartLedgerState;
   activeIncidentSimulationId: string | null;
-  guidedStep: number; // 1-7 (0 if dismissed)
+  guidedStep: number; // 1-8 (0 if dismissed)
   guidedDismissed: boolean;
   lastUpdated: string;
 }

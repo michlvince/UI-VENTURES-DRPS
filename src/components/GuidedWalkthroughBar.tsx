@@ -24,51 +24,58 @@ export const WALKTHROUGH_STEPS: WalkthroughStep[] = [
   {
     step: 1,
     title: 'Multi-Unit BIA & RTO Matrix',
-    description: 'Inspect the 9 subsidiary units and 14 critical processes. Check the initial readiness and test editing RTO hours.',
+    description: 'Inspect the 10 subsidiary units and 16 critical processes including UI Ventures Mart (UV-MRT). Check readiness and test editing RTO hours.',
     targetTab: 'units_bia',
-    highlightAction: 'Review UV-HOT and UV-BAK RTO/RPO requirements',
+    highlightAction: 'Review UV-MRT, UV-HOT and UV-BAK RTO/RPO requirements',
   },
   {
     step: 2,
     title: 'Shared Infrastructure Blast Radius',
     description: 'Discover how shared asset A13 (Enterprise Network) or A14 (Mains Power) cascades downtime across all subsidiaries.',
     targetTab: 'blast_radius',
-    highlightAction: 'Click Asset A13 or A14 to observe multi-unit blast radius',
+    highlightAction: 'Click Asset A13, A14, or A20 (Offline Mart Ledger) to observe blast radius',
   },
   {
     step: 3,
     title: 'Enterprise Risk Matrix (5x5 Heatmap)',
-    description: 'Examine 15 enterprise risks. Adjust Likelihood and Impact sliders to observe live score recomputation.',
+    description: 'Examine 16 enterprise risks including R16 (Mart POS Outage). Adjust Likelihood and Impact sliders to observe live score recomputation.',
     targetTab: 'risk_register',
-    highlightAction: 'Inspect R01 Power Outage (25 Critical) and tweak R04 PMS Ransomware',
+    highlightAction: 'Inspect R01 Power Outage (25 Critical) and R16 Mart Simultaneous Outage (16)',
   },
   {
     step: 4,
     title: 'Controlled Incident Simulation & Checklist',
-    description: 'Run SIM-01 (Campus Power Outage) or SIM-07 (Ransomware). Track task phases and RTO compliance evaluation.',
+    description: 'Run SIM-01 (Campus Outage) or SIM-09 (Mart Offline Ledger Failover). Track task phases and RTO compliance evaluation.',
     targetTab: 'incident_simulator',
-    highlightAction: 'Switch between SIM-01 (MET) and SIM-03 (MISSED) scenarios',
+    highlightAction: 'Switch to SIM-09 (Mart Offline Drill) to inspect 22m recovery checklist',
   },
   {
     step: 5,
-    title: 'Continuous Backup Assurance Log',
-    description: 'Verify the 4-hour and 12-hour RPO synchronization records across on-premise NAS, data center, and immutable vault.',
-    targetTab: 'backup_assurance',
-    highlightAction: 'Trigger a simulated live differential or full backup job',
+    title: 'UI Ventures Mart Offline Continuity Ledger',
+    description: 'Experience offline POS checkout mode, search pre-staged items, record customer sales with stock deduction, and export audit logs.',
+    targetTab: 'mart_ledger',
+    highlightAction: 'Add items to cart, confirm an offline sale, and export CSV/JSON logs',
   },
   {
     step: 6,
+    title: 'Continuous Backup Assurance Log',
+    description: 'Verify 4h and 12h RPO synchronization records across on-premise NAS, data center, and immutable vault including Mart backups.',
+    targetTab: 'backup_assurance',
+    highlightAction: 'Trigger a simulated live differential backup job for UV-MRT',
+  },
+  {
+    step: 7,
     title: 'Operational Efficiency Benchmarks',
     description: 'Compare manual recovery triage with DRPS automation. See 57.8% MTTR reduction and 95.6% triage acceleration.',
     targetTab: 'efficiency_storage',
     highlightAction: 'Review manual vs automated MTTR variance metrics',
   },
   {
-    step: 7,
+    step: 8,
     title: 'Client Storage Telemetry & Governance Export',
-    description: 'Inspect the live LocalStorage payload byte count, download the CSV audit report, or export full JSON state.',
+    description: 'Inspect live LocalStorage payload byte count, download CSV audit report, or export full JSON state.',
     targetTab: 'efficiency_storage',
-    highlightAction: 'Export the complete CSV governance report or JSON backup',
+    highlightAction: 'Export the complete CSV governance report or full JSON backup',
   },
 ];
 
@@ -103,13 +110,13 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
     if (target) {
       onNavigateTab(target.targetTab);
       if (stepNum === 2 && onSelectAsset) {
-        onSelectAsset('A13');
+        onSelectAsset('A20');
       }
     }
   };
 
   const handleNext = () => {
-    if (currentStep < 7) {
+    if (currentStep < 8) {
       handleStepJump(currentStep + 1);
     } else {
       onDismiss();
@@ -128,7 +135,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-2xl bg-[#14533D] text-[#4ADE80] flex items-center justify-center font-mono-metrics text-xs font-extrabold border border-white/10 shadow-inner shrink-0">
-              {currentStep}/7
+              {currentStep}/8
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -155,8 +162,8 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
               onClick={handleNext}
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold bg-[#4ADE80] text-[#0A261D] rounded-xl hover:bg-[#22C55E] transition-all shadow-md"
             >
-              <span>{currentStep === 7 ? 'Finish' : 'Next'}</span>
-              {currentStep === 7 ? (
+              <span>{currentStep === 8 ? 'Finish' : 'Next'}</span>
+              {currentStep === 8 ? (
                 <CheckCircle2 className="w-3.5 h-3.5" />
               ) : (
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -189,7 +196,7 @@ export const GuidedWalkthroughBar: React.FC<GuidedWalkthroughBarProps> = ({
             />
           ))}
           <span className="text-[10px] text-white/70 ml-2 font-medium truncate">
-            Step {currentStep} of 7: {stepData.highlightAction}
+            Step {currentStep} of 8: {stepData.highlightAction}
           </span>
         </div>
       </div>

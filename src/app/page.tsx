@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 import {
   LayoutDashboard,
   Building2,
@@ -15,6 +15,10 @@ import {
   ShieldCheck,
   Menu,
   X,
+  ShoppingCart,
+  Wifi,
+  WifiOff,
+  RotateCcw,
 } from 'lucide-react';
 import { WorkspaceTab } from '@/types/drps';
 import { useDrpsStore } from '@/hooks/useDrpsStore';
@@ -26,6 +30,7 @@ import { RiskRegisterView } from '@/components/RiskRegisterView';
 import { IncidentSimulatorView } from '@/components/IncidentSimulatorView';
 import { BackupAssuranceView } from '@/components/BackupAssuranceView';
 import { EfficiencyStorageView } from '@/components/EfficiencyStorageView';
+import { MartContinuityView } from '@/components/MartContinuityView';
 import { GuidedWalkthroughBar } from '@/components/GuidedWalkthroughBar';
 
 export default function HomeShell() {
@@ -53,10 +58,34 @@ export default function HomeShell() {
     setGuidedStep,
     dismissGuidedWalkthrough,
     restoreGuidedWalkthrough,
+    // Mart Continuity Actions
+    toggleMartOfflineMode,
+    prestageMartInventory,
+    resetMartInventorySeed,
+    upsertMartInventoryItem,
+    recordMartSale,
+    reconcileMartSales,
+    clearMartSalesHistory,
+    exportMartSalesCsv,
+    exportMartInventoryCsv,
   } = useDrpsStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
+
+  // Detect live browser online / offline connectivity without cascading render effects
+  const isOnline = useSyncExternalStore(
+    (callback) => {
+      window.addEventListener('online', callback);
+      window.addEventListener('offline', callback);
+      return () => {
+        window.removeEventListener('online', callback);
+        window.removeEventListener('offline', callback);
+      };
+    },
+    () => navigator.onLine,
+    () => true
+  );
 
   if (!isLoaded) {
     return (
@@ -72,6 +101,7 @@ export default function HomeShell() {
   const primaryNavItems: { id: WorkspaceTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: 'overview', label: 'Overview', icon: Home },
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'mart_ledger', label: 'Mart Offline Ledger', icon: ShoppingCart },
     { id: 'units_bia', label: 'Units & BIA', icon: Building2 },
     { id: 'blast_radius', label: 'Blast Radius', icon: GitFork },
   ];
@@ -86,6 +116,7 @@ export default function HomeShell() {
   const currentTabTitle = {
     overview: 'Executive Overview',
     dashboard: 'Command Dashboard',
+    mart_ledger: 'UI Ventures Mart Continuity Ledger',
     units_bia: 'Subsidiaries & BIA Matrix',
     blast_radius: 'Asset Blast Radius',
     risk_register: 'Risk Register 5×5',
@@ -132,19 +163,36 @@ export default function HomeShell() {
               </button>
             </div>
 
+            {/* Runtime Storage & Network Badge */}
+            <div className="flex items-center justify-between p-2.5 rounded-2xl bg-white/[0.06] border border-white/[0.08] text-[11px]">
+              <div className="flex items-center gap-1.5">
+                {isOnline ? (
+                  <Wifi className="w-3.5 h-3.5 text-[#4ADE80]" />
+                ) : (
+                  <WifiOff className="w-3.5 h-3.5 text-[#F87171]" />
+                )}
+                <span className="font-semibold text-white/90">
+                  {isOnline ? 'Network Online' : 'Operating Offline'}
+                </span>
+              </div>
+              <span className="px-2 py-0.5 rounded-md bg-[#4ADE80]/15 text-[#4ADE80] text-[10px] font-mono-metrics font-bold">
+                Native Storage
+              </span>
+            </div>
+
             {/* Quick Search Input */}
             <div className="relative">
               <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 type="text"
-                placeholder="Quick search..."
+                placeholder="Quick navigate..."
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 text-xs bg-white/[0.08] text-white placeholder-white/40 rounded-xl border border-white/[0.06] focus:outline-none focus:ring-1 focus:ring-[#4ADE80] focus:bg-white/[0.12] transition-all"
               />
             </div>
 
-            {/* Nav Groups (Hidden on mobile unless open) */}
+            {/* Nav Groups */}
             <div className={`${mobileMenuOpen ? 'block' : 'hidden'} lg:block space-y-6`}>
               {/* Main Menu */}
               <div className="space-y-1.5">
@@ -171,7 +219,12 @@ export default function HomeShell() {
                         <Icon className={`w-4 h-4 ${isActive ? 'text-[#4ADE80]' : 'text-white/50'}`} />
                         <span>{item.label}</span>
                       </div>
-                      {isActive && (
+                      {item.id === 'mart_ledger' && state.martLedger.offlineModeActive && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#4ADE80] text-[#0A261D]">
+                          ACTIVE
+                        </span>
+                      )}
+                      {isActive && item.id !== 'mart_ledger' && (
                         <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />
                       )}
                     </button>
@@ -220,14 +273,14 @@ export default function HomeShell() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#4ADE80]" />
-                  <span className="text-[11px] font-semibold text-white">ISO 22301 Aligned</span>
+                  <span className="text-[11px] font-semibold text-white">ISO 22301 / NIST</span>
                 </div>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#4ADE80]/20 text-[#4ADE80]">
-                  Active
+                  Verified
                 </span>
               </div>
               <p className="text-[10px] text-white/60 leading-relaxed">
-                9 subsidiaries monitored with air-gapped offline storage assurance.
+                10 subsidiaries monitored with zero mandatory cloud dependency.
               </p>
               <div className="pt-1 flex items-center justify-between text-[10px] text-white/50">
                 <span>Holdings Readiness</span>
@@ -258,22 +311,40 @@ export default function HomeShell() {
           {/* Top Navbar Header Bento Card */}
           <header className="bg-white rounded-[24px] sm:rounded-[28px] px-5 sm:px-7 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm border border-black/[0.03]">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
                   {currentTabTitle}
                 </h1>
-                <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#065F46] text-[11px] font-medium border border-[#A7F3D0]">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#065F46] text-[11px] font-medium border border-[#A7F3D0]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
                   University of Ibadan
                 </span>
+                {/* Online / Offline status badge */}
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+                  isOnline 
+                    ? 'bg-[#DCFCE7] text-[#16A34A] border border-[#BBF7D0]' 
+                    : 'bg-[#FEE2E2] text-[#DC2626] border border-[#FECACA]'
+                }`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-[#16A34A]' : 'bg-[#DC2626]'}`} />
+                  {isOnline ? 'Host Connected' : 'Localhost / Offline Ready'}
+                </span>
               </div>
               <p className="text-xs text-[#6B7280] mt-0.5">
-                UI Ventures Limited Disaster Recovery Planning System • Live Client Engine
+                UI Ventures Limited Disaster Recovery Planning System • Zero External Database Required
               </p>
             </div>
 
             {/* Header Right Actions */}
-            <div className="flex items-center gap-2.5 self-end sm:self-auto">
+            <div className="flex items-center gap-2.5 self-end sm:self-auto flex-wrap">
+              <button
+                onClick={resetToFactorySeed}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F3F4F6] hover:bg-[#E5E7EB] text-xs font-semibold text-[#374151] transition-colors border border-black/[0.04]"
+                title="Reset or seed default UI Ventures data"
+              >
+                <RotateCcw className="w-3 h-3 text-[#103E2E]" />
+                <span className="hidden sm:inline">Seed Default Data</span>
+              </button>
+
               <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[#F3F4F6] border border-black/[0.04]">
                 <div className="w-2 h-2 rounded-full bg-[#10B981]" />
                 <span className="text-[11px] text-[#4B5563]">Readiness:</span>
@@ -314,6 +385,21 @@ export default function HomeShell() {
                 aggregateReadiness={aggregateEnterpriseReadiness}
                 onNavigateTab={setActiveTab}
                 onSelectUnitFilter={setSelectedUnitIdFilter}
+              />
+            )}
+
+            {activeTab === 'mart_ledger' && (
+              <MartContinuityView
+                martLedger={state.martLedger}
+                onToggleOfflineMode={toggleMartOfflineMode}
+                onPrestageInventory={prestageMartInventory}
+                onResetInventorySeed={resetMartInventorySeed}
+                onUpsertInventoryItem={upsertMartInventoryItem}
+                onRecordSale={recordMartSale}
+                onReconcileSales={reconcileMartSales}
+                onClearSalesHistory={clearMartSalesHistory}
+                onExportSalesCsv={exportMartSalesCsv}
+                onExportInventoryCsv={exportMartInventoryCsv}
               />
             )}
 

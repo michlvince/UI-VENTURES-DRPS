@@ -74,7 +74,7 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
             </div>
           </div>
           <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/60">
-            <span>9 Subsidiaries verified</span>
+            <span>10 Subsidiaries verified</span>
             <span className="font-semibold text-white">ISO 22301</span>
           </div>
         </div>
@@ -150,7 +150,7 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
             </div>
           </div>
           <div className="pt-3 border-t border-black/[0.04] flex items-center justify-between text-[11px] text-[#6B7280]">
-            <span>8 verified drills</span>
+            <span>{simulations.length} verified drills</span>
             <button 
               onClick={() => onNavigateTab('incident_simulator')}
               className="text-[#103E2E] font-semibold hover:underline"
@@ -174,7 +174,7 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
                 Subsidiary Readiness & BIA Catalog
               </h3>
               <p className="text-xs text-[#6B7280] mt-0.5">
-                Continuity posture ranked across all 9 commercial subsidiaries.
+                Continuity posture ranked across all 10 commercial subsidiaries.
               </p>
             </div>
             <button

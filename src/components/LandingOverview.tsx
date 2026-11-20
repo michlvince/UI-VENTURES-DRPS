@@ -55,7 +55,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
 
           <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl font-normal">
             A cohesive operational disaster recovery framework modeled for UI Ventures Limited. 
-            Empowering 9 commercial subsidiaries with automated RTO/RPO evaluation, blast radius impact analysis, and resilient offline local storage.
+            Empowering 10 commercial subsidiaries including UI Ventures Mart with automated RTO/RPO evaluation, blast radius impact analysis, and resilient offline local storage.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -68,11 +68,19 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
             </button>
 
             <button
+              onClick={() => onNavigateTab('mart_ledger')}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-[#0A261D] hover:bg-[#F3F4F6] text-xs sm:text-sm font-bold rounded-2xl transition-all shadow-md"
+            >
+              <span>Mart Offline Ledger (UV-MRT)</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+
+            <button
               onClick={onStartWalkthrough}
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-medium rounded-2xl transition-all backdrop-blur-sm"
             >
               <Compass className="w-4 h-4 text-[#4ADE80]" />
-              <span>Start 7-Step Tour</span>
+              <span>Start 8-Step Tour</span>
             </button>
 
             <button
@@ -96,13 +104,13 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
           <div>
             <div className="text-[11px] text-white/60">Subsidiaries</div>
             <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-white">
-              9 Units
+              10 Units
             </div>
           </div>
           <div>
             <div className="text-[11px] text-white/60">Critical Processes</div>
             <div className="text-xl sm:text-2xl font-bold font-mono-metrics text-white">
-              14 Tier-1
+              16 Tier-1
             </div>
           </div>
           <div>
@@ -130,7 +138,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
               Business Impact Analysis
             </h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
-              14 critical business processes mapped with verified RTO/RPO limits and BIA scores (1–5).
+              16 critical business processes mapped across 10 units with verified RTO/RPO limits and BIA scores (1–5).
             </p>
           </div>
           <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
@@ -172,7 +180,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
               5×5 Risk Heatmap
             </h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
-              15 enterprise risks scored dynamically from R01 Grid Failure (25) to R15 Staff Unavailability.
+              16 enterprise risks scored dynamically from R01 Grid Failure (25) to R16 Mart Outage (16).
             </p>
           </div>
           <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
@@ -193,7 +201,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
               Disaster Drills & Runbooks
             </h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">
-              8 controlled drill simulations evaluating RTO compliance (6 MET, 2 MISSED) with live stopwatch.
+              9 controlled drill simulations evaluating RTO compliance (7 MET, 2 MISSED) with live stopwatch.
             </p>
           </div>
           <div className="mt-4 flex items-center justify-between text-[11px] text-[#103E2E] font-semibold">
@@ -214,11 +222,11 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
                 Subsidiary Business Units
               </h3>
               <span className="px-2 py-0.5 rounded-full bg-[#F3F4F6] text-xs font-semibold text-[#4B5563]">
-                9 Entities
+                10 Entities
               </span>
             </div>
             <p className="text-xs text-[#6B7280] mt-0.5">
-              Continuity postures across hospitality, bakery, water production, petroleum, print, and corporate arms.
+              Continuity postures across supermarket retail, hospitality, bakery, water production, petroleum, print, and corporate arms.
             </p>
           </div>
 
