@@ -48,26 +48,24 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
   const complianceRate = Math.round((metSims.length / simulations.length) * 100);
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-16">
+    <div className="space-y-6 pb-16">
       {/* Top Metric Cards Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        {/* Card 1: Enterprise Readiness */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           label="Enterprise Posture"
           value={`${aggregateReadiness.toFixed(1)}%`}
-          subValue="+14.2% from initial holding drill"
+          subValue="+14.2% from baseline holding drill"
           variant="forest"
           icon={TrendingUp}
           badge={{ text: 'ISO 22301', variant: 'accent' }}
           footer={
             <div className="flex items-center justify-between text-[11px]">
               <span>{units.length} Subsidiaries verified</span>
-              <span className="font-semibold text-white">Full Coverage</span>
+              <span className="font-semibold text-white">Full Scope</span>
             </div>
           }
         />
 
-        {/* Card 2: Tier-1 Critical Processes */}
         <MetricCard
           label="Critical Processes"
           value={processes.length}
@@ -87,7 +85,6 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
           }
         />
 
-        {/* Card 3: Risk Balance */}
         <MetricCard
           label="Enterprise Risks"
           value={risks.length}
@@ -107,7 +104,6 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
           }
         />
 
-        {/* Card 4: Drill Compliance Rate */}
         <MetricCard
           label="Simulation Drills"
           value={`${complianceRate}%`}
@@ -129,15 +125,15 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
       </div>
 
       {/* Main Grid: Subsidiaries Table + Shared Utilities & Alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Subsidiary Leaderboard Table (8 cols) */}
-        <div className="lg:col-span-8 bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+        <div className="lg:col-span-8 bg-white rounded-2xl p-6 shadow-xs border border-[#E5E7EB] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#F1F3F5]">
             <div>
-              <h3 className="text-base font-bold text-[#111827]">
+              <h3 className="text-sm font-bold text-[#111827]">
                 Subsidiary Readiness & BIA Catalog
               </h3>
-              <p className="text-xs text-[#6B7280] mt-0.5">
+              <p className="text-xs text-[#64748B] mt-0.5">
                 Continuity posture ranked across all {units.length} commercial subsidiaries.
               </p>
             </div>
@@ -153,16 +149,16 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs min-w-[500px]">
               <thead>
-                <tr className="border-b border-[#E5E7EB] text-[#6B7280] bg-[#F9FAFB] rounded-xl">
-                  <th className="py-2.5 px-3.5 font-semibold rounded-l-xl">Code</th>
-                  <th className="py-2.5 px-3.5 font-semibold">Subsidiary</th>
-                  <th className="py-2.5 px-3.5 font-semibold">Category</th>
-                  <th className="py-2.5 px-3.5 font-semibold text-right">Readiness</th>
-                  <th className="py-2.5 px-3.5 font-semibold text-center">Status</th>
-                  <th className="py-2.5 px-3.5 font-semibold text-right rounded-r-xl">Action</th>
+                <tr className="border-b border-[#E5E7EB] text-[#64748B] bg-[#F8F9FA] rounded-xl">
+                  <th className="py-3 px-4 font-semibold rounded-l-xl">Code</th>
+                  <th className="py-3 px-4 font-semibold">Subsidiary</th>
+                  <th className="py-3 px-4 font-semibold">Category</th>
+                  <th className="py-3 px-4 font-semibold text-right">Readiness</th>
+                  <th className="py-3 px-4 font-semibold text-center">Status</th>
+                  <th className="py-3 px-4 font-semibold text-right rounded-r-xl">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E7EB]">
+              <tbody className="divide-y divide-[#F1F3F5]">
                 {units
                   .slice()
                   .sort((a, b) => b.currentReadiness - a.currentReadiness)
@@ -175,27 +171,27 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
                         : 'danger';
 
                     return (
-                      <tr key={u.id} className="hover:bg-[#F9FAFB] transition-colors">
-                        <td className="py-3 px-3.5 font-mono-metrics font-bold text-[#111827]">
+                      <tr key={u.id} className="hover:bg-[#F8F9FA] transition-colors">
+                        <td className="py-3.5 px-4 font-mono-metrics font-bold text-[#111827]">
                           {u.id}
                         </td>
-                        <td className="py-3 px-3.5 font-semibold text-[#111827]">
+                        <td className="py-3.5 px-4 font-semibold text-[#111827]">
                           {u.name}
                         </td>
-                        <td className="py-3 px-3.5 text-[#6B7280]">{u.category}</td>
-                        <td className="py-3 px-3.5 text-right">
+                        <td className="py-3.5 px-4 text-[#64748B]">{u.category}</td>
+                        <td className="py-3.5 px-4 text-right">
                           <StatusBadge
                             label={`${u.currentReadiness.toFixed(1)}%`}
                             variant={statusVariant}
                             size="sm"
                           />
                         </td>
-                        <td className="py-3 px-3.5 text-center">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F3F4F6] text-[#4B5563] font-medium border border-[#E5E7EB]">
+                        <td className="py-3.5 px-4 text-center">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F8F9FA] text-[#64748B] font-medium border border-[#E2E8F0]">
                             {u.status}
                           </span>
                         </td>
-                        <td className="py-3 px-3.5 text-right">
+                        <td className="py-3.5 px-4 text-right">
                           <button
                             onClick={() => {
                               onSelectUnitFilter(u.id);
@@ -215,15 +211,15 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
         </div>
 
         {/* Right Column: Shared Assets & Emergency Alert (4 cols) */}
-        <div className="lg:col-span-4 space-y-4 sm:space-y-5">
+        <div className="lg:col-span-4 space-y-6">
           {/* Shared Campus Utilities */}
-          <div className="bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-3.5">
-            <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
+          <div className="bg-white rounded-2xl p-6 shadow-xs border border-[#E5E7EB] space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#F1F3F5]">
               <div>
                 <h4 className="text-sm font-bold text-[#111827]">
                   Shared Campus Utilities
                 </h4>
-                <p className="text-xs text-[#6B7280]">
+                <p className="text-xs text-[#64748B] mt-0.5">
                   High blast radius assets cascading enterprise-wide.
                 </p>
               </div>
@@ -235,12 +231,12 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
               </button>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {sharedAssets.map((asset) => (
                 <div
                   key={asset.id}
                   onClick={() => onNavigateTab('blast_radius')}
-                  className="p-3 rounded-xl border border-[#E5E7EB] hover:border-[#103E2E]/40 bg-[#F9FAFB] hover:bg-[#F3F4F6] transition-all cursor-pointer"
+                  className="p-3.5 rounded-xl border border-[#E5E7EB] hover:border-[#CBD5E1] bg-[#F8F9FA] hover:bg-white transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono-metrics text-xs font-bold text-[#111827]">
@@ -259,9 +255,9 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
                   <h5 className="text-xs font-semibold text-[#111827] mt-1.5 line-clamp-1">
                     {asset.name}
                   </h5>
-                  <div className="flex items-center justify-between text-[11px] text-[#6B7280] mt-2">
+                  <div className="flex items-center justify-between text-[11px] text-[#64748B] mt-2">
                     <span>{asset.dependentProcessIds.length} dependent procs</span>
-                    <span className="text-[#103E2E] font-bold">{units.length} Subsidiaries</span>
+                    <span className="text-[#103E2E] font-semibold">{units.length} Subsidiaries</span>
                   </div>
                 </div>
               ))}
@@ -269,16 +265,16 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
           </div>
 
           {/* Quick Alert: Scenarios Exceeding RTO */}
-          <div className="bg-[#FEF2F2] rounded-[20px] p-5 sm:p-6 border border-[#FECACA] space-y-3">
-            <div className="flex items-center gap-2">
+          <div className="bg-[#FEF2F2] rounded-2xl p-6 border border-[#FECACA] space-y-3">
+            <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-[#DC2626]/10 flex items-center justify-center text-[#DC2626]">
                 <AlertTriangle className="w-4 h-4" />
               </div>
-              <h4 className="text-sm font-bold text-[#991B1B]">
+              <h4 className="text-xs font-bold text-[#991B1B]">
                 {missedSims.length} Scenarios Exceeded RTO
               </h4>
             </div>
-            <p className="text-xs text-[#991B1B]/80 leading-relaxed">
+            <p className="text-xs text-[#991B1B]/85 leading-relaxed">
               Drills SIM-03 (UI Water Treatment) and SIM-07 (Corporate Ransomware) ran +45m and +1h 30m beyond allowed recovery thresholds.
             </p>
             <button

@@ -139,22 +139,22 @@ export default function HomeShell() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6] text-[#111827]">
-        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white shadow-sm border border-[#E5E7EB]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F8F9FA] text-[#111827]">
+        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white shadow-xs border border-[#E5E7EB]">
           <div className="w-5 h-5 rounded-full border-2 border-[#103E2E] border-t-transparent animate-spin" />
-          <span className="text-xs font-semibold text-[#4B5563]">Loading UI Ventures DRPS Console...</span>
+          <span className="text-xs font-semibold text-[#475569]">Loading UI Ventures DRPS Console...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] text-[#111827] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F8F9FA] text-[#111827] flex flex-col justify-between">
       {/* Toast Notification Stack */}
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
 
-      {/* Main Container Shell */}
-      <div className="w-full max-w-[1780px] mx-auto flex flex-col lg:flex-row flex-1 items-stretch">
+      {/* Main Container Shell with generous max-width */}
+      <div className="w-full max-w-[1680px] mx-auto flex flex-col lg:flex-row flex-1 items-stretch">
         {/* App Sidebar */}
         <AppSidebar
           activeTab={activeTab}
@@ -169,7 +169,7 @@ export default function HomeShell() {
         />
 
         {/* Main Canvas Area */}
-        <div className="flex-1 flex flex-col gap-3.5 p-3 sm:p-4 md:p-5 lg:p-6 min-w-0">
+        <div className="flex-1 flex flex-col gap-5 p-4 sm:p-6 lg:p-8 min-w-0">
           {/* Floating Glass Header */}
           <AppHeader
             currentTab={activeTab}
@@ -182,7 +182,7 @@ export default function HomeShell() {
           />
 
           {/* Active Workspace View */}
-          <main className="flex-1 mt-1">
+          <main className="flex-1">
             {activeTab === 'overview' && (
               <LandingOverview
                 units={state.units}
