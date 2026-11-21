@@ -1,26 +1,6 @@
 'use client';
 
 import React, { useState, useSyncExternalStore } from 'react';
-import {
-  LayoutDashboard,
-  Building2,
-  GitFork,
-  AlertTriangle,
-  Flame,
-  HardDrive,
-  BarChart3,
-  Home,
-  Compass,
-  Search,
-  ShieldCheck,
-  Menu,
-  X,
-  ShoppingCart,
-  Wifi,
-  WifiOff,
-  RotateCcw,
-} from 'lucide-react';
-import { WorkspaceTab } from '@/types/drps';
 import { useDrpsStore } from '@/hooks/useDrpsStore';
 import { LandingOverview } from '@/components/LandingOverview';
 import { CommandDashboard } from '@/components/CommandDashboard';
@@ -32,6 +12,9 @@ import { BackupAssuranceView } from '@/components/BackupAssuranceView';
 import { EfficiencyStorageView } from '@/components/EfficiencyStorageView';
 import { MartContinuityView } from '@/components/MartContinuityView';
 import { GuidedWalkthroughBar } from '@/components/GuidedWalkthroughBar';
+import { AppSidebar } from '@/components/ui/AppSidebar';
+import { AppHeader } from '@/components/ui/AppHeader';
+import { ToastContainer, ToastMessage } from '@/components/ui/ToastContainer';
 
 export default function HomeShell() {
   const {
@@ -70,8 +53,21 @@ export default function HomeShell() {
     exportMartInventoryCsv,
   } = useDrpsStore();
 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [globalSearch, setGlobalSearch] = useState('');
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const addToast = (type: ToastMessage['type'], message: string) => {
+    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    setToasts((prev) => [...prev, { id, type, message }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   // Detect live browser online / offline connectivity without cascading render effects
   const isOnline = useSyncExternalStore(
@@ -87,284 +83,106 @@ export default function HomeShell() {
     () => true
   );
 
+  const handleResetFactory = () => {
+    resetToFactorySeed();
+    addToast('success', 'Default UI Ventures dataset reseeded successfully.');
+  };
+
+  const handleExportJson = () => {
+    exportBackupJson();
+    addToast('info', 'Full JSON state exported to disk.');
+  };
+
+  const handleExportCsv = () => {
+    exportCsvGovernanceReport();
+    addToast('info', 'Governance CSV audit report exported.');
+  };
+
+  const handleImportJson = async (file: File) => {
+    const result = await importBackupJson(file);
+    if (result.success) {
+      addToast('success', result.message);
+    } else {
+      addToast('error', result.message);
+    }
+    return result;
+  };
+
+  const handleTriggerBackup = (
+    unitId: Parameters<typeof triggerManualBackup>[0],
+    dataset: Parameters<typeof triggerManualBackup>[1],
+    type: Parameters<typeof triggerManualBackup>[2],
+    sizeMb: Parameters<typeof triggerManualBackup>[3],
+    destination: Parameters<typeof triggerManualBackup>[4]
+  ) => {
+    triggerManualBackup(unitId, dataset, type, sizeMb, destination);
+    addToast('success', `Snapshot recorded for ${unitId}: ${dataset}`);
+  };
+
+  const handleRecordMartSale = (
+    saleData: Parameters<typeof recordMartSale>[0]
+  ) => {
+    const transaction = recordMartSale(saleData);
+    addToast('success', `Offline receipt ${transaction.receiptId} recorded: ₦${transaction.totalAmount.toLocaleString()}`);
+    return transaction;
+  };
+
+  const handleReconcileMartSales = (receiptIds?: string[]) => {
+    reconcileMartSales(receiptIds);
+    addToast('success', 'Sales marked as reconciled in offline ledger.');
+  };
+
+  const handleClearMartSales = () => {
+    clearMartSalesHistory();
+    addToast('info', 'Offline sales history cleared.');
+  };
+
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#ECEEEF] text-[#111827]">
-        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white shadow-sm border border-black/[0.04]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6] text-[#111827]">
+        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white shadow-sm border border-[#E5E7EB]">
           <div className="w-5 h-5 rounded-full border-2 border-[#103E2E] border-t-transparent animate-spin" />
-          <span className="text-xs font-medium text-[#4B5563]">Loading UI Ventures DRPS Console...</span>
+          <span className="text-xs font-semibold text-[#4B5563]">Loading UI Ventures DRPS Console...</span>
         </div>
       </div>
     );
   }
 
-  const primaryNavItems: { id: WorkspaceTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'overview', label: 'Overview', icon: Home },
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'mart_ledger', label: 'Mart Offline Ledger', icon: ShoppingCart },
-    { id: 'units_bia', label: 'Units & BIA', icon: Building2 },
-    { id: 'blast_radius', label: 'Blast Radius', icon: GitFork },
-  ];
-
-  const secondaryNavItems: { id: WorkspaceTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'risk_register', label: 'Risk Matrix', icon: AlertTriangle },
-    { id: 'incident_simulator', label: 'Simulator', icon: Flame },
-    { id: 'backup_assurance', label: 'Backups', icon: HardDrive },
-    { id: 'efficiency_storage', label: 'Storage & Audit', icon: BarChart3 },
-  ];
-
-  const currentTabTitle = {
-    overview: 'Executive Overview',
-    dashboard: 'Command Dashboard',
-    mart_ledger: 'UI Ventures Mart Continuity Ledger',
-    units_bia: 'Subsidiaries & BIA Matrix',
-    blast_radius: 'Asset Blast Radius',
-    risk_register: 'Risk Register 5×5',
-    incident_simulator: 'Incident Simulator',
-    backup_assurance: 'Backup Assurance',
-    efficiency_storage: 'Efficiency & Storage',
-  }[activeTab];
-
   return (
-    <div className="min-h-screen p-2.5 sm:p-4 md:p-6 lg:p-7 bg-[#ECEEEF] text-[#111827] flex flex-col justify-between">
-      {/* Outer Bento Container Shell */}
-      <div className="w-full max-w-[1720px] mx-auto flex flex-col lg:flex-row gap-4 lg:gap-5 flex-1 items-stretch">
-        
-        {/* =========================================
-            LEFT CURVED DARK FOREST SIDEBAR
-           ========================================= */}
-        <aside className="w-full lg:w-[270px] xl:w-[290px] shrink-0 bg-[#0A261D] text-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 flex flex-col justify-between shadow-xl shadow-black/5 relative z-30">
-          <div className="space-y-6">
-            {/* Brand Header */}
-            <div className="flex items-center justify-between">
-              <button 
-                onClick={() => setActiveTab('overview')}
-                className="flex items-center gap-3 text-left group focus:outline-none"
-              >
-                <div className="w-10 h-10 rounded-2xl bg-[#14533D] flex items-center justify-center font-bold text-sm tracking-tight text-[#4ADE80] shadow-inner group-hover:scale-105 transition-transform duration-200">
-                  UI
-                </div>
-                <div>
-                  <div className="text-sm font-bold tracking-tight text-white group-hover:text-[#4ADE80] transition-colors">
-                    UI Ventures
-                  </div>
-                  <div className="text-[11px] text-[#A7F3D0]/70 font-medium">
-                    DRPS Enterprise
-                  </div>
-                </div>
-              </button>
+    <div className="min-h-screen bg-[#F3F4F6] text-[#111827] flex flex-col justify-between">
+      {/* Toast Notification Stack */}
+      <ToastContainer toasts={toasts} onDismiss={removeToast} />
 
-              {/* Mobile toggle */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-xl bg-white/10 text-white"
-              >
-                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-              </button>
-            </div>
+      {/* Main Container Shell */}
+      <div className="w-full max-w-[1780px] mx-auto flex flex-col lg:flex-row flex-1 items-stretch">
+        {/* App Sidebar */}
+        <AppSidebar
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          isMobileOpen={mobileMenuOpen}
+          onCloseMobile={() => setMobileMenuOpen(false)}
+          martOfflineActive={state.martLedger.offlineModeActive}
+          aggregateReadiness={aggregateEnterpriseReadiness}
+          onOpenWalkthrough={restoreGuidedWalkthrough}
+        />
 
-            {/* Runtime Storage & Network Badge */}
-            <div className="flex items-center justify-between p-2.5 rounded-2xl bg-white/[0.06] border border-white/[0.08] text-[11px]">
-              <div className="flex items-center gap-1.5">
-                {isOnline ? (
-                  <Wifi className="w-3.5 h-3.5 text-[#4ADE80]" />
-                ) : (
-                  <WifiOff className="w-3.5 h-3.5 text-[#F87171]" />
-                )}
-                <span className="font-semibold text-white/90">
-                  {isOnline ? 'Network Online' : 'Operating Offline'}
-                </span>
-              </div>
-              <span className="px-2 py-0.5 rounded-md bg-[#4ADE80]/15 text-[#4ADE80] text-[10px] font-mono-metrics font-bold">
-                Native Storage
-              </span>
-            </div>
+        {/* Main Canvas Area */}
+        <div className="flex-1 flex flex-col gap-3.5 p-3 sm:p-4 md:p-5 lg:p-6 min-w-0">
+          {/* Floating Glass Header */}
+          <AppHeader
+            currentTab={activeTab}
+            isOnline={isOnline}
+            storageBytes={storageBytes}
+            aggregateReadiness={aggregateEnterpriseReadiness}
+            onOpenMobileMenu={() => setMobileMenuOpen(true)}
+            onResetSeedData={handleResetFactory}
+            onOpenWalkthrough={restoreGuidedWalkthrough}
+          />
 
-            {/* Quick Search Input */}
-            <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
-              <input
-                type="text"
-                placeholder="Quick navigate..."
-                value={globalSearch}
-                onChange={(e) => setGlobalSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-white/[0.08] text-white placeholder-white/40 rounded-xl border border-white/[0.06] focus:outline-none focus:ring-1 focus:ring-[#4ADE80] focus:bg-white/[0.12] transition-all"
-              />
-            </div>
-
-            {/* Nav Groups */}
-            <div className={`${mobileMenuOpen ? 'block' : 'hidden'} lg:block space-y-6`}>
-              {/* Main Menu */}
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-semibold tracking-wider text-white/40 uppercase px-3 pb-1">
-                  Core Modules
-                </div>
-                {primaryNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        setActiveTab(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium transition-all duration-150 ${
-                        isActive
-                          ? 'bg-[#154E3A] text-white font-semibold shadow-md shadow-black/10'
-                          : 'text-white/70 hover:text-white hover:bg-white/[0.06]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-[#4ADE80]' : 'text-white/50'}`} />
-                        <span>{item.label}</span>
-                      </div>
-                      {item.id === 'mart_ledger' && state.martLedger.offlineModeActive && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#4ADE80] text-[#0A261D]">
-                          ACTIVE
-                        </span>
-                      )}
-                      {isActive && item.id !== 'mart_ledger' && (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Operational Tools */}
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-semibold tracking-wider text-white/40 uppercase px-3 pb-1">
-                  Assurance & Controls
-                </div>
-                {secondaryNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        setActiveTab(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-medium transition-all duration-150 ${
-                        isActive
-                          ? 'bg-[#154E3A] text-white font-semibold shadow-md shadow-black/10'
-                          : 'text-white/70 hover:text-white hover:bg-white/[0.06]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-[#4ADE80]' : 'text-white/50'}`} />
-                        <span>{item.label}</span>
-                      </div>
-                      {isActive && (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Sidebar Card: Compliance & ISO Status */}
-          <div className="mt-6 pt-5 border-t border-white/10 space-y-3">
-            <div className="p-3.5 rounded-2xl bg-white/[0.06] border border-white/[0.08] space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#4ADE80]" />
-                  <span className="text-[11px] font-semibold text-white">ISO 22301 / NIST</span>
-                </div>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#4ADE80]/20 text-[#4ADE80]">
-                  Verified
-                </span>
-              </div>
-              <p className="text-[10px] text-white/60 leading-relaxed">
-                10 subsidiaries monitored with zero mandatory cloud dependency.
-              </p>
-              <div className="pt-1 flex items-center justify-between text-[10px] text-white/50">
-                <span>Holdings Readiness</span>
-                <span className="font-mono-metrics font-bold text-[#4ADE80]">
-                  {aggregateEnterpriseReadiness.toFixed(1)}%
-                </span>
-              </div>
-            </div>
-
-            {/* Quick Walkthrough Trigger */}
-            {state.guidedDismissed ? (
-              <button
-                onClick={restoreGuidedWalkthrough}
-                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors"
-              >
-                <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />
-                <span>Open Walkthrough</span>
-              </button>
-            ) : null}
-          </div>
-        </aside>
-
-        {/* =========================================
-            RIGHT MAIN CANVAS AREA
-           ========================================= */}
-        <div className="flex-1 flex flex-col gap-4 lg:gap-5 min-w-0">
-          
-          {/* Top Navbar Header Bento Card */}
-          <header className="bg-white rounded-[24px] sm:rounded-[28px] px-5 sm:px-7 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm border border-black/[0.03]">
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
-                  {currentTabTitle}
-                </h1>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#065F46] text-[11px] font-medium border border-[#A7F3D0]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                  University of Ibadan
-                </span>
-                {/* Online / Offline status badge */}
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                  isOnline 
-                    ? 'bg-[#DCFCE7] text-[#16A34A] border border-[#BBF7D0]' 
-                    : 'bg-[#FEE2E2] text-[#DC2626] border border-[#FECACA]'
-                }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-[#16A34A]' : 'bg-[#DC2626]'}`} />
-                  {isOnline ? 'Host Connected' : 'Localhost / Offline Ready'}
-                </span>
-              </div>
-              <p className="text-xs text-[#6B7280] mt-0.5">
-                UI Ventures Limited Disaster Recovery Planning System • Zero External Database Required
-              </p>
-            </div>
-
-            {/* Header Right Actions */}
-            <div className="flex items-center gap-2.5 self-end sm:self-auto flex-wrap">
-              <button
-                onClick={resetToFactorySeed}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F3F4F6] hover:bg-[#E5E7EB] text-xs font-semibold text-[#374151] transition-colors border border-black/[0.04]"
-                title="Reset or seed default UI Ventures data"
-              >
-                <RotateCcw className="w-3 h-3 text-[#103E2E]" />
-                <span className="hidden sm:inline">Seed Default Data</span>
-              </button>
-
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[#F3F4F6] border border-black/[0.04]">
-                <div className="w-2 h-2 rounded-full bg-[#10B981]" />
-                <span className="text-[11px] text-[#4B5563]">Readiness:</span>
-                <span className="font-mono-metrics font-bold text-xs text-[#0A261D]">
-                  {aggregateEnterpriseReadiness.toFixed(1)}%
-                </span>
-              </div>
-
-              <button
-                onClick={restoreGuidedWalkthrough}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-[#0A261D] text-white text-xs font-medium hover:bg-[#154E3A] transition-colors shadow-sm"
-              >
-                <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />
-                <span className="hidden sm:inline">Guide</span>
-              </button>
-            </div>
-          </header>
-
-          {/* Dynamic Active View Canvas */}
-          <main className="flex-1">
+          {/* Active Workspace View */}
+          <main className="flex-1 mt-1">
             {activeTab === 'overview' && (
               <LandingOverview
                 units={state.units}
@@ -392,14 +210,29 @@ export default function HomeShell() {
               <MartContinuityView
                 martLedger={state.martLedger}
                 onToggleOfflineMode={toggleMartOfflineMode}
-                onPrestageInventory={prestageMartInventory}
-                onResetInventorySeed={resetMartInventorySeed}
-                onUpsertInventoryItem={upsertMartInventoryItem}
-                onRecordSale={recordMartSale}
-                onReconcileSales={reconcileMartSales}
-                onClearSalesHistory={clearMartSalesHistory}
-                onExportSalesCsv={exportMartSalesCsv}
-                onExportInventoryCsv={exportMartInventoryCsv}
+                onPrestageInventory={(inv) => {
+                  prestageMartInventory(inv);
+                  addToast('success', `${inv.length} items pre-staged in offline memory.`);
+                }}
+                onResetInventorySeed={() => {
+                  resetMartInventorySeed();
+                  addToast('info', 'Mart inventory catalog restored to default seed.');
+                }}
+                onUpsertInventoryItem={(item) => {
+                  upsertMartInventoryItem(item);
+                  addToast('success', `Saved SKU: ${item.sku}`);
+                }}
+                onRecordSale={handleRecordMartSale}
+                onReconcileSales={handleReconcileMartSales}
+                onClearSalesHistory={handleClearMartSales}
+                onExportSalesCsv={() => {
+                  exportMartSalesCsv();
+                  addToast('info', 'Mart offline sales CSV exported.');
+                }}
+                onExportInventoryCsv={() => {
+                  exportMartInventoryCsv();
+                  addToast('info', 'Mart inventory CSV exported.');
+                }}
               />
             )}
 
@@ -409,8 +242,14 @@ export default function HomeShell() {
                 processes={state.processes}
                 selectedUnitFilter={selectedUnitIdFilter}
                 onSelectUnitFilter={setSelectedUnitIdFilter}
-                onUpdateProcess={updateProcess}
-                onUpdateUnitReadiness={updateUnitReadiness}
+                onUpdateProcess={(id, updates) => {
+                  updateProcess(id, updates);
+                  addToast('success', `Process ${id} updated.`);
+                }}
+                onUpdateUnitReadiness={(id, score) => {
+                  updateUnitReadiness(id, score);
+                  addToast('info', `${id} readiness set to ${score.toFixed(1)}%`);
+                }}
               />
             )}
 
@@ -425,7 +264,13 @@ export default function HomeShell() {
             )}
 
             {activeTab === 'risk_register' && (
-              <RiskRegisterView risks={state.risks} onUpdateRisk={updateRisk} />
+              <RiskRegisterView
+                risks={state.risks}
+                onUpdateRisk={(id, l, i) => {
+                  updateRisk(id, l, i);
+                  addToast('success', `Risk ${id} re-evaluated (Score: ${l * i})`);
+                }}
+              />
             )}
 
             {activeTab === 'incident_simulator' && (
@@ -439,7 +284,7 @@ export default function HomeShell() {
             {activeTab === 'backup_assurance' && (
               <BackupAssuranceView
                 backups={state.backups}
-                onTriggerBackup={triggerManualBackup}
+                onTriggerBackup={handleTriggerBackup}
               />
             )}
 
@@ -447,10 +292,10 @@ export default function HomeShell() {
               <EfficiencyStorageView
                 state={state}
                 storageBytes={storageBytes}
-                onResetFactory={resetToFactorySeed}
-                onExportJson={exportBackupJson}
-                onExportCsv={exportCsvGovernanceReport}
-                onImportJson={importBackupJson}
+                onResetFactory={handleResetFactory}
+                onExportJson={handleExportJson}
+                onExportCsv={handleExportCsv}
+                onImportJson={handleImportJson}
               />
             )}
           </main>

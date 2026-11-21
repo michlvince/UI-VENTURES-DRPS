@@ -7,6 +7,7 @@ import {
   Timer,
 } from 'lucide-react';
 import { IncidentSimulation } from '@/types/drps';
+import { StatusBadge } from './ui/StatusBadge';
 
 interface IncidentSimulatorViewProps {
   simulations: IncidentSimulation[];
@@ -65,20 +66,19 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-16">
-      
       {/* Header Bento Box */}
-      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
             Controlled Incident Simulator & Phased Runbooks
           </h2>
           <p className="text-xs text-[#6B7280] mt-0.5">
-            8 operational drills across university subsidiaries. Track recovery tasks, evaluate RTO compliance, and audit recovery latencies.
+            {simulations.length} operational drills across university subsidiaries. Track recovery tasks, evaluate RTO compliance, and audit recovery latencies.
           </p>
         </div>
 
         {/* Live Elapsed Drill Stopwatch */}
-        <div className="flex items-center gap-2.5 bg-[#F9FAFB] border border-black/[0.06] rounded-2xl p-2 px-3.5 self-start sm:self-auto">
+        <div className="flex items-center gap-2.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-2 px-3.5 self-start sm:self-auto shadow-xs">
           <Timer className="w-4 h-4 text-[#103E2E]" />
           <div className="font-mono-metrics font-extrabold text-sm text-[#111827] w-14">
             {formatSeconds(elapsedDrillSeconds)}
@@ -86,14 +86,14 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           {isRunningTimer ? (
             <button
               onClick={handleStopDrill}
-              className="px-2.5 py-1 bg-[#4B5563] hover:bg-[#374151] text-white text-[11px] font-bold rounded-xl transition-colors"
+              className="px-2.5 py-1 bg-[#4B5563] hover:bg-[#374151] text-white text-[11px] font-bold rounded-lg transition-colors"
             >
               Pause
             </button>
           ) : (
             <button
               onClick={handleStartDrill}
-              className="px-2.5 py-1 bg-[#103E2E] hover:bg-[#14533D] text-white text-[11px] font-bold rounded-xl flex items-center gap-1 transition-colors"
+              className="px-2.5 py-1 bg-[#103E2E] hover:bg-[#14533D] text-white text-[11px] font-bold rounded-lg flex items-center gap-1 transition-colors"
             >
               <Play className="w-3 h-3 fill-current" />
               <span>Drill</span>
@@ -110,7 +110,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
       </div>
 
       {/* Scenarios Horizontal Selector Bento Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
         {simulations.map((sim) => {
           const isSelected = sim.id === activeSimId;
           const isMet = sim.complianceStatus === 'MET';
@@ -123,10 +123,10 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 setElapsedDrillSeconds(0);
                 setIsRunningTimer(false);
               }}
-              className={`p-3 rounded-2xl border text-left transition-all duration-150 ${
+              className={`p-2.5 rounded-xl border text-left transition-all duration-150 ${
                 isSelected
-                  ? 'border-[#103E2E] bg-[#0A261D] text-white shadow-md'
-                  : 'border-black/[0.04] bg-white text-[#111827] hover:bg-[#F9FAFB]'
+                  ? 'border-[#103E2E] bg-[#0A261D] text-white shadow-xs'
+                  : 'border-[#E5E7EB] bg-white text-[#111827] hover:bg-[#F9FAFB]'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -134,7 +134,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   {sim.id}
                 </span>
                 <span
-                  className={`text-[9px] font-mono-metrics font-bold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[9px] font-mono-metrics font-bold px-1.5 py-0.2 rounded-full ${
                     isMet
                       ? isSelected ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-[#DCFCE7] text-[#16A34A]'
                       : isSelected ? 'bg-[#DC2626]/20 text-[#FCA5A5]' : 'bg-[#FEE2E2] text-[#DC2626]'
@@ -143,10 +143,10 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   {sim.complianceStatus}
                 </span>
               </div>
-              <div className={`text-[10px] font-mono-metrics mt-1.5 ${isSelected ? 'text-white/60' : 'text-[#6B7280]'}`}>
+              <div className={`text-[10px] font-mono-metrics mt-1 ${isSelected ? 'text-white/60' : 'text-[#6B7280]'}`}>
                 {sim.targetUnitId}
               </div>
-              <div className={`text-[11px] font-bold mt-1 line-clamp-1 ${isSelected ? 'text-white' : 'text-[#111827]'}`}>
+              <div className={`text-[10px] font-bold mt-0.5 line-clamp-1 ${isSelected ? 'text-white' : 'text-[#111827]'}`}>
                 {sim.title}
               </div>
             </button>
@@ -156,30 +156,24 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
 
       {/* Main Console Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-        
         {/* Left Column: Context Card + Runbook Checklist (7 cols) */}
         <div className="lg:col-span-7 space-y-4 sm:space-y-5">
-          
           {/* Active Sim Context Card */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] space-y-4">
+          <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] space-y-4">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono-metrics font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#F3F4F6] text-[#111827]">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono-metrics font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#F3F4F6] text-[#111827] border border-[#E5E7EB]">
                     {activeSim.id}
                   </span>
                   <span className="text-xs text-[#6B7280]">
                     Target: <strong className="text-[#111827]">{activeSim.targetUnitId}</strong>
                   </span>
-                  <span
-                    className={`text-[11px] font-mono-metrics font-bold px-2.5 py-0.5 rounded-full ${
-                      activeSim.complianceStatus === 'MET'
-                        ? 'bg-[#DCFCE7] text-[#16A34A]'
-                        : 'bg-[#FEE2E2] text-[#DC2626]'
-                    }`}
-                  >
-                    RTO {activeSim.complianceStatus} ({activeSim.varianceMinutes <= 0 ? `${activeSim.varianceMinutes}m` : `+${activeSim.varianceMinutes}m`})
-                  </span>
+                  <StatusBadge
+                    label={`RTO ${activeSim.complianceStatus} (${activeSim.varianceMinutes <= 0 ? `${activeSim.varianceMinutes}m` : `+${activeSim.varianceMinutes}m`})`}
+                    variant={activeSim.complianceStatus === 'MET' ? 'success' : 'danger'}
+                    size="sm"
+                  />
                 </div>
                 <h3 className="text-base sm:text-lg font-bold text-[#111827] mt-2">
                   {activeSim.title}
@@ -191,7 +185,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
             </div>
 
             {/* Metrics Breakdown */}
-            <div className="pt-3 border-t border-black/[0.04] grid grid-cols-3 gap-3 text-xs">
+            <div className="pt-3 border-t border-[#E5E7EB] grid grid-cols-3 gap-3 text-xs">
               <div>
                 <span className="text-[#6B7280]">Mandated RTO</span>
                 <div className="font-mono-metrics font-extrabold text-sm text-[#111827] mt-0.5">
@@ -213,7 +207,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
             </div>
 
             {/* Slider to test recovery time */}
-            <div className="pt-3 border-t border-black/[0.04] space-y-1.5">
+            <div className="pt-3 border-t border-[#E5E7EB] space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-[#6B7280] font-semibold">
                   Test Simulated Recovery Time:
@@ -242,7 +236,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           </div>
 
           {/* Phased Checklist Bento Card */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] space-y-4">
+          <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="text-sm font-bold text-[#111827]">
@@ -271,10 +265,10 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                 <div
                   key={task.id}
                   onClick={() => onToggleTask(activeSim.id, task.id)}
-                  className={`p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer flex items-start gap-3 ${
+                  className={`p-3.5 rounded-xl border transition-all duration-150 cursor-pointer flex items-start gap-3 ${
                     task.completed
-                      ? 'bg-[#F9FAFB] border-black/[0.04]'
-                      : 'bg-white border-black/[0.06] hover:border-[#103E2E]/40 hover:bg-[#F9FAFB]'
+                      ? 'bg-[#F9FAFB] border-[#E5E7EB]'
+                      : 'bg-white border-[#E5E7EB] hover:border-[#103E2E]/40 hover:bg-[#F9FAFB]'
                   }`}
                 >
                   <input
@@ -285,7 +279,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
                   />
                   <div className="flex-1 space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono-metrics font-bold px-2 py-0.5 rounded-md bg-[#F3F4F6] text-[#4B5563]">
+                      <span className="text-[10px] font-mono-metrics font-bold px-2 py-0.5 rounded-md bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]">
                         {task.phase}
                       </span>
                       <span className="text-[10px] text-[#9CA3AF]">Role: {task.role}</span>
@@ -306,15 +300,14 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
 
         {/* Right Column: MTTR Impact & Event Telemetry (5 cols) */}
         <div className="lg:col-span-5 space-y-4 sm:space-y-5">
-          
           {/* MTTR Benchmark Bento */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3.5">
+          <div className="bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-3.5">
             <h4 className="text-sm font-bold text-[#111827]">
               Manual vs Automated Recovery Variance
             </h4>
 
             <div className="space-y-3 text-xs">
-              <div className="p-4 rounded-2xl bg-[#F9FAFB] border border-black/[0.04] space-y-1.5">
+              <div className="p-4 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[#6B7280]">Legacy Manual MTTR:</span>
                   <span className="font-mono-metrics font-extrabold text-[#DC2626]">
@@ -330,7 +323,7 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
               </div>
 
               {/* Time Saved Hero Box */}
-              <div className="p-4 rounded-2xl bg-[#0A261D] text-white flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[#0A261D] text-white flex items-center justify-between">
                 <div>
                   <div className="font-bold text-xs text-white">MTTR Reduction</div>
                   <div className="text-[11px] text-[#86EFAC] mt-0.5">
@@ -349,8 +342,8 @@ export const IncidentSimulatorView: React.FC<IncidentSimulatorViewProps> = ({
           </div>
 
           {/* Telemetry Chronological Log Bento */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3">
-            <div className="flex items-center justify-between">
+          <div className="bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
               <h4 className="text-sm font-bold text-[#111827]">
                 Telemetry Sequence
               </h4>

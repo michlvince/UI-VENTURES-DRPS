@@ -11,6 +11,8 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { DrpsState } from '@/types/drps';
+import { ConfirmationDialog } from './ui/ConfirmationDialog';
+import { StatusBadge } from './ui/StatusBadge';
 
 interface EfficiencyStorageViewProps {
   state: DrpsState;
@@ -64,9 +66,8 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-16">
-      
       {/* Header Bento Box */}
-      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03]">
+      <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB]">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
           Efficiency Benchmarks & Local Storage Telemetry
         </h2>
@@ -77,10 +78,10 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
       {/* Metric 3-Card Bento Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-        <div className="bg-[#0A261D] text-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm space-y-1">
+        <div className="card-hero-forest text-white p-5 sm:p-6 shadow-sm space-y-1">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-white/70">MTTR Reduction</span>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#4ADE80]/20 text-[#4ADE80]">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#4ADE80]/20 text-[#4ADE80]">
               Benchmark
             </span>
           </div>
@@ -92,12 +93,10 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
           </p>
         </div>
 
-        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-1">
+        <div className="bg-white rounded-[18px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-1">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-[#6B7280]">Triage Latency</span>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#16A34A]">
-              Response
-            </span>
+            <StatusBadge label="Response" variant="success" size="sm" />
           </div>
           <div className="text-3xl font-extrabold font-mono-metrics text-[#111827]">
             95.6%
@@ -107,10 +106,10 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
           </p>
         </div>
 
-        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-1">
+        <div className="bg-white rounded-[18px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-1">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-[#6B7280]">Storage Allocated</span>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#F3F4F6] text-[#4B5563]">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]">
               {percentUsed}% of 5MB
             </span>
           </div>
@@ -125,9 +124,8 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
       {/* Main Grid: Governance Tools (7 cols) + Telemetry (5 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-        
         {/* Governance & State Management Bento */}
-        <div className="lg:col-span-7 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] space-y-5">
+        <div className="lg:col-span-7 bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] space-y-5">
           <div>
             <h3 className="text-sm font-bold text-[#111827]">
               Governance Audit Reports & Persistence Management
@@ -139,7 +137,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
           {importStatus && (
             <div
-              className={`p-3.5 rounded-2xl border flex items-center gap-2.5 text-xs font-semibold ${
+              className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-xs font-semibold ${
                 importStatus.success
                   ? 'bg-[#DCFCE7] border-[#BBF7D0] text-[#16A34A]'
                   : 'bg-[#FEE2E2] border-[#FECACA] text-[#DC2626]'
@@ -156,7 +154,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {/* Export CSV */}
-            <div className="p-4 rounded-2xl border border-black/[0.05] space-y-2 bg-[#F9FAFB]">
+            <div className="p-4 rounded-xl border border-[#E5E7EB] space-y-2 bg-[#F9FAFB]">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-[#DCFCE7] flex items-center justify-center text-[#16A34A]">
                   <FileSpreadsheet className="w-4 h-4" />
@@ -164,11 +162,11 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
                 <h4 className="text-xs font-bold text-[#111827]">CSV Governance Audit</h4>
               </div>
               <p className="text-[11px] text-[#6B7280] leading-relaxed">
-                Download verified tabular report of all 9 business units, 14 critical processes, and RTO/RPO limits.
+                Download verified tabular report of all {state.units.length} business units, {state.processes.length} critical processes, and RTO/RPO limits.
               </p>
               <button
                 onClick={onExportCsv}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-black/[0.08] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-[#E5E7EB] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export CSV Report</span>
@@ -176,7 +174,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             </div>
 
             {/* Export JSON */}
-            <div className="p-4 rounded-2xl border border-black/[0.05] space-y-2 bg-[#F9FAFB]">
+            <div className="p-4 rounded-xl border border-[#E5E7EB] space-y-2 bg-[#F9FAFB]">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-[#DCFCE7] flex items-center justify-center text-[#16A34A]">
                   <FileCode className="w-4 h-4" />
@@ -188,7 +186,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               </p>
               <button
                 onClick={onExportJson}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-black/[0.08] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-[#E5E7EB] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export JSON State</span>
@@ -196,7 +194,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             </div>
 
             {/* Restore JSON */}
-            <div className="p-4 rounded-2xl border border-black/[0.05] space-y-2 bg-[#F9FAFB]">
+            <div className="p-4 rounded-xl border border-[#E5E7EB] space-y-2 bg-[#F9FAFB]">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-[#DCFCE7] flex items-center justify-center text-[#16A34A]">
                   <Upload className="w-4 h-4" />
@@ -215,7 +213,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-black/[0.08] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-[#E5E7EB] hover:bg-[#F3F4F6] text-xs font-bold text-[#111827] rounded-xl shadow-xs transition-colors"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Select JSON File</span>
@@ -223,7 +221,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
             </div>
 
             {/* Factory Reset */}
-            <div className="p-4 rounded-2xl border border-[#FECACA] space-y-2 bg-[#FEE2E2]/30">
+            <div className="p-4 rounded-xl border border-[#FECACA] space-y-2 bg-[#FEE2E2]/30">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-[#FEE2E2] flex items-center justify-center text-[#DC2626]">
                   <RefreshCw className="w-4 h-4" />
@@ -233,45 +231,25 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               <p className="text-[11px] text-[#991B1B]/80 leading-relaxed">
                 Revert all modified RTOs, risk scores, and simulations back to verified default seed dataset.
               </p>
-              {showConfirmReset ? (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      onResetFactory();
-                      setShowConfirmReset(false);
-                    }}
-                    className="flex-1 py-1.5 px-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold rounded-xl transition-colors"
-                  >
-                    Confirm
-                  </button>
-                  <button
-                    onClick={() => setShowConfirmReset(false)}
-                    className="py-1.5 px-2 bg-white border border-black/[0.08] text-xs font-medium rounded-xl hover:bg-[#F9FAFB]"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setShowConfirmReset(true)}
-                  className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-[#FECACA] hover:bg-[#FEE2E2] text-xs font-bold text-[#DC2626] rounded-xl shadow-xs transition-colors"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Reset Seed Data</span>
-                </button>
-              )}
+              <button
+                onClick={() => setShowConfirmReset(true)}
+                className="w-full mt-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-white border border-[#FECACA] hover:bg-[#FEE2E2] text-xs font-bold text-[#DC2626] rounded-xl shadow-xs transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Reset Seed Data</span>
+              </button>
             </div>
           </div>
         </div>
 
         {/* Client Telemetry & Entity Registry Bento */}
-        <div className="lg:col-span-5 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] space-y-4">
+        <div className="lg:col-span-5 bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] space-y-4">
           <h3 className="text-sm font-bold text-[#111827]">
             Client Telemetry & Entity Registry
           </h3>
 
           <div className="space-y-3 text-xs">
-            <div className="p-4 bg-[#F9FAFB] border border-black/[0.04] rounded-2xl space-y-2">
+            <div className="p-4 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[#6B7280]">Active Version:</span>
                 <span className="font-mono-metrics font-bold text-[#111827]">{state.version}</span>
@@ -300,7 +278,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
                 <span className="text-[#6B7280]">Backup Logs:</span>
                 <span className="font-mono-metrics font-bold text-[#111827]">{state.backups.length} Records</span>
               </div>
-              <div className="flex items-center justify-between pt-2 border-t border-black/[0.04]">
+              <div className="flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
                 <span className="text-[#6B7280]">Last Saved:</span>
                 <span className="font-mono-metrics text-[10px] text-[#4B5563]">
                   {state.lastUpdated.slice(0, 19).replace('T', ' ')}
@@ -308,7 +286,7 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
               </div>
             </div>
 
-            <div className="p-4 bg-[#0A261D] text-white rounded-2xl text-xs space-y-1">
+            <div className="card-hero-forest text-white p-4 rounded-xl text-xs space-y-1">
               <div className="font-bold text-[#4ADE80]">Zero External Database Architecture</div>
               <p className="text-[11px] text-white/80 leading-relaxed">
                 Full client-side operation guaranteeing institutional air-gapped continuity even when central cloud networks or external databases are unreachable.
@@ -317,6 +295,18 @@ export const EfficiencyStorageView: React.FC<EfficiencyStorageViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Confirmation Dialog for Factory Reset */}
+      <ConfirmationDialog
+        isOpen={showConfirmReset}
+        onClose={() => setShowConfirmReset(false)}
+        onConfirm={onResetFactory}
+        title="Confirm Factory Reset"
+        message="Are you sure you want to revert all business units, RTO thresholds, risk scores, and simulations back to verified default seed state? Any customized entries will be restored to baseline."
+        confirmLabel="Reset All Data"
+        cancelLabel="Keep Current State"
+        variant="danger"
+      />
     </div>
   );
 };

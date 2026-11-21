@@ -8,6 +8,7 @@ import {
   Check,
 } from 'lucide-react';
 import { BusinessUnit, BusinessProcess, UnitId } from '@/types/drps';
+import { StatusBadge } from './ui/StatusBadge';
 
 interface UnitsBiaViewProps {
   units: BusinessUnit[];
@@ -71,15 +72,14 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-16">
-      
       {/* Header Bento Box */}
-      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
             Business Impact Analysis (BIA) & Process Matrix
           </h2>
           <p className="text-xs text-[#6B7280] mt-0.5">
-            14 verified critical processes mapped across 9 UI Ventures subsidiaries with editable RTO / RPO thresholds.
+            {processes.length} verified critical processes mapped across {units.length} UI Ventures subsidiaries with editable RTO / RPO thresholds.
           </p>
         </div>
 
@@ -92,16 +92,16 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search processes..."
-              className="pl-8 pr-3 py-1.5 text-xs bg-[#F9FAFB] border border-black/[0.06] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#103E2E] w-48 text-[#111827]"
+              className="pl-8 pr-3 py-1.5 text-xs bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#103E2E] w-48 text-[#111827]"
             />
           </div>
 
           <select
             value={selectedUnitFilter}
             onChange={(e) => onSelectUnitFilter(e.target.value as UnitId | 'ALL')}
-            className="py-1.5 px-3 text-xs bg-[#F9FAFB] border border-black/[0.06] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#103E2E] text-[#111827] font-medium"
+            className="py-1.5 px-3 text-xs bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#103E2E] text-[#111827] font-semibold"
           >
-            <option value="ALL">All 9 Subsidiaries</option>
+            <option value="ALL">All {units.length} Subsidiaries</option>
             {units.map((u) => (
               <option key={u.id} value={u.id}>
                 {u.id} - {u.name}
@@ -111,13 +111,13 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
         </div>
       </div>
 
-      {/* Selected Unit Dynamic Card */}
+      {/* Selected Unit Details Banner */}
       {selectedUnitFilter !== 'ALL' && (
         (() => {
           const u = units.find((x) => x.id === selectedUnitFilter);
           if (!u) return null;
           return (
-            <div className="bg-[#0A261D] text-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="card-hero-forest text-white p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2.5">
                   <span className="font-mono-metrics text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white/10 text-[#4ADE80]">
@@ -129,15 +129,15 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                 <p className="text-xs text-white/80 max-w-2xl leading-relaxed">{u.description}</p>
               </div>
 
-              <div className="flex items-center gap-5 shrink-0 bg-white/10 rounded-2xl p-4 border border-white/10">
+              <div className="flex items-center gap-4 shrink-0 bg-white/10 rounded-xl p-3.5 border border-white/10">
                 <div className="text-right">
                   <div className="text-[11px] text-white/60">Unit Readiness</div>
-                  <div className="font-mono-metrics font-extrabold text-xl text-[#4ADE80]">
+                  <div className="font-mono-metrics font-extrabold text-lg text-[#4ADE80]">
                     {u.currentReadiness.toFixed(1)}%
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-white/50">Simulate Score</span>
+                  <span className="text-[10px] text-white/60">Simulate Score</span>
                   <input
                     type="range"
                     min="50"
@@ -155,23 +155,23 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
       )}
 
       {/* Processes Table Bento Card */}
-      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03]">
+      <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB]">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs min-w-[850px]">
             <thead>
-              <tr className="border-b border-black/[0.06] text-[#6B7280] bg-[#F9FAFB] rounded-xl">
-                <th className="py-3 px-3.5 font-semibold rounded-l-xl">Process ID</th>
-                <th className="py-3 px-3.5 font-semibold">Unit</th>
-                <th className="py-3 px-3.5 font-semibold">Business Process & Assets</th>
-                <th className="py-3 px-3.5 font-semibold text-center">Criticality</th>
-                <th className="py-3 px-3.5 font-semibold text-center">RTO</th>
-                <th className="py-3 px-3.5 font-semibold text-center">RPO</th>
-                <th className="py-3 px-3.5 font-semibold text-center">BIA (Fin/Ops/Rep)</th>
-                <th className="py-3 px-3.5 font-semibold text-center">Workaround</th>
-                <th className="py-3 px-3.5 font-semibold text-right rounded-r-xl">Action</th>
+              <tr className="border-b border-[#E5E7EB] text-[#6B7280] bg-[#F9FAFB] rounded-xl">
+                <th className="py-2.5 px-3.5 font-semibold rounded-l-xl">Process ID</th>
+                <th className="py-2.5 px-3.5 font-semibold">Unit</th>
+                <th className="py-2.5 px-3.5 font-semibold">Business Process & Assets</th>
+                <th className="py-2.5 px-3.5 font-semibold text-center">Criticality</th>
+                <th className="py-2.5 px-3.5 font-semibold text-center">RTO</th>
+                <th className="py-2.5 px-3.5 font-semibold text-center">RPO</th>
+                <th className="py-2.5 px-3.5 font-semibold text-center">BIA (Fin/Ops/Rep)</th>
+                <th className="py-2.5 px-3.5 font-semibold text-center">Workaround</th>
+                <th className="py-2.5 px-3.5 font-semibold text-right rounded-r-xl">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/[0.04]">
+            <tbody className="divide-y divide-[#E5E7EB]">
               {filteredProcesses.map((proc) => {
                 const isEditing = editingProcessId === proc.id;
                 const unit = units.find((u) => u.id === proc.unitId);
@@ -183,18 +183,18 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       isEditing ? 'bg-[#ECFDF5]/50' : ''
                     }`}
                   >
-                    <td className="py-3.5 px-3.5 font-mono-metrics font-bold text-[#111827] align-top">
+                    <td className="py-3 px-3.5 font-mono-metrics font-bold text-[#111827] align-top">
                       {proc.id}
                     </td>
 
-                    <td className="py-3.5 px-3.5 align-top">
-                      <span className="font-mono-metrics font-bold px-2 py-0.5 rounded-lg bg-[#F3F4F6] text-[#111827]">
+                    <td className="py-3 px-3.5 align-top">
+                      <span className="font-mono-metrics font-bold px-2 py-0.5 rounded-lg bg-[#F3F4F6] text-[#111827] border border-[#E5E7EB]">
                         {proc.unitId}
                       </span>
                       <div className="text-[10px] text-[#6B7280] mt-1">{unit?.name}</div>
                     </td>
 
-                    <td className="py-3.5 px-3.5 align-top max-w-sm">
+                    <td className="py-3 px-3.5 align-top max-w-sm">
                       <div className="font-bold text-[#111827]">{proc.name}</div>
                       <div className="text-[11px] text-[#4B5563] mt-1 line-clamp-2">
                         {proc.notes}
@@ -204,7 +204,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                         {proc.dependentAssetIds.map((aid) => (
                           <span
                             key={aid}
-                            className="text-[10px] font-mono-metrics px-1.5 py-0.2 rounded-md bg-[#F3F4F6] text-[#4B5563]"
+                            className="text-[10px] font-mono-metrics px-1.5 py-0.2 rounded-md bg-[#F3F4F6] text-[#4B5563] border border-[#E5E7EB]"
                           >
                             {aid}
                           </span>
@@ -212,26 +212,23 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                       </div>
                     </td>
 
-                    <td className="py-3.5 px-3.5 text-center align-top">
-                      <span
-                        className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
-                          proc.criticality === 'Critical'
-                            ? 'bg-[#FEE2E2] text-[#DC2626]'
-                            : 'bg-[#F3F4F6] text-[#4B5563]'
-                        }`}
-                      >
-                        {proc.criticality}
-                      </span>
+                    <td className="py-3 px-3.5 text-center align-top">
+                      <StatusBadge
+                        label={proc.criticality}
+                        variant={proc.criticality === 'Critical' ? 'danger' : 'neutral'}
+                        size="sm"
+                      />
                     </td>
 
                     {/* RTO */}
-                    <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics font-bold">
+                    <td className="py-3 px-3.5 text-center align-top font-mono-metrics font-bold">
                       {isEditing ? (
                         <select
                           value={editRto}
                           onChange={(e) => setEditRto(Number(e.target.value))}
-                          className="px-2 py-1 border border-black/[0.1] rounded-lg text-xs bg-white text-[#111827]"
+                          className="px-2 py-1 border border-[#D1D5DB] rounded-lg text-xs bg-white text-[#111827]"
                         >
+                          <option value={1}>1h</option>
                           <option value={2}>2h</option>
                           <option value={4}>4h</option>
                           <option value={8}>8h</option>
@@ -244,14 +241,14 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                     </td>
 
                     {/* RPO */}
-                    <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics">
+                    <td className="py-3 px-3.5 text-center align-top font-mono-metrics">
                       {isEditing ? (
                         <select
                           value={editRpo === null ? 'null' : editRpo}
                           onChange={(e) =>
                             setEditRpo(e.target.value === 'null' ? null : Number(e.target.value))
                           }
-                          className="px-2 py-1 border border-black/[0.1] rounded-lg text-xs bg-white text-[#111827]"
+                          className="px-2 py-1 border border-[#D1D5DB] rounded-lg text-xs bg-white text-[#111827]"
                         >
                           <option value="null">N/A</option>
                           <option value={2}>2h</option>
@@ -267,7 +264,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                     </td>
 
                     {/* BIA Impact Scores */}
-                    <td className="py-3.5 px-3.5 text-center align-top font-mono-metrics">
+                    <td className="py-3 px-3.5 text-center align-top font-mono-metrics">
                       {isEditing ? (
                         <div className="flex items-center justify-center gap-1">
                           <input
@@ -276,7 +273,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                             max="5"
                             value={editFin}
                             onChange={(e) => setEditFin(Number(e.target.value))}
-                            className="w-7 border border-black/[0.1] text-center rounded-md text-xs py-0.5"
+                            className="w-7 border border-[#D1D5DB] text-center rounded-md text-xs py-0.5"
                           />
                           <span>/</span>
                           <input
@@ -285,7 +282,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                             max="5"
                             value={editOps}
                             onChange={(e) => setEditOps(Number(e.target.value))}
-                            className="w-7 border border-black/[0.1] text-center rounded-md text-xs py-0.5"
+                            className="w-7 border border-[#D1D5DB] text-center rounded-md text-xs py-0.5"
                           />
                           <span>/</span>
                           <input
@@ -294,7 +291,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                             max="5"
                             value={editRep}
                             onChange={(e) => setEditRep(Number(e.target.value))}
-                            className="w-7 border border-black/[0.1] text-center rounded-md text-xs py-0.5"
+                            className="w-7 border border-[#D1D5DB] text-center rounded-md text-xs py-0.5"
                           />
                         </div>
                       ) : (
@@ -305,7 +302,7 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                     </td>
 
                     {/* Workaround */}
-                    <td className="py-3.5 px-3.5 text-center align-top">
+                    <td className="py-3 px-3.5 text-center align-top">
                       {isEditing ? (
                         <input
                           type="checkbox"
@@ -324,11 +321,11 @@ export const UnitsBiaView: React.FC<UnitsBiaViewProps> = ({
                     </td>
 
                     {/* Action */}
-                    <td className="py-3.5 px-3.5 text-right align-top">
+                    <td className="py-3 px-3.5 text-right align-top">
                       {isEditing ? (
                         <button
                           onClick={() => handleSaveEdit(proc.id)}
-                          className="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white bg-[#0A261D] hover:bg-[#14533D] rounded-xl shadow-sm transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white bg-[#0A261D] hover:bg-[#154E3A] rounded-xl shadow-xs transition-colors"
                         >
                           <Check className="w-3.5 h-3.5" />
                           <span>Save</span>

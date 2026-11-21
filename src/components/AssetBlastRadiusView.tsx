@@ -10,6 +10,7 @@ import {
   BusinessUnit,
 } from '@/types/drps';
 import { getAssetBlastRadius } from '@/lib/drpsEngine';
+import { StatusBadge } from './ui/StatusBadge';
 
 interface AssetBlastRadiusViewProps {
   assets: InfrastructureAsset[];
@@ -31,9 +32,8 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-16">
-      
       {/* Header Bento Box */}
-      <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 shadow-sm border border-black/[0.03]">
+      <div className="bg-white rounded-[20px] p-5 sm:p-7 shadow-xs border border-[#E5E7EB]">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111827]">
           Infrastructure Dependency & Blast Radius Engine
         </h2>
@@ -44,12 +44,11 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
 
       {/* Main Grid: Left Assets List (5 cols) + Right Blast Radius Details (7 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-        
-        {/* Left Column: 18 Assets List */}
-        <div className="lg:col-span-5 bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-black/[0.04]">
+        {/* Left Column: Assets List */}
+        <div className="lg:col-span-5 bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-[#E5E7EB]">
             <span className="text-xs font-bold text-[#111827]">
-              18 Catalogued Assets (A01 - A18)
+              {assets.length} Catalogued Assets (A01 - A{assets.length})
             </span>
             <span className="font-mono-metrics text-[11px] font-semibold text-[#103E2E]">
               {assets.filter((a) => a.isShared).length} Shared Utilities
@@ -65,10 +64,10 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                 <div
                   key={asset.id}
                   onClick={() => onSelectAssetId(asset.id)}
-                  className={`p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer ${
+                  className={`p-3.5 rounded-xl border transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'border-[#103E2E] bg-[#ECFDF5] shadow-sm'
-                      : 'border-black/[0.04] bg-[#F9FAFB] hover:bg-[#F3F4F6] hover:border-black/[0.08]'
+                      ? 'border-[#103E2E] bg-[#ECFDF5] shadow-xs'
+                      : 'border-[#E5E7EB] bg-[#F9FAFB] hover:bg-[#F3F4F6] hover:border-[#D1D5DB]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -81,21 +80,21 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                           SHARED ALL
                         </span>
                       ) : (
-                        <span className="text-[10px] font-mono-metrics font-semibold px-2 py-0.5 rounded-md bg-white border border-black/[0.06] text-[#4B5563]">
+                        <span className="text-[10px] font-mono-metrics font-semibold px-2 py-0.5 rounded-md bg-white border border-[#E5E7EB] text-[#4B5563]">
                           {asset.primaryUnitId}
                         </span>
                       )}
                     </div>
 
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    <StatusBadge
+                      label={asset.redundancyLevel}
+                      variant={
                         asset.redundancyLevel === 'Single Point of Failure'
-                          ? 'bg-[#FEE2E2] text-[#DC2626]'
-                          : 'bg-[#F3F4F6] text-[#4B5563]'
-                      }`}
-                    >
-                      {asset.redundancyLevel}
-                    </span>
+                          ? 'danger'
+                          : 'neutral'
+                      }
+                      size="sm"
+                    />
                   </div>
 
                   <h4 className="text-xs font-bold text-[#111827] mt-1.5 line-clamp-1">
@@ -119,7 +118,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
           {selectedAsset ? (
             <>
               {/* Asset Hero Bento */}
-              <div className="bg-[#0A261D] text-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 shadow-sm space-y-4">
+              <div className="card-hero-forest text-white p-5 sm:p-6 shadow-sm space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -128,7 +127,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                       </span>
                       <span className="text-xs text-white/60">• Primary: {selectedAsset.primaryUnitId}</span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
+                    <h3 className="text-base sm:text-lg font-bold text-white mt-1">
                       {selectedAsset.name}
                     </h3>
                     <p className="text-xs text-white/80 leading-relaxed max-w-xl">
@@ -162,25 +161,25 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
 
               {/* Three Impact Metrics Bento Cards */}
               <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                <div className="bg-white rounded-[18px] p-4 sm:p-5 shadow-xs border border-[#E5E7EB] space-y-1">
                   <div className="text-[11px] font-semibold text-[#6B7280]">Impacted Units</div>
                   <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#103E2E]">
-                    {blastData.impactedUnits.length} / 9
+                    {blastData.impactedUnits.length} / {units.length}
                   </div>
                   <div className="text-[11px] text-[#6B7280]">
-                    {blastData.impactedUnits.length === 9 ? 'Full enterprise scope' : 'Localized unit'}
+                    {blastData.impactedUnits.length === units.length ? 'Full enterprise scope' : 'Localized unit'}
                   </div>
                 </div>
 
-                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                <div className="bg-white rounded-[18px] p-4 sm:p-5 shadow-xs border border-[#E5E7EB] space-y-1">
                   <div className="text-[11px] font-semibold text-[#6B7280]">Halted Processes</div>
                   <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#111827]">
-                    {blastData.impactedProcesses.length} / 14
+                    {blastData.impactedProcesses.length} / {processes.length}
                   </div>
                   <div className="text-[11px] text-[#6B7280]">Direct operations stopped</div>
                 </div>
 
-                <div className="bg-white rounded-[24px] p-4 sm:p-5 shadow-sm border border-black/[0.03] space-y-1">
+                <div className="bg-white rounded-[18px] p-4 sm:p-5 shadow-xs border border-[#E5E7EB] space-y-1">
                   <div className="text-[11px] font-semibold text-[#6B7280]">Strictest RTO</div>
                   <div className="text-2xl sm:text-3xl font-extrabold font-mono-metrics text-[#DC2626]">
                     {blastData.strictestRtoHours !== null ? `${blastData.strictestRtoHours}h` : 'N/A'}
@@ -190,7 +189,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
               </div>
 
               {/* Impacted Subsidiary Units Bento */}
-              <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3">
+              <div className="bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-3">
                 <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">
                   Impacted Subsidiary Units ({blastData.impactedUnits.length})
                 </h4>
@@ -198,7 +197,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                   {blastData.impactedUnits.map((u) => (
                     <div
                       key={u.id}
-                      className="px-3 py-1.5 rounded-xl bg-[#F9FAFB] border border-black/[0.05] flex items-center gap-2 text-xs"
+                      className="px-3 py-1.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] flex items-center gap-2 text-xs"
                     >
                       <span className="font-mono-metrics font-bold text-[#103E2E]">{u.id}</span>
                       <span className="text-[#111827] font-semibold">{u.name}</span>
@@ -208,7 +207,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
               </div>
 
               {/* Cascading Impacted Processes Detailed Bento */}
-              <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-sm border border-black/[0.03] space-y-3">
+              <div className="bg-white rounded-[20px] p-5 sm:p-6 shadow-xs border border-[#E5E7EB] space-y-3">
                 <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">
                   Cascading Impacted Processes ({blastData.impactedProcesses.length})
                 </h4>
@@ -217,25 +216,21 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
                   {blastData.impactedProcesses.map((proc) => (
                     <div
                       key={proc.id}
-                      className="p-3.5 rounded-2xl bg-[#F9FAFB] border border-black/[0.04] flex items-center justify-between gap-3"
+                      className="p-3.5 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-between gap-3"
                     >
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
                           <span className="font-mono-metrics font-bold text-xs text-[#111827]">
                             {proc.id}
                           </span>
-                          <span className="text-[10px] font-mono-metrics px-2 py-0.5 rounded-md bg-white border border-black/[0.05] text-[#4B5563]">
+                          <span className="text-[10px] font-mono-metrics px-2 py-0.5 rounded-md bg-white border border-[#E5E7EB] text-[#4B5563]">
                             {proc.unitId}
                           </span>
-                          <span
-                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                              proc.criticality === 'Critical'
-                                ? 'bg-[#FEE2E2] text-[#DC2626]'
-                                : 'bg-[#F3F4F6] text-[#4B5563]'
-                            }`}
-                          >
-                            {proc.criticality}
-                          </span>
+                          <StatusBadge
+                            label={proc.criticality}
+                            variant={proc.criticality === 'Critical' ? 'danger' : 'neutral'}
+                            size="sm"
+                          />
                         </div>
                         <div className="text-xs font-semibold text-[#111827]">{proc.name}</div>
                       </div>
@@ -252,7 +247,7 @@ export const AssetBlastRadiusView: React.FC<AssetBlastRadiusViewProps> = ({
               </div>
             </>
           ) : (
-            <div className="bg-white rounded-[28px] p-8 text-center text-[#6B7280] text-xs">
+            <div className="bg-white rounded-[20px] p-8 text-center text-[#6B7280] text-xs border border-[#E5E7EB]">
               Select an asset from the left catalog to compute live blast radius.
             </div>
           )}

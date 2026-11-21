@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'UI Ventures Limited | Multi-Unit Disaster Recovery Planning System (DRPS)',
   description:
-    'Comprehensive multi-unit enterprise business continuity and disaster recovery planning system modeled for UI Ventures Limited, University of Ibadan.',
+    'Enterprise disaster recovery planning and operational continuity management platform for UI Ventures Limited subsidiaries, University of Ibadan.',
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#FAFAFA] text-[#09090B] font-sans antialiased selection:bg-[#ECFDF5] selection:text-[#0F3D2E]">
+      <body className="min-h-full flex flex-col bg-[#F3F4F6] text-[#111827] font-sans antialiased selection:bg-[#DCFCE7] selection:text-[#0A261D]">
         {children}
       </body>
     </html>
