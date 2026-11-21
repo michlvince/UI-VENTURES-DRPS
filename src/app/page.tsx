@@ -53,7 +53,8 @@ export default function HomeShell() {
     exportMartInventoryCsv,
   } = useDrpsStore();
 
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // Desktop sidebar collapsed by default on initial page load (does not automatically pop open)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
