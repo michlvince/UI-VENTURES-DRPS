@@ -110,14 +110,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         />
       )}
 
-      {/* Sidebar Aside Element - Capsule Floating Rounded Dock */}
+      {/* Sidebar Aside Element - Docked Directly Against Canvas */}
       <aside
-        className={`fixed lg:sticky top-4 bottom-4 left-4 z-40 glass-sidebar-capsule rounded-[32px] text-white flex flex-col justify-between transition-all duration-200 shrink-0 ${
-          isCollapsed ? 'w-[72px] p-3' : 'w-[245px] xl:w-[260px] pt-6 pb-6 pl-4 pr-4'
+        className={`fixed lg:sticky top-0 bottom-0 left-0 z-40 bg-[#0A261D] text-white flex flex-col justify-between transition-all duration-200 border-r border-[#14533D]/40 shrink-0 ${
+          isCollapsed ? 'w-[76px] p-3' : 'w-[250px] xl:w-[265px] pt-6 pb-6 pl-5 pr-5'
         } ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
-        style={{ maxHeight: 'calc(100vh - 32px)' }}
       >
         <div className="space-y-6">
           {/* Brand Header */}
