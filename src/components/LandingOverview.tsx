@@ -229,7 +229,7 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
               {/* Bottom Row inside Box: Floating Pill Dock */}
               <div className="pt-2 flex items-center justify-between gap-3">
                 <span className="text-[11px] text-white/60 font-medium hidden sm:inline">Select Subsidiary:</span>
-                <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full">
+                <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full no-scrollbar">
                   {heroDockPills.map((pill) => {
                     const Icon = pill.icon;
                     const isActive = activeFilterPill === pill.id;
