@@ -16,7 +16,6 @@ import {
   Fuel,
   UtensilsCrossed,
   ShieldCheck,
-  Zap,
 } from 'lucide-react';
 import { BusinessUnit, WorkspaceTab } from '@/types/drps';
 import { StatusBadge } from './ui/StatusBadge';
@@ -89,74 +88,169 @@ export const LandingOverview: React.FC<LandingOverviewProps> = ({
       </section>
 
       {/* 2. LARGE ROUNDED HERO SHOWCASE VIEWPORT */}
-      <section className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-radial from-[#103E2E] via-[#0A261D] to-[#04140E] border border-[#1B4D3E]/40 shadow-xl min-h-[360px] sm:min-h-[420px] flex flex-col justify-between p-6 sm:p-10 text-white">
-        {/* Ambient lighting glows */}
-        <div className="absolute -top-24 -left-24 w-80 h-80 bg-[#4ADE80]/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-[#16A34A]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(74,222,128,0.12),transparent_60%)] pointer-events-none" />
+      <section className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden bg-gradient-to-br from-[#061C14] via-[#0A261D] to-[#103E2E] border border-[#164E3A]/50 shadow-2xl p-6 sm:p-9 text-white">
+        {/* Subtle atmospheric ambient glow */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#4ADE80]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#22C55E]/15 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Top Floating Row: High-Impact Metric Highlight */}
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-6">
-          <div className="space-y-1">
-            <div className="text-5xl sm:text-7xl lg:text-8xl font-black font-mono-metrics tracking-tight text-white flex items-baseline gap-1">
-              <span>{aggregateReadiness.toFixed(0)}</span>
-              <span className="text-3xl sm:text-5xl text-[#4ADE80] font-normal">%</span>
+        <div className="relative z-10 space-y-6">
+          {/* Top Bar: Headline & Operational Badges */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#4ADE80] animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-white">Live Continuity Telemetry</span>
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[#86EFAC] font-mono-metrics">
+                10 Units Armed
+              </span>
             </div>
-            <div className="space-y-0.5">
-              <div className="text-xs sm:text-sm font-bold text-white/95 tracking-wide">
-                Enterprise Readiness Posture
+
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90 font-medium inline-flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#4ADE80]" />
+                <span>ISO 22301 &amp; NIST SP 800-34 Aligned</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Interactive Hero Content: Metric + Live Unit Spotlight Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            {/* Left Col: High-Impact Posture Gauge */}
+            <div className="lg:col-span-5 space-y-3">
+              <div className="text-6xl sm:text-7xl lg:text-8xl font-black font-mono-metrics tracking-tight text-white flex items-baseline gap-1">
+                <span>{aggregateReadiness.toFixed(0)}</span>
+                <span className="text-3xl sm:text-4xl font-normal text-[#4ADE80]">%</span>
               </div>
-              <div className="text-[11px] sm:text-xs text-[#86EFAC] font-medium">
-                Holdings Resiliency Index Across 10 Units
+              <div className="space-y-1">
+                <div className="text-sm font-bold text-white tracking-wide">
+                  Enterprise Resilience Posture
+                </div>
+                <p className="text-xs text-white/70 leading-relaxed font-normal">
+                  Composite readiness score calculated across 10 commercial subsidiaries and 16 tier-1 processes. Fully autonomous local persistence with {(storageBytes / 1024).toFixed(1)} KB offline storage.
+                </p>
+              </div>
+
+              {/* Quick Stat Micro-Pills */}
+              <div className="pt-2 flex flex-wrap items-center gap-2">
+                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px]">
+                  <span className="text-white/60">Air-Gapped SOPs: </span>
+                  <span className="font-bold text-[#86EFAC]">9 Drills</span>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px]">
+                  <span className="text-white/60">POS Failover: </span>
+                  <span className="font-bold text-[#4ADE80]">Active</span>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px]">
+                  <span className="text-white/60">Assets Mapped: </span>
+                  <span className="font-bold text-white">20 Nodes</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-white/90">
-            <ShieldCheck className="w-4 h-4 text-[#4ADE80]" />
-            <span>ISO 22301 &amp; NIST SP 800-34 Aligned</span>
-          </div>
-        </div>
+            {/* Right Col: Interactive Unit Spotlight Preview Box */}
+            <div className="lg:col-span-7 bg-black/25 rounded-2xl p-5 border border-white/10 backdrop-blur-md space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#4ADE80]" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                    {activeFilterPill === 'all'
+                      ? 'Subsidiary Matrix Preview'
+                      : `${activeFilterPill} Focus Snapshot`}
+                  </span>
+                </div>
 
-        {/* Center / Ambient illustration cue */}
-        <div className="relative z-10 my-4 sm:my-6 flex items-center justify-center">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-xs text-white/80">
-            <Zap className="w-4 h-4 text-[#4ADE80]" />
-            <span>Air-gapped runbooks &amp; zero cloud dependency offline ledger</span>
-          </div>
-        </div>
-
-        {/* Bottom Floating Row: Left capability block & Right floating pill dock */}
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-4 border-t border-white/10">
-          <div className="max-w-md space-y-1 text-left">
-            <div className="text-xs sm:text-sm font-bold text-white">
-              Advanced BIA Engine &amp; Failover Protocols
-            </div>
-            <div className="text-[11px] sm:text-xs text-white/70 leading-relaxed font-normal">
-              Pre-staged local storage with {(storageBytes / 1024).toFixed(1)} KB native footprint. Instantaneous failover protocols without requiring cloud or internet connectivity.
-            </div>
-          </div>
-
-          {/* Floating Pill Dock */}
-          <div className="flex items-center gap-1.5 p-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 overflow-x-auto max-w-full shadow-lg">
-            {heroDockPills.map((pill) => {
-              const Icon = pill.icon;
-              const isActive = activeFilterPill === pill.id;
-              return (
                 <button
-                  key={pill.id}
-                  onClick={() => setActiveFilterPill(pill.id)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                    isActive
-                      ? 'bg-white text-[#0A261D] shadow-sm'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`}
+                  onClick={() => onNavigateTab(activeFilterPill === 'UV-MRT' ? 'mart_ledger' : 'units_bia')}
+                  className="text-xs text-[#86EFAC] hover:text-white font-semibold flex items-center gap-1 transition-colors"
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#0A261D]' : 'text-white/70'}`} />
-                  <span>{pill.label}</span>
+                  <span>Launch Deep Dive</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
-              );
-            })}
+              </div>
+
+              {/* Dynamic Focus Content based on pill selection */}
+              {activeFilterPill === 'all' ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {units.slice(0, 6).map((u) => (
+                    <button
+                      key={u.id}
+                      onClick={() => setActiveFilterPill(u.id)}
+                      className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-left transition-all group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono-metrics text-[11px] font-bold text-[#86EFAC]">{u.id}</span>
+                        <span className="font-mono-metrics text-[11px] text-white/90">{u.currentReadiness.toFixed(0)}%</span>
+                      </div>
+                      <div className="text-xs font-medium text-white/90 truncate mt-1 group-hover:text-white">{u.name}</div>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                (() => {
+                  const focusedUnit = units.find((u) => u.id === activeFilterPill) || units[0];
+                  return (
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 rounded-md bg-[#4ADE80] text-[#0A261D] font-mono-metrics text-xs font-bold">
+                              {focusedUnit.id}
+                            </span>
+                            <span className="text-sm font-bold text-white">{focusedUnit.name}</span>
+                          </div>
+                          <p className="text-xs text-white/70 mt-1">{focusedUnit.description}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold font-mono-metrics text-[#4ADE80]">
+                            {focusedUnit.currentReadiness.toFixed(1)}%
+                          </div>
+                          <div className="text-[10px] text-white/50 uppercase">Readiness</div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-xs">
+                        <div className="bg-white/5 p-2 rounded-lg">
+                          <div className="text-[10px] text-white/60">Location</div>
+                          <div className="font-medium text-white truncate mt-0.5">{focusedUnit.location}</div>
+                        </div>
+                        <div className="bg-white/5 p-2 rounded-lg">
+                          <div className="text-[10px] text-white/60">Head of Unit</div>
+                          <div className="font-medium text-white truncate mt-0.5">{focusedUnit.headOfUnit}</div>
+                        </div>
+                        <div className="bg-white/5 p-2 rounded-lg">
+                          <div className="text-[10px] text-white/60">Staff Armed</div>
+                          <div className="font-medium text-white mt-0.5 font-mono-metrics">{focusedUnit.primaryStaffCount} personnel</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()
+              )}
+
+              {/* Bottom Row inside Box: Floating Pill Dock */}
+              <div className="pt-2 flex items-center justify-between gap-3">
+                <span className="text-[11px] text-white/60 font-medium hidden sm:inline">Select Subsidiary:</span>
+                <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full">
+                  {heroDockPills.map((pill) => {
+                    const Icon = pill.icon;
+                    const isActive = activeFilterPill === pill.id;
+                    return (
+                      <button
+                        key={pill.id}
+                        onClick={() => setActiveFilterPill(pill.id)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                          isActive
+                            ? 'bg-white text-[#0A261D] shadow-sm'
+                            : 'bg-white/10 text-white/80 hover:text-white hover:bg-white/20 border border-white/10'
+                        }`}
+                      >
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#0A261D]' : 'text-white/70'}`} />
+                        <span>{pill.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
