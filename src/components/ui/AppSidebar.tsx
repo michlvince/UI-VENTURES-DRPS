@@ -69,22 +69,26 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           }}
           title={isCollapsed ? item.label : undefined}
           className={`w-full flex items-center ${
-            isCollapsed ? 'justify-center px-2 py-2.5' : 'justify-between px-3.5 py-2.5'
-          } rounded-xl text-xs transition-all duration-150 ${
+            isCollapsed
+              ? 'justify-center p-2.5 rounded-full'
+              : 'justify-between px-4 py-2.5'
+          } text-xs transition-all duration-150 ${
             isActive
-              ? 'sidebar-nav-active'
-              : 'text-white/70 hover:text-white hover:bg-white/[0.06]'
+              ? isCollapsed
+                ? 'sidebar-tab-collapsed-active'
+                : 'sidebar-tab-cutout'
+              : 'text-white/75 hover:text-white hover:bg-white/10 rounded-full'
           }`}
         >
           <div className="flex items-center gap-3">
-            <Icon className={`w-4 h-4 shrink-0 nav-icon ${isActive ? 'text-[#4ADE80]' : 'text-white/60'}`} />
+            <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0A261D]' : 'text-white/70'}`} />
             {!isCollapsed && <span className="truncate">{item.label}</span>}
           </div>
           {!isCollapsed && item.id === 'mart_ledger' && martOfflineActive && (
             <span
               className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
                 isActive
-                  ? 'bg-[#4ADE80] text-[#0A261D]'
+                  ? 'bg-[#0A261D] text-[#4ADE80]'
                   : 'bg-[#4ADE80] text-[#0A261D]'
               }`}
             >
@@ -106,13 +110,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         />
       )}
 
-      {/* Sidebar Aside Element */}
+      {/* Sidebar Aside Element - Capsule Floating Rounded Dock */}
       <aside
-        className={`fixed lg:sticky top-0 bottom-0 left-0 z-40 bg-[#0A261D] text-white flex flex-col justify-between transition-all duration-200 border-r border-[#14533D]/40 shrink-0 ${
-          isCollapsed ? 'w-[76px] p-3' : 'w-[250px] xl:w-[265px] pt-6 pb-6 pl-5 pr-5'
+        className={`fixed lg:sticky top-4 bottom-4 left-4 z-40 glass-sidebar-capsule rounded-[32px] text-white flex flex-col justify-between transition-all duration-200 shrink-0 ${
+          isCollapsed ? 'w-[72px] p-3' : 'w-[245px] xl:w-[260px] pt-6 pb-6 pl-4 pr-4'
         } ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
+        style={{ maxHeight: 'calc(100vh - 32px)' }}
       >
         <div className="space-y-6">
           {/* Brand Header */}
@@ -122,9 +127,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 onSelectTab('overview');
                 onCloseMobile();
               }}
-              className="flex items-center gap-3 text-left group focus:outline-none"
+              className="flex items-center gap-2.5 text-left group focus:outline-none"
             >
-              <div className="w-9 h-9 rounded-xl bg-[#14533D] flex items-center justify-center font-bold text-xs tracking-tight text-[#4ADE80] shrink-0 border border-white/10 group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-full bg-[#154E3A] flex items-center justify-center font-bold text-xs tracking-tight text-[#4ADE80] shrink-0 border border-white/15 shadow-sm group-hover:scale-105 transition-transform">
                 UI
               </div>
               {!isCollapsed && (
@@ -142,7 +147,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             {/* Desktop Collapse Toggle */}
             <button
               onClick={onToggleCollapse}
-              className="hidden lg:flex p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+              className="hidden lg:flex p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors border border-white/10"
               title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
@@ -205,7 +210,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             onClick={onOpenWalkthrough}
             className={`w-full flex items-center ${
               isCollapsed ? 'justify-center p-2' : 'justify-center gap-2 py-2 px-3'
-            } rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors`}
+            } rounded-full bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors`}
             title="Open 8-step product tour"
           >
             <Compass className="w-3.5 h-3.5 text-[#4ADE80]" />

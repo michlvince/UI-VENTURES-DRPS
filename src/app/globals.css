@@ -44,21 +44,79 @@ body {
   font-feature-settings: 'tnum' on, 'lnum' on;
 }
 
-/* Sidebar Active Navigation Item (Clean Modern SaaS Pill) */
-.sidebar-nav-active {
-  background-color: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF !important;
-  font-weight: 600 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.2);
+/* Floating Capsule Sidebar Styling (from Reference) */
+.glass-sidebar-capsule {
+  background: linear-gradient(180deg, #0A261D 0%, #08241B 60%, #051A13 100%);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-.sidebar-nav-active .nav-icon {
-  color: #4ADE80 !important;
+/* Sidebar Active Navigation Item (Seamless White Tab with Cutout Curves from Reference) */
+.sidebar-tab-cutout {
+  position: relative;
+  background-color: #FFFFFF !important;
+  color: #0A261D !important;
+  font-weight: 700 !important;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-right: -16px;
+  padding-right: 16px;
+  z-index: 20;
+  box-shadow: -4px 0 14px -2px rgba(0, 0, 0, 0.08);
 }
 
-.sidebar-nav-active .nav-indicator {
-  display: block;
+.sidebar-tab-cutout * {
+  color: #0A261D !important;
+}
+
+.sidebar-tab-cutout::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-bottom-right-radius: 20px;
+  box-shadow: 8px 8px 0 8px #FFFFFF;
+  pointer-events: none;
+}
+
+.sidebar-tab-cutout::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-top-right-radius: 20px;
+  box-shadow: 8px -8px 0 8px #FFFFFF;
+  pointer-events: none;
+}
+
+/* Collapsed Icon Pill Active */
+.sidebar-tab-collapsed-active {
+  background-color: #FFFFFF !important;
+  color: #0A261D !important;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-tab-collapsed-active * {
+  color: #0A261D !important;
+}
+
+/* Floating Navbar Pill from Inspiration */
+.glass-header-pill {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  border-radius: 9999px;
 }
 
 /* Floating Table Selected Pill Row mechanism */

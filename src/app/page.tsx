@@ -174,6 +174,7 @@ export default function HomeShell() {
           {/* Floating Glass Header */}
           <AppHeader
             currentTab={activeTab}
+            onSelectTab={setActiveTab}
             isOnline={isOnline}
             storageBytes={storageBytes}
             aggregateReadiness={aggregateEnterpriseReadiness}
