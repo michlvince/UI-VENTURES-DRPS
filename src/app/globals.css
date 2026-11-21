@@ -5,14 +5,14 @@
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Refined Color Palette */
+    /* Theme Palette */
     --color-primary: #0A261D;
     --color-primary-dark: #061B14;
     --color-primary-medium: #103E2E;
     --color-primary-light: #154E3A;
     --color-accent: #10B981;
     --color-accent-bright: #34D399;
-    --color-bg-canvas: #F8F9FA;
+    --color-bg-canvas: #F4F6F8;
     --color-surface: #FFFFFF;
     --color-border: #E5E7EB;
     --color-border-subtle: #F1F3F5;
@@ -31,7 +31,7 @@
 }
 
 body {
-  background-color: var(--color-bg-canvas, #F8F9FA);
+  background-color: var(--color-bg-canvas, #F4F6F8);
   color: var(--color-text-main, #111827);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -42,6 +42,73 @@ body {
 .font-mono-metrics {
   font-family: var(--font-mono);
   font-feature-settings: 'tnum' on, 'lnum' on;
+}
+
+/* Inverted Curved Cutout Sidebar active indicator mechanism */
+.sidebar-cutout-active {
+  position: relative;
+  background-color: #F4F6F8;
+  color: #0A261D !important;
+  font-weight: 700 !important;
+  border-top-left-radius: 28px;
+  border-bottom-left-radius: 28px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-right: -20px;
+  padding-right: 20px;
+  box-shadow: -4px 0 16px -2px rgba(0, 0, 0, 0.04);
+  z-index: 20;
+}
+
+.sidebar-cutout-active::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-bottom-right-radius: 24px;
+  box-shadow: 10px 10px 0 10px #F4F6F8;
+  pointer-events: none;
+}
+
+.sidebar-cutout-active::after {
+  content: '';
+  position: absolute;
+  bottom: -24px;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-top-right-radius: 24px;
+  box-shadow: 10px -10px 0 10px #F4F6F8;
+  pointer-events: none;
+}
+
+/* Floating Table Selected Pill Row mechanism */
+.table-row-selected-pill {
+  position: relative;
+  background-color: #0A261D !important;
+  color: #FFFFFF !important;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -4px rgba(10, 38, 29, 0.35), 0 4px 10px -2px rgba(10, 38, 29, 0.2);
+  transform: translateY(-1px);
+  z-index: 10;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.table-row-selected-pill td {
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+}
+
+.table-row-selected-pill td * {
+  color: #FFFFFF !important;
+}
+
+.table-row-selected-pill .pill-accent {
+  color: #4ADE80 !important;
 }
 
 /* Header & Glass Elements */

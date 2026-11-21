@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
   TrendingUp,
+  Settings,
+  ChevronDown,
 } from 'lucide-react';
 import {
   BusinessUnit,
@@ -39,6 +41,8 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
   onNavigateTab,
   onSelectUnitFilter,
 }) => {
+  const [selectedRowId, setSelectedRowId] = useState<string>('UV-HOT');
+
   const criticalProcesses = processes.filter((p) => p.criticality === 'Critical');
   const sharedAssets = assets.filter((a) => a.isShared);
   const criticalRisks = risks.filter((r) => r.severity === 'Critical');
@@ -46,6 +50,8 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
   const metSims = simulations.filter((s) => s.complianceStatus === 'MET');
   const missedSims = simulations.filter((s) => s.complianceStatus === 'MISSED');
   const complianceRate = Math.round((metSims.length / simulations.length) * 100);
+
+  const sortedUnits = units.slice().sort((a, b) => b.currentReadiness - a.currentReadiness);
 
   return (
     <div className="space-y-6 pb-16">
@@ -126,85 +132,135 @@ export const CommandDashboard: React.FC<CommandDashboardProps> = ({
 
       {/* Main Grid: Subsidiaries Table + Shared Utilities & Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Subsidiary Leaderboard Table (8 cols) */}
+        {/* Left Column: Subsidiary Leaderboard Table (8 cols) matching Inspiration Mechanism */}
         <div className="lg:col-span-8 bg-white rounded-2xl p-6 shadow-xs border border-[#E5E7EB] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F1F3F5]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#F1F3F5]">
             <div>
               <h3 className="text-sm font-bold text-[#111827]">
-                Subsidiary Readiness & BIA Catalog
+                Subsidiary Continuity Directory
               </h3>
               <p className="text-xs text-[#64748B] mt-0.5">
-                Continuity posture ranked across all {units.length} commercial subsidiaries.
+                Click any subsidiary row to highlight and inspect its full profile.
               </p>
             </div>
-            <button
-              onClick={() => onNavigateTab('units_bia')}
-              className="text-xs text-[#103E2E] hover:underline font-semibold flex items-center gap-1"
-            >
-              <span>Manage BIA</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-[#64748B] font-medium">
+                {units.length} monitored subsidiaries
+              </span>
+              <button
+                onClick={() => onNavigateTab('units_bia')}
+                className="text-xs text-[#103E2E] hover:underline font-semibold flex items-center gap-1 ml-2"
+              >
+                <span>BIA Details</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs min-w-[500px]">
+            <table className="w-full text-left border-collapse text-xs min-w-[540px]">
               <thead>
-                <tr className="border-b border-[#E5E7EB] text-[#64748B] bg-[#F8F9FA] rounded-xl">
-                  <th className="py-3 px-4 font-semibold rounded-l-xl">Code</th>
-                  <th className="py-3 px-4 font-semibold">Subsidiary</th>
-                  <th className="py-3 px-4 font-semibold">Category</th>
-                  <th className="py-3 px-4 font-semibold text-right">Readiness</th>
-                  <th className="py-3 px-4 font-semibold text-center">Status</th>
-                  <th className="py-3 px-4 font-semibold text-right rounded-r-xl">Action</th>
+                <tr className="text-[#64748B] text-[11px] uppercase tracking-wider font-semibold border-b border-[#F1F3F5]">
+                  <th className="py-3 px-4">Code</th>
+                  <th className="py-3 px-4">Subsidiary</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4 text-right">Readiness</th>
+                  <th className="py-3 px-4 text-center">Status</th>
+                  <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#F1F3F5]">
-                {units
-                  .slice()
-                  .sort((a, b) => b.currentReadiness - a.currentReadiness)
-                  .map((u) => {
-                    const statusVariant =
-                      u.currentReadiness >= 85
-                        ? 'success'
-                        : u.currentReadiness >= 75
-                        ? 'neutral'
-                        : 'danger';
+              <tbody className="space-y-1">
+                {sortedUnits.map((u) => {
+                  const isSelected = u.id === selectedRowId;
+                  const statusVariant =
+                    u.currentReadiness >= 85
+                      ? 'success'
+                      : u.currentReadiness >= 75
+                      ? 'neutral'
+                      : 'danger';
 
-                    return (
-                      <tr key={u.id} className="hover:bg-[#F8F9FA] transition-colors">
-                        <td className="py-3.5 px-4 font-mono-metrics font-bold text-[#111827]">
-                          {u.id}
-                        </td>
-                        <td className="py-3.5 px-4 font-semibold text-[#111827]">
-                          {u.name}
-                        </td>
-                        <td className="py-3.5 px-4 text-[#64748B]">{u.category}</td>
-                        <td className="py-3.5 px-4 text-right">
+                  return (
+                    <tr
+                      key={u.id}
+                      onClick={() => setSelectedRowId(u.id)}
+                      className={`cursor-pointer transition-all duration-150 ${
+                        isSelected
+                          ? 'table-row-selected-pill'
+                          : 'hover:bg-[#F8F9FA] rounded-xl'
+                      }`}
+                    >
+                      <td className="py-3 px-4 font-mono-metrics font-bold">
+                        {u.id}
+                      </td>
+                      <td className="py-3 px-4 font-semibold">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                              isSelected
+                                ? 'bg-[#154E3A] text-[#4ADE80]'
+                                : 'bg-[#F0FDF4] text-[#16A34A]'
+                            }`}
+                          >
+                            {u.id.slice(3, 5)}
+                          </div>
+                          <span>{u.name}</span>
+                        </div>
+                      </td>
+                      <td className={`py-3 px-4 ${isSelected ? 'text-white/80' : 'text-[#64748B]'}`}>
+                        {u.category}
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        {isSelected ? (
+                          <span className="font-mono-metrics font-bold text-sm text-[#4ADE80] pill-accent">
+                            {u.currentReadiness.toFixed(1)}%
+                          </span>
+                        ) : (
                           <StatusBadge
                             label={`${u.currentReadiness.toFixed(1)}%`}
                             variant={statusVariant}
                             size="sm"
                           />
-                        </td>
-                        <td className="py-3.5 px-4 text-center">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F8F9FA] text-[#64748B] font-medium border border-[#E2E8F0]">
-                            {u.status}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-right">
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <span
+                          className={`text-[10px] px-2.5 py-0.5 rounded-full font-medium ${
+                            isSelected
+                              ? 'bg-white/10 text-white border border-white/20'
+                              : 'bg-[#F8F9FA] text-[#64748B] border border-[#E2E8F0]'
+                          }`}
+                        >
+                          {u.status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               onSelectUnitFilter(u.id);
                               onNavigateTab('units_bia');
                             }}
-                            className="text-[#103E2E] hover:underline text-[11px] font-semibold"
+                            className={`p-1 rounded-md transition-colors ${
+                              isSelected
+                                ? 'text-white/80 hover:text-white hover:bg-white/10'
+                                : 'text-[#64748B] hover:text-[#111827] hover:bg-[#F1F3F5]'
+                            }`}
+                            title="Inspect Details"
                           >
-                            Details
+                            <Settings className="w-3.5 h-3.5" />
                           </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 ${
+                              isSelected ? 'text-[#4ADE80] pill-accent' : 'text-[#94A3B8]'
+                            }`}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -61,34 +61,38 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     const isActive = activeTab === item.id;
 
     return (
-      <button
-        key={item.id}
-        onClick={() => {
-          onSelectTab(item.id);
-          onCloseMobile();
-        }}
-        title={isCollapsed ? item.label : undefined}
-        className={`w-full flex items-center ${
-          isCollapsed ? 'justify-center px-2 py-2.5' : 'justify-between px-3.5 py-2.5'
-        } rounded-xl text-xs font-medium transition-all duration-150 ${
-          isActive
-            ? 'bg-[#154E3A] text-white font-semibold'
-            : 'text-white/70 hover:text-white hover:bg-white/[0.06]'
-        }`}
-      >
-        <div className="flex items-center gap-3">
-          <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#4ADE80]' : 'text-white/50'}`} />
-          {!isCollapsed && <span className="truncate">{item.label}</span>}
-        </div>
-        {!isCollapsed && item.id === 'mart_ledger' && martOfflineActive && (
-          <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#4ADE80] text-[#0A261D]">
-            OFFLINE
-          </span>
-        )}
-        {!isCollapsed && isActive && item.id !== 'mart_ledger' && (
-          <div className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />
-        )}
-      </button>
+      <div key={item.id} className="relative">
+        <button
+          onClick={() => {
+            onSelectTab(item.id);
+            onCloseMobile();
+          }}
+          title={isCollapsed ? item.label : undefined}
+          className={`w-full flex items-center ${
+            isCollapsed ? 'justify-center px-2 py-3' : 'justify-between px-4 py-3'
+          } text-xs transition-all duration-150 ${
+            isActive
+              ? 'sidebar-cutout-active'
+              : 'text-white/70 hover:text-white hover:bg-white/[0.06] rounded-xl'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0A261D]' : 'text-white/60'}`} />
+            {!isCollapsed && <span className="truncate">{item.label}</span>}
+          </div>
+          {!isCollapsed && item.id === 'mart_ledger' && martOfflineActive && (
+            <span
+              className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                isActive
+                  ? 'bg-[#0A261D] text-[#4ADE80]'
+                  : 'bg-[#4ADE80] text-[#0A261D]'
+              }`}
+            >
+              OFFLINE
+            </span>
+          )}
+        </button>
+      </div>
     );
   };
 
@@ -104,8 +108,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
       {/* Sidebar Aside Element */}
       <aside
-        className={`fixed lg:sticky top-0 bottom-0 left-0 z-40 bg-[#0A261D] text-white flex flex-col justify-between transition-all duration-200 border-r border-[#14533D]/40 ${
-          isCollapsed ? 'w-[72px] p-3' : 'w-[260px] xl:w-[270px] p-5'
+        className={`fixed lg:sticky top-0 bottom-0 left-0 z-40 bg-[#0A261D] text-white flex flex-col justify-between transition-all duration-200 border-r border-[#14533D]/40 shrink-0 ${
+          isCollapsed ? 'w-[76px] p-3' : 'w-[250px] xl:w-[265px] pt-6 pb-6 pl-5 pr-5'
         } ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
